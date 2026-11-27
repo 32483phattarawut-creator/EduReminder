@@ -894,11 +894,11 @@ button { cursor: pointer; }
 const SUPABASE_URL = 'https://fghgjkyanoyfjbtdnipm.supabase.co';
 
 // ใส่ Publishable Key ของโปรเจกต์ตรงนี้
-const SUPABASE_PUBLISHABLE_KEY = 'วาง_PUBLISHABLE_KEY_ที่นี่';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
 
 const supabaseReady =
   window.supabase &&
-  SUPABASE_PUBLISHABLE_KEY !== 'วาง_PUBLISHABLE_KEY_ที่นี่';
+  SUPABASE_PUBLISHABLE_KEY !== 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
 
 const supabaseClient = supabaseReady
   ? window.supabase.createClient(
