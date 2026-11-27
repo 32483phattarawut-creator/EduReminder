@@ -285,6 +285,30 @@ textarea.form-control{min-height:85px;resize:vertical}
           <div class="message" id="notificationSettingsMessage"></div>
         </div>
       </div>
+      
+<div class="panel">
+  <h2 class="panel-title">เชื่อมต่อ LINE</h2>
+  <p style="font-size:13px;color:var(--muted);line-height:1.8">
+    เชื่อมต่อบัญชี LINE เพื่อรับการแจ้งเตือนงานจาก EduReminder ตามวันที่และเวลาที่กำหนด
+  </p>
+  <button class="btn btn-primary" id="createLineCodeButton" onclick="createLineLinkCode()">
+    สร้างรหัสเชื่อมต่อ LINE
+  </button>
+  <div id="lineLinkResult" class="hidden" style="margin-top:18px">
+    <div style="font-size:12px;color:var(--muted)">รหัสเชื่อมต่อของคุณ</div>
+    <div id="lineLinkCode" style="font-size:30px;font-weight:700;letter-spacing:5px;color:var(--green-dark);margin:8px 0"></div>
+    <div id="lineLinkExpiry" style="font-size:12px;color:var(--muted)"></div>
+    <button class="btn btn-outline btn-small" style="margin-top:12px" onclick="copyLineLinkCode()">คัดลอกรหัส</button>
+    <div class="status-box">
+      1. เพิ่มเพื่อน LINE Official Account ชื่อ EduReminder<br>
+      2. ส่งรหัสด้านบนไปในแชต LINE<br>
+      3. รอข้อความยืนยันการเชื่อมต่อจาก EduReminder<br><br>
+      รหัสนี้ใช้ได้เพียงครั้งเดียวและหมดอายุภายใน 10 นาที
+    </div>
+  </div>
+  <div id="lineLinkMessage" class="message"></div>
+</div>
+
       <div class="panel">
         <h2 class="panel-title">ข้อมูลบัญชี</h2>
         <div class="setting-row"><div><div style="font-weight:600">อีเมลที่ใช้งาน</div><div class="setting-description" id="settingsEmail">-</div></div></div>
