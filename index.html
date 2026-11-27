@@ -1,22 +1,22 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EduReminder | ระบบจัดการงานนักเรียน</title>
+<meta name="theme-color" content="#f5f7f3">
+<title>EduReminder | Student Planner</title>
 
 <style>
 @font-face {
   font-family: 'TH SarabunPSK';
   src: url('./fonts/THSarabunPSK.ttf') format('truetype');
   font-weight: 400;
-  font-style: normal;
 }
 @font-face {
   font-family: 'TH SarabunPSK';
   src: url('./fonts/THSarabunPSK-Bold.ttf') format('truetype');
   font-weight: 700;
-  font-style: normal;
 }
 @font-face {
   font-family: 'TH SarabunPSK';
@@ -31,6 +31,21 @@
   font-style: italic;
 }
 
+:root {
+  --green: #64866e;
+  --green-dark: #355c43;
+  --green-light: #e8f0e8;
+  --sage: #a8bca8;
+  --bg: #f5f7f3;
+  --white: #ffffff;
+  --text: #293b30;
+  --muted: #87938a;
+  --border: #e8ede7;
+  --red: #c66d68;
+  --orange: #c28c4e;
+  --shadow: 0 5px 22px rgba(48,75,54,.045);
+}
+
 * {
   box-sizing: border-box;
   font-family: 'TH SarabunPSK', sans-serif;
@@ -38,173 +53,611 @@
 
 body {
   margin: 0;
-  background: #f4f8f5;
-  color: #263b30;
+  background: var(--bg);
+  color: var(--text);
   font-size: 20px;
 }
 
-header {
-  background: #248653;
-  color: white;
-  padding: 20px 6%;
+button, input, select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+}
+
+/* SIDEBAR */
+
+.sidebar {
+  width: 245px;
+  background: #fff;
+  border-right: 1px solid var(--border);
+  padding: 26px 17px;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 0 10px 32px;
+}
+
+.brand-icon {
+  width: 42px;
+  height: 42px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  font-size: 25px;
+}
+
+.brand h2 {
+  margin: 0;
+  font-size: 27px;
+  line-height: 1;
+}
+
+.brand small {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.menu-label {
+  color: #a1aaa2;
+  font-size: 16px;
+  padding: 12px 12px 7px;
+}
+
+.nav-btn {
+  border: 0;
+  background: transparent;
+  color: #748078;
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 11px;
+  text-align: left;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 3px 0;
+  font-size: 20px;
+  transition: .2s;
+}
+
+.nav-btn:hover {
+  background: #f5f8f4;
+  color: var(--green-dark);
+}
+
+.nav-btn.active {
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-weight: 700;
+}
+
+.nav-icon {
+  width: 24px;
+  text-align: center;
+  font-size: 19px;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  background: #f5f8f4;
+  border-radius: 14px;
+  padding: 15px;
+}
+
+.sidebar-bottom strong {
+  font-size: 19px;
+}
+
+.sidebar-bottom p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 16px;
+}
+
+/* MAIN */
+
+.main {
+  flex: 1;
+  min-width: 0;
+  padding: 28px 38px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.topbar h1 {
+  font-size: 34px;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.topbar p {
+  color: var(--muted);
+  margin: 3px 0 0;
+  font-size: 18px;
+}
+
+.date-label {
+  background: white;
+  padding: 9px 15px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--green-dark);
+  font-size: 17px;
+}
+
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* WELCOME */
+
+.welcome {
+  background: linear-gradient(110deg,#e7efe5,#f1f5ed);
+  border-radius: 19px;
+  padding: 25px 28px;
+  margin-bottom: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  overflow: hidden;
+}
+
+.welcome h2 {
+  font-size: 29px;
+  margin: 0 0 3px;
+}
+
+.welcome p {
+  margin: 0;
+  color: #718477;
+}
+
+.welcome-icon {
+  font-size: 55px;
+  opacity: .8;
+}
+
+/* STATS */
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: 15px;
+  margin-bottom: 22px;
+}
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 19px;
+  box-shadow: var(--shadow);
+}
+
+.stat-top {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-header h1 {
-  margin: 0;
-  font-size: 34px;
-  font-weight: 700;
-}
-
-header p {
-  margin: 0;
+.stat-icon {
+  width: 37px;
+  height: 37px;
+  border-radius: 11px;
+  background: var(--green-light);
+  display: grid;
+  place-items: center;
   font-size: 19px;
 }
 
-main {
-  max-width: 1050px;
-  margin: 30px auto;
-  padding: 0 18px;
-}
-
-.welcome h2 {
-  font-size: 32px;
-  margin-bottom: 0;
-}
-
-.welcome p {
-  margin-top: 0;
-  color: #718078;
-}
-
-.stats {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 22px;
-}
-
-.card {
-  background: white;
-  border-radius: 16px;
-  padding: 20px;
-  box-shadow: 0 3px 12px #0000000a;
+.stat-title {
+  color: var(--muted);
+  font-size: 17px;
 }
 
 .stat-number {
-  font-size: 38px;
-  font-weight: bold;
-  color: #248653;
+  font-size: 36px;
+  font-weight: 700;
+  margin-top: 8px;
+  line-height: 1.1;
 }
 
-.panel {
-  margin-top: 22px;
+.stat-note {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
-h3 {
-  font-size: 27px;
-  margin: 0 0 12px;
-}
+/* CONTENT GRID */
 
-.form {
+.content-grid {
   display: grid;
-  grid-template-columns: 2fr 1fr 1fr auto;
-  gap: 10px;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 18px;
 }
 
-input, select, button {
-  font-family: 'TH SarabunPSK', sans-serif;
-  font-size: 20px;
-  padding: 10px 13px;
-  border-radius: 9px;
-  border: 1px solid #d6e2d9;
-}
-
-input, select {
-  width: 100%;
+.section-card {
   background: white;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 18px;
+  box-shadow: var(--shadow);
 }
 
-button {
-  background: #248653;
-  color: white;
-  border: none;
-  cursor: pointer;
+.section-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
 }
 
-button:hover {
-  background: #176b40;
+.section-head h3 {
+  margin: 0;
+  font-size: 24px;
 }
 
-.task {
+.text-btn {
+  color: var(--green-dark);
+  background: transparent;
+  border: 0;
+  font-size: 17px;
+}
+
+/* TASKS */
+
+.task-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
   gap: 12px;
-  padding: 14px 0;
-  border-bottom: 1px solid #edf1ed;
+  padding: 13px 0;
+  border-bottom: 1px solid #f0f2ef;
 }
 
-.task strong {
-  font-size: 22px;
+.task-item:last-child {
+  border-bottom: 0;
 }
 
-.task small {
-  display: block;
-  color: #718078;
-  font-size: 18px;
+.task-info {
+  min-width: 0;
 }
 
-.task label {
+.task-title {
+  font-weight: 700;
+  font-size: 20px;
+  overflow-wrap: anywhere;
+}
+
+.task-meta {
+  font-size: 16px;
+  color: var(--muted);
+}
+
+.task-actions {
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap: 7px;
+  flex-shrink: 0;
 }
 
-.task label input {
-  width: auto;
+.small-btn {
+  border: 0;
+  border-radius: 8px;
+  padding: 5px 10px;
+  background: #f1f5ef;
+  color: var(--green-dark);
+  font-size: 16px;
 }
 
-.delete {
-  background: #fcebea;
-  color: #b53d35;
-  padding: 7px 15px;
+.small-btn.delete {
+  color: var(--red);
+  background: #fcf0ef;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 15px;
+  background: #edf3ed;
+  color: var(--green-dark);
+}
+
+.badge.high {
+  background: #f9ece9;
+  color: #b85f57;
+}
+
+.badge.medium {
+  background: #fbf2e6;
+  color: #aa793b;
+}
+
+.badge.low {
+  background: #edf3ed;
+  color: #66836a;
+}
+
+.completed .task-title {
+  text-decoration: line-through;
+  color: #a1aaa2;
 }
 
 .empty {
-  color: #849189;
   text-align: center;
-  padding: 25px;
+  color: var(--muted);
+  padding: 25px 10px;
+}
+
+/* PROGRESS */
+
+.progress-track {
+  height: 9px;
+  background: #edf1ec;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 10px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: var(--green);
+  border-radius: 20px;
+  transition: width .3s;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 16px;
+  margin-top: 7px;
+}
+
+/* FORMS */
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 13px;
+}
+
+.field {
+  margin-bottom: 13px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.field input, .field select, .search-input {
+  width: 100%;
+  border: 1px solid #dfe7de;
+  background: #fff;
+  padding: 10px 12px;
+  border-radius: 10px;
+  outline: none;
+  color: var(--text);
+  font-size: 18px;
+}
+
+.field input:focus, .field select:focus,
+.search-input:focus {
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px #64866e18;
+}
+
+.primary-btn {
+  background: var(--green-dark);
+  color: white;
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 19px;
+  font-size: 19px;
+}
+
+.primary-btn:hover {
+  background: #284a34;
+}
+
+.secondary-btn {
+  background: #eef3ed;
+  color: var(--green-dark);
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 17px;
+  font-size: 18px;
+}
+
+/* CALENDAR */
+
+.calendar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+  gap: 10px;
+}
+
+.calendar-head h2 {
+  font-size: 26px;
+  margin: 0;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7,minmax(0,1fr));
+  gap: 7px;
+}
+
+.day-name {
+  text-align: center;
+  color: var(--muted);
+  font-size: 17px;
+  padding: 8px 0;
+}
+
+.calendar-day {
+  min-height: 78px;
+  background: #fafbf9;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 7px;
+  font-size: 17px;
+}
+
+.calendar-day.today {
+  border: 2px solid var(--green);
+  background: #f0f5ef;
+}
+
+.calendar-day.selected {
+  background: #e4eee3;
+}
+
+.calendar-day.muted {
+  opacity: .35;
+}
+
+.calendar-day .dot {
+  width: 6px;
+  height: 6px;
+  background: var(--green);
+  display: inline-block;
+  border-radius: 50%;
+  margin-right: 2px;
+}
+
+/* FILTER */
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.filter-row select, .filter-row input {
+  border: 1px solid #dfe7de;
+  background: white;
+  border-radius: 9px;
+  padding: 9px 12px;
+  font-size: 18px;
+  color: var(--text);
 }
 
 .footer {
   text-align: center;
-  padding: 25px;
-  color: #849189;
-  font-size: 17px;
+  color: #a0aaa1;
+  font-size: 16px;
+  padding: 25px 0;
 }
 
-@media(max-width:650px) {
+/* MOBILE */
+
+@media(max-width:950px) {
+  .sidebar {
+    width: 205px;
+  }
+  .main {
+    padding: 24px 20px;
+  }
   .stats {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2,minmax(0,1fr));
   }
+}
 
-  .form {
-    grid-template-columns: 1fr;
+@media(max-width:680px) {
+  .app {
+    display: block;
   }
-
-  header {
-    padding: 18px;
+  .sidebar {
+    width: 100%;
+    padding: 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--border);
   }
-
-  header h1 {
+  .brand {
+    padding: 0 5px 10px;
+  }
+  .menu-label, .sidebar-bottom {
+    display: none;
+  }
+  .nav-list {
+    display: flex;
+    overflow-x: auto;
+    gap: 5px;
+  }
+  .nav-btn {
+    white-space: nowrap;
+    width: auto;
+    padding: 8px 12px;
+    margin: 0;
+  }
+  .main {
+    padding: 19px 14px;
+  }
+  .topbar {
+    align-items: flex-start;
+  }
+  .topbar h1 {
     font-size: 29px;
   }
+  .date-label {
+    font-size: 15px;
+  }
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+  .calendar-day {
+    min-height: 55px;
+    padding: 4px;
+    font-size: 15px;
+  }
+  .task-actions {
+    flex-wrap: wrap;
+  }
+}
 
-  .task {
-    align-items: flex-start;
+@media(max-width:390px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 9px;
+  }
+  .card {
+    padding: 13px;
+  }
+  .welcome {
+    padding: 18px;
   }
 }
 </style>
@@ -212,236 +665,391 @@ button:hover {
 
 <body>
 
-<header>
-  <div>
-    <h1>🌱 EduReminder</h1>
-    <p>จัดการงาน เรียน และกำหนดส่งในที่เดียว</p>
+<div class="app">
+
+<aside class="sidebar">
+
+  <div class="brand">
+    <div class="brand-icon">🌿</div>
+    <div>
+      <h2>EduReminder</h2>
+      <small>Student Planner</small>
+    </div>
   </div>
-  <span>📚 Student Planner</span>
+
+  <div class="menu-label">เมนูหลัก</div>
+
+  <nav class="nav-list">
+    <button class="nav-btn active" data-page="dashboard">
+      <span class="nav-icon">⌂</span> ภาพรวม
+    </button>
+    <button class="nav-btn" data-page="tasks">
+      <span class="nav-icon">☷</span> รายการงาน
+    </button>
+    <button class="nav-btn" data-page="calendar">
+      <span class="nav-icon">▦</span> ปฏิทิน
+    </button>
+    <button class="nav-btn" data-page="settings">
+      <span class="nav-icon">⚙</span> ตั้งค่า
+    </button>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <strong>🌱 เริ่มต้นวันใหม่</strong>
+    <p>จัดการเวลาให้ดี แล้วทุกอย่างจะง่ายขึ้น</p>
+  </div>
+
+</aside>
+
+<main class="main">
+
+<header class="topbar">
+  <div>
+    <h1 id="pageTitle">ภาพรวม</h1>
+    <p id="pageSubtitle">ยินดีต้อนรับกลับมา วันนี้เป็นวันที่ดีในการเรียนรู้</p>
+  </div>
+  <div class="date-label" id="todayLabel"></div>
 </header>
 
-<main>
+<!-- DASHBOARD -->
 
-<section class="welcome">
-  <h2>สวัสดีครับ 👋</h2>
-  <p>วันนี้มาเช็กงานที่ต้องทำกันเถอะ</p>
-</section>
+<section class="page active" id="dashboard">
 
-<section class="stats">
-
-  <div class="card">
-    <div>งานทั้งหมด</div>
-    <div class="stat-number" id="total">0</div>
+  <div class="welcome">
+    <div>
+      <h2>สวัสดีครับ 👋</h2>
+      <p>พร้อมจัดการงานและเป้าหมายของวันนี้หรือยัง?</p>
+    </div>
+    <div class="welcome-icon">📚</div>
   </div>
 
-  <div class="card">
-    <div>กำลังดำเนินการ</div>
-    <div class="stat-number" id="pending">0</div>
-  </div>
+  <div class="stats">
 
-  <div class="card">
-    <div>ทำเสร็จแล้ว</div>
-    <div class="stat-number" id="done">0</div>
-  </div>
+    <div class="card">
+      <div class="stat-top">
+        <span class="stat-title">งานทั้งหมด</span>
+        <span class="stat-icon">📋</span>
+      </div>
+      <div class="stat-number" id="totalCount">0</div>
+      <div class="stat-note">รายการงานทั้งหมด</div>
+    </div>
 
-</section>
+    <div class="card">
+      <div class="stat-top">
+        <span class="stat-title">ยังไม่เสร็จ</span>
+        <span class="stat-icon">⏳</span>
+      </div>
+      <div class="stat-number" id="pendingCount">0</div>
+      <div class="stat-note">งานที่กำลังดำเนินการ</div>
+    </div>
 
-<section class="card panel">
+    <div class="card">
+      <div class="stat-top">
+        <span class="stat-title">เสร็จแล้ว</span>
+        <span class="stat-icon">✓</span>
+      </div>
+      <div class="stat-number" id="doneCount">0</div>
+      <div class="stat-note">งานที่ทำสำเร็จ</div>
+    </div>
 
-  <h3>➕ เพิ่มงานใหม่</h3>
-
-  <div class="form">
-
-    <input
-      id="taskName"
-      placeholder="กรอกชื่องานหรือการบ้าน"
-    >
-
-    <select id="subject">
-      <option value="คณิตศาสตร์">คณิตศาสตร์</option>
-      <option value="วิทยาศาสตร์">วิทยาศาสตร์</option>
-      <option value="ภาษาไทย">ภาษาไทย</option>
-      <option value="ภาษาอังกฤษ">ภาษาอังกฤษ</option>
-      <option value="สังคมศึกษา">สังคมศึกษา</option>
-      <option value="ประวัติศาสตร์">ประวัติศาสตร์</option>
-      <option value="สุขศึกษา">สุขศึกษา</option>
-      <option value="ศิลปะ">ศิลปะ</option>
-      <option value="อื่น ๆ">อื่น ๆ</option>
-    </select>
-
-    <input id="deadline" type="date">
-
-    <button onclick="addTask()">เพิ่มงาน</button>
+    <div class="card">
+      <div class="stat-top">
+        <span class="stat-title">ใกล้ครบกำหนด</span>
+        <span class="stat-icon">🔔</span>
+      </div>
+      <div class="stat-number" id="urgentCount">0</div>
+      <div class="stat-note">ภายใน 3 วัน</div>
+    </div>
 
   </div>
 
-</section>
+  <div class="content-grid">
 
-<section class="card panel">
+    <div class="section-card">
+      <div class="section-head">
+        <h3>งานที่กำลังจะมาถึง</h3>
+        <button class="text-btn" onclick="showPage('tasks')">ดูทั้งหมด →</button>
+      </div>
+      <div id="upcomingTasks"></div>
+    </div>
 
-  <h3>📋 รายการงานของฉัน</h3>
+    <div>
 
-  <div id="taskList"></div>
-
-</section>
-
-</main>
-
-<div class="footer">
-  EduReminder © 2026 | Your Student Planner 🌱
-</div>
-
-<script>
-
-let tasks = JSON.parse(
-  localStorage.getItem("eduTasks") || "[]"
-);
-
-function save() {
-  localStorage.setItem(
-    "eduTasks",
-    JSON.stringify(tasks)
-  );
-  render();
-}
-
-function addTask() {
-
-  const name = document
-    .getElementById("taskName")
-    .value.trim();
-
-  const subject = document
-    .getElementById("subject")
-    .value;
-
-  const deadline = document
-    .getElementById("deadline")
-    .value;
-
-  if (!name) {
-    alert("กรุณากรอกชื่องาน");
-    return;
-  }
-
-  tasks.push({
-    id: Date.now(),
-    name: name,
-    subject: subject,
-    deadline: deadline,
-    done: false
-  });
-
-  document.getElementById("taskName").value = "";
-  document.getElementById("deadline").value = "";
-
-  save();
-}
-
-function toggleTask(id) {
-
-  tasks = tasks.map(task =>
-    task.id === id
-      ? {...task, done: !task.done}
-      : task
-  );
-
-  save();
-}
-
-function deleteTask(id) {
-
-  if (confirm("ต้องการลบงานนี้หรือไม่?")) {
-
-    tasks = tasks.filter(
-      task => task.id !== id
-    );
-
-    save();
-  }
-}
-
-function escapeHTML(value) {
-
-  return String(value).replace(
-    /[&<>"']/g,
-    character => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#39;"
-    })[character]
-  );
-}
-
-function render() {
-
-  document.getElementById("total").textContent =
-    tasks.length;
-
-  document.getElementById("pending").textContent =
-    tasks.filter(task => !task.done).length;
-
-  document.getElementById("done").textContent =
-    tasks.filter(task => task.done).length;
-
-  const list = document.getElementById("taskList");
-
-  if (tasks.length === 0) {
-
-    list.innerHTML =
-      '<div class="empty">ยังไม่มีงาน ลองเพิ่มงานแรกของคุณได้เลย 🌱</div>';
-
-    return;
-  }
-
-  list.innerHTML = tasks.map(task => `
-
-    <div class="task">
-
-      <div>
-
-        <label>
-
-          <input
-            type="checkbox"
-            ${task.done ? "checked" : ""}
-            onchange="toggleTask(${task.id})"
-          >
-
-          <strong style="
-            ${task.done
-              ? "text-decoration:line-through;color:#89958e"
-              : ""}
-          ">
-            ${escapeHTML(task.name)}
-          </strong>
-
-        </label>
-
-        <small>
-          ${escapeHTML(task.subject)}
-          · กำหนดส่ง: ${escapeHTML(task.deadline || "ไม่ระบุ")}
-        </small>
-
+      <div class="section-card">
+        <h3>ความคืบหน้าของงาน</h3>
+        <div class="stat-number" id="progressPercent">0%</div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressBar" style="width:0%"></div>
+        </div>
+        <div class="progress-text">
+          <span>ความสำเร็จ</span>
+          <span id="progressDetail">0 / 0 งาน</span>
+        </div>
       </div>
 
-      <button
-        class="delete"
-        onclick="deleteTask(${task.id})"
-      >
-        ลบ
-      </button>
+      <div class="section-card">
+        <div class="section-head">
+          <h3>เพิ่มงานด่วน</h3>
+        </div>
+        <button class="primary-btn" style="width:100%" onclick="showPage('tasks')">
+          + เพิ่มงานใหม่
+        </button>
+      </div>
 
     </div>
 
-  `).join("");
+  </div>
+
+</section>
+
+<!-- TASKS -->
+
+<section class="page" id="tasks">
+
+  <div class="section-card">
+
+    <div class="section-head">
+      <h3 id="formTitle">เพิ่มรายการงานใหม่</h3>
+    </div>
+
+    <form id="taskForm">
+
+      <div class="form-grid">
+
+        <div class="field">
+          <label for="taskName">ชื่องาน</label>
+          <input id="taskName" required maxlength="120"
+            placeholder="เช่น ทำแบบฝึกหัดคณิตศาสตร์">
+        </div>
+
+        <div class="field">
+          <label for="taskType">ประเภทงาน</label>
+          <select id="taskType">
+            <option value="การบ้าน">การบ้าน</option>
+            <option value="งานที่ได้รับมอบหมาย">งานที่ได้รับมอบหมาย</option>
+            <option value="สอบ">สอบ</option>
+            <option value="กิจกรรม">กิจกรรม</option>
+            <option value="อื่น ๆ">อื่น ๆ</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskSubject">วิชา</label>
+          <select id="taskSubject">
+            <option>คณิตศาสตร์</option>
+            <option>วิทยาศาสตร์</option>
+            <option>ภาษาไทย</option>
+            <option>ภาษาอังกฤษ</option>
+            <option>สังคมศึกษา</option>
+            <option>ประวัติศาสตร์</option>
+            <option>สุขศึกษา</option>
+            <option>ศิลปะ</option>
+            <option>การงานอาชีพ</option>
+            <option>อื่น ๆ</option>
+          </select>
+        </div>
+
+        <div class="field">
+          <label for="taskDate">กำหนดส่ง</label>
+          <input id="taskDate" type="date">
+        </div>
+
+        <div class="field">
+          <label for="taskPriority">ความสำคัญ</label>
+          <select id="taskPriority">
+            <option value="high">สูง</option>
+            <option value="medium" selected>ปานกลาง</option>
+            <option value="low">ต่ำ</option>
+          </select>
+        </div>
+
+      </div>
+
+      <button class="primary-btn" type="submit" id="submitBtn">
+        + บันทึกงาน
+      </button>
+
+      <button class="secondary-btn" type="button"
+        id="cancelEdit" onclick="cancelEditing()" hidden>
+        ยกเลิก
+      </button>
+
+    </form>
+
+  </div>
+
+  <div class="section-card">
+
+    <div class="section-head">
+      <h3>รายการงานทั้งหมด</h3>
+    </div>
+
+    <div class="filter-row">
+      <input class="search-input" id="searchTask"
+        placeholder="🔍 ค้นหาชื่องานหรือวิชา..."
+        style="flex:1;min-width:180px">
+
+      <select id="filterStatus">
+        <option value="all">ทุกสถานะ</option>
+        <option value="pending">ยังไม่เสร็จ</option>
+        <option value="done">เสร็จแล้ว</option>
+      </select>
+
+      <select id="filterSubject">
+        <option value="all">ทุกวิชา</option>
+        <option>คณิตศาสตร์</option>
+        <option>วิทยาศาสตร์</option>
+        <option>ภาษาไทย</option>
+        <option>ภาษาอังกฤษ</option>
+        <option>สังคมศึกษา</option>
+        <option>ประวัติศาสตร์</option>
+        <option>สุขศึกษา</option>
+        <option>ศิลปะ</option>
+        <option>การงานอาชีพ</option>
+        <option>อื่น ๆ</option>
+      </select>
+    </div>
+
+    <div id="allTasks"></div>
+
+  </div>
+
+</section>
+
+<!-- CALENDAR -->
+
+<section class="page" id="calendar">
+
+  <div class="section-card">
+
+    <div class="calendar-head">
+      <button class="secondary-btn" onclick="changeMonth(-1)">←</button>
+      <h2 id="calendarMonth"></h2>
+      <button class="secondary-btn" onclick="changeMonth(1)">→</button>
+    </div>
+
+    <div class="calendar-grid" id="calendarGrid"></div>
+
+    <div style="margin-top:18px">
+      <h3 id="selectedDateTitle">รายการงาน</h3>
+      <div id="calendarTasks"></div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- SETTINGS -->
+
+<section class="page" id="settings">
+
+  <div class="section-card">
+    <h3>ตั้งค่าทั่วไป</h3>
+    <p>EduReminder - Student Planner</p>
+    <p>ฟอนต์: TH SarabunPSK</p>
+    <p>ธีม: Modern Minimal / Sage Green</p>
+    <p>การจัดเก็บข้อมูล: เบราว์เซอร์ของอุปกรณ์นี้</p>
+  </div>
+
+  <div class="section-card">
+    <h3>ข้อมูลของฉัน</h3>
+    <p style="color:var(--muted)">
+      ข้อมูลในเวอร์ชันนี้จัดเก็บไว้ในอุปกรณ์ที่ใช้งาน
+      ยังไม่ได้ซิงก์กับบัญชีออนไลน์
+    </p>
+    <button class="secondary-btn" onclick="exportData()">
+      ดาวน์โหลดข้อมูลสำรอง
+    </button>
+  </div>
+
+  <div class="section-card">
+    <h3>การแจ้งเตือน LINE</h3>
+    <p style="color:var(--muted)">
+      ยังไม่ได้เชื่อมต่อ LINE Messaging API
+      เราจะตั้งค่าระบบนี้ในขั้นตอนถัดไป
+    </p>
+  </div>
+
+</section>
+
+<footer class="footer">
+  EduReminder © 2026 · Study smart, grow better 🌿
+</footer>
+
+</main>
+</div>
+
+<script>
+const STORAGE_KEY = 'eduTasks';
+
+let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+let editingId = null;
+let currentMonth = new Date();
+let selectedDate = localDate(new Date());
+
+function localDate(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth()+1).padStart(2,'0');
+  const d = String(date.getDate()).padStart(2,'0');
+  return `${y}-${m}-${d}`;
 }
 
-render();
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;',
+    '<':'&lt;',
+    '>':'&gt;',
+    '"':'&quot;',
+    "'":'&#39;'
+  })[c]);
+}
 
-</script>
+function save() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+  renderAll();
+}
 
-</body>
-</html>
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(el =>
+    el.classList.toggle('active', el.id === page)
+  );
+
+  document.querySelectorAll('.nav-btn').forEach(el =>
+    el.classList.toggle('active', el.dataset.page === page)
+  );
+
+  const titles = {
+    dashboard: ['ภาพรวม','ยินดีต้อนรับกลับมา วันนี้เป็นวันที่ดีในการเรียนรู้'],
+    tasks: ['รายการงาน','จัดการการบ้าน งาน และกำหนดส่งของคุณ'],
+    calendar: ['ปฏิทิน','ตรวจสอบกำหนดส่งงานในแต่ละวัน'],
+    settings: ['ตั้งค่า','จัดการข้อมูลและการตั้งค่าของคุณ']
+  };
+
+  document.getElementById('pageTitle').textContent = titles[page][0];
+  document.getElementById('pageSubtitle').textContent = titles[page][1];
+
+  if (page === 'calendar') renderCalendar();
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+
+function addOrUpdateTask(event) {
+  event.preventDefault();
+
+  const name = document.getElementById('taskName').value.trim();
+  if (!name) return;
+
+  const data = {
+    name,
+    type: document.getElementById('taskType').value,
+    subject: document.getElementById('taskSubject').value,
+    date: document.getElementById('taskDate').value,
+    priority: document.getElementById('taskPriority').value
+  };
+
+  if (editingId !== null) {
+    tasks = tasks.map(t => t.id === editingId ? {...t,...data} : t);
+  } else {
+    tasks.p
