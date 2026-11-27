@@ -216,6 +216,11 @@ button {
   color: var(--text);
 }
 
+.btn:disabled {
+  opacity: .6;
+  cursor: not-allowed;
+}
+
 .btn svg {
   width: 16px;
   height: 16px;
@@ -538,6 +543,94 @@ button {
   margin-top: 3px;
 }
 
+.setting-switch {
+  position: relative;
+  width: 46px;
+  height: 26px;
+  flex-shrink: 0;
+}
+
+.setting-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.setting-slider {
+  position: absolute;
+  inset: 0;
+  background: #dce4dd;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.setting-slider::before {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  left: 3px;
+  top: 3px;
+  background: white;
+  border-radius: 50%;
+  transition: .2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,.15);
+}
+
+.setting-switch input:checked + .setting-slider {
+  background: var(--green);
+}
+
+.setting-switch input:checked + .setting-slider::before {
+  transform: translateX(20px);
+}
+
+.notification-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.notification-fields .form-group {
+  margin-bottom: 0;
+}
+
+.notification-fields .full-width {
+  grid-column: 1 / -1;
+}
+
+.notification-status {
+  padding: 12px 14px;
+  border-radius: 9px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 12px;
+  line-height: 1.8;
+  margin-top: 16px;
+}
+
+.notification-status.error {
+  background: #fbeeee;
+  color: var(--red);
+}
+
+.notification-message {
+  min-height: 20px;
+  font-size: 12px;
+  margin-top: 12px;
+  line-height: 1.7;
+}
+
+.notification-message.success {
+  color: var(--green-dark);
+}
+
+.notification-message.error {
+  color: var(--red);
+}
+
 /* MODAL */
 .modal-backdrop {
   position: fixed;
@@ -701,29 +794,104 @@ button {
   .task-actions {
     flex-direction: column;
   }
+
+  .notification-fields {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* AUTH */
 .auth-screen {
-  min-height: 100vh; display: flex; align-items: center; justify-content: center;
-  padding: 22px; background: var(--bg);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 22px;
+  background: var(--bg);
 }
+
 .auth-card {
-  width: 100%; max-width: 420px; background: #fff; border: 1px solid var(--border);
-  border-radius: 18px; padding: 28px; box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 420px;
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: var(--shadow);
 }
-.auth-brand { display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:22px; }
-.auth-brand img { width:52px; height:52px; object-fit:contain; }
-.auth-title { text-align:center; font-size:22px; font-weight:800; margin:0; }
-.auth-desc { text-align:center; color:var(--muted); font-size:13px; margin:6px 0 22px; }
-.auth-card .field { width:100%; }
-.auth-message { font-size:12px; color:var(--green-dark); line-height:1.7; margin-top:12px; min-height:18px; }
-.auth-switch { text-align:center; font-size:13px; color:var(--muted); margin-top:16px; }
-.auth-switch button { border:0; background:transparent; color:var(--green-dark); font-weight:700; }
-.auth-screen[hidden], .layout[hidden] { display:none !important; }
-.account-email { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
-@media(max-width:700px) { .auth-card { padding:22px; } }
+
+.auth-brand {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  justify-content:center;
+  margin-bottom:22px;
+}
+
+.auth-brand img {
+  width:52px;
+  height:52px;
+  object-fit:contain;
+}
+
+.auth-title {
+  text-align:center;
+  font-size:22px;
+  font-weight:800;
+  margin:0;
+}
+
+.auth-desc {
+  text-align:center;
+  color:var(--muted);
+  font-size:13px;
+  margin:6px 0 22px;
+}
+
+.auth-card .field {
+  width:100%;
+}
+
+.auth-message {
+  font-size:12px;
+  color:var(--green-dark);
+  line-height:1.7;
+  margin-top:12px;
+  min-height:18px;
+}
+
+.auth-switch {
+  text-align:center;
+  font-size:13px;
+  color:var(--muted);
+  margin-top:16px;
+}
+
+.auth-switch button {
+  border:0;
+  background:transparent;
+  color:var(--green-dark);
+  font-weight:700;
+}
+
+.auth-screen[hidden],
+.layout[hidden] {
+  display:none !important;
+}
+
+.account-email {
+  color:var(--muted);
+  font-size:12px;
+  overflow-wrap:anywhere;
+}
+
+@media(max-width:700px) {
+  .auth-card {
+    padding:22px;
+  }
+}
 </style>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 
@@ -733,27 +901,39 @@ button {
   <div class="auth-card">
     <div class="auth-brand">
       <img src="./logo.png" alt="EduReminder Logo">
-      <div><div class="brand-name">EduReminder</div><div class="brand-sub">Student Planner</div></div>
+      <div>
+        <div class="brand-name">EduReminder</div>
+        <div class="brand-sub">Student Planner</div>
+      </div>
     </div>
+
     <h1 class="auth-title" id="authTitle">เข้าสู่ระบบ</h1>
     <p class="auth-desc" id="authDesc">เข้าสู่ระบบเพื่อจัดการงานและกำหนดการเรียนของคุณ</p>
+
     <form id="authForm">
       <div class="form-group" id="displayNameGroup" hidden>
         <label class="form-label" for="authDisplayName">ชื่อที่แสดง</label>
         <input class="field" id="authDisplayName" autocomplete="name" placeholder="กรอกชื่อของคุณ">
       </div>
+
       <div class="form-group">
         <label class="form-label" for="authEmail">อีเมล</label>
         <input class="field" id="authEmail" type="email" autocomplete="email" required placeholder="name@example.com">
       </div>
+
       <div class="form-group">
         <label class="form-label" for="authPassword">รหัสผ่าน</label>
         <input class="field" id="authPassword" type="password" minlength="6" autocomplete="current-password" required placeholder="อย่างน้อย 6 ตัวอักษร">
       </div>
+
       <button class="btn btn-primary" id="authSubmit" type="submit" style="width:100%">เข้าสู่ระบบ</button>
       <div class="auth-message" id="authMessage" role="status"></div>
     </form>
-    <div class="auth-switch"><span id="authSwitchText">ยังไม่มีบัญชี?</span> <button type="button" id="authSwitch">สมัครสมาชิก</button></div>
+
+    <div class="auth-switch">
+      <span id="authSwitchText">ยังไม่มีบัญชี?</span>
+      <button type="button" id="authSwitch">สมัครสมาชิก</button>
+    </div>
   </div>
 </section>
 
@@ -968,6 +1148,55 @@ button {
 
     <div class="panel">
       <div class="panel-header">
+        <h3 class="panel-title">การตั้งค่าการแจ้งเตือน</h3>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">เปิดใช้งานการแจ้งเตือน</div>
+          <div class="setting-desc">เปิดหรือปิดการแจ้งเตือนประจำวัน</div>
+        </div>
+
+        <label class="setting-switch">
+          <input type="checkbox" id="notificationEnabled">
+          <span class="setting-slider"></span>
+        </label>
+      </div>
+
+      <div class="notification-fields">
+
+        <div class="form-group">
+          <label class="form-label" for="notificationStartDate">วันที่เริ่มแจ้งเตือน</label>
+          <input class="field" type="date" id="notificationStartDate">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="notificationEndDate">วันที่สิ้นสุดการแจ้งเตือน</label>
+          <input class="field" type="date" id="notificationEndDate">
+        </div>
+
+        <div class="form-group full-width">
+          <label class="form-label" for="dailyNotificationTime">เวลาแจ้งเตือนประจำวัน</label>
+          <input class="field" type="time" id="dailyNotificationTime">
+        </div>
+
+      </div>
+
+      <div class="notification-status" id="notificationStatus">
+        กำลังโหลดการตั้งค่า...
+      </div>
+
+      <div style="margin-top:18px">
+        <button class="btn btn-primary" id="saveNotificationSettings" type="button" onclick="saveNotificationSettings()">
+          บันทึกการตั้งค่า
+        </button>
+      </div>
+
+      <div class="notification-message" id="notificationSettingsMessage" role="status"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
         <h3 class="panel-title">การตั้งค่าระบบ</h3>
       </div>
 
@@ -999,7 +1228,7 @@ button {
       <div class="setting-row">
         <div>
           <div class="setting-title">ลบข้อมูลงานทั้งหมด</div>
-          <div class="setting-desc">ลบรายการงานที่บันทึกไว้ในเบราว์เซอร์นี้</div>
+          <div class="setting-desc">ลบรายการงานที่บันทึกไว้ในบัญชีนี้</div>
         </div>
         <button class="btn btn-danger" onclick="clearData()">ลบข้อมูล</button>
       </div>
@@ -1065,11 +1294,13 @@ button {
 </div>
 
 <script>
-// ตั้งค่า Supabase: ใส่ Publishable Key ที่คัดลอกมาจาก Project Settings > API Keys
+// SUPABASE CONFIGURATION
 const SUPABASE_URL = 'https://fghgjkyanoyfjbtdnipm.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
+const SUPABASE_PUBLISHABLE_KEY = 'ใส่_Publishable_Key_เดิมของคุณ';
 
-const supabaseReady = window.supabase && SUPABASE_PUBLISHABLE_KEY !== 'วาง_PUBLISHABLE_KEY_ที่นี่';
+const supabaseReady = window.supabase &&
+  SUPABASE_PUBLISHABLE_KEY !== 'ใส่_Publishable_Key_เดิมของคุณ';
+
 const supabaseClient = supabaseReady
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
   : null;
@@ -1079,6 +1310,14 @@ let tasks = [];
 let authMode = 'login';
 let currentMonth = new Date();
 let selectedDate = getLocalDateString(new Date());
+
+let notificationSettings = {
+  notification_enabled: true,
+  notification_start_date: null,
+  notification_end_date: null,
+  daily_notification_time: null,
+  timezone: 'Asia/Bangkok'
+};
 
 const pageInfo = {
   dashboard: ['ภาพรวม', 'สรุปงานและกำหนดการของคุณ'],
@@ -1104,50 +1343,77 @@ function showAuthMessage(message, isError = false) {
   el.style.color = isError ? 'var(--red)' : 'var(--green-dark)';
 }
 
+function showNotificationMessage(message, isError = false) {
+  const el = document.getElementById('notificationSettingsMessage');
+  el.textContent = message;
+  el.className = 'notification-message ' + (isError ? 'error' : 'success');
+}
+
 function setAuthMode(mode) {
   authMode = mode;
   const signup = mode === 'signup';
+
   document.getElementById('authTitle').textContent = signup ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+
   document.getElementById('authDesc').textContent = signup
     ? 'สร้างบัญชีเพื่อเริ่มจัดการงานและกำหนดการเรียน'
     : 'เข้าสู่ระบบเพื่อจัดการงานและกำหนดการเรียนของคุณ';
+
   document.getElementById('authSubmit').textContent = signup ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
   document.getElementById('displayNameGroup').hidden = !signup;
   document.getElementById('authPassword').autocomplete = signup ? 'new-password' : 'current-password';
   document.getElementById('authSwitchText').textContent = signup ? 'มีบัญชีอยู่แล้ว?' : 'ยังไม่มีบัญชี?';
   document.getElementById('authSwitch').textContent = signup ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+
   showAuthMessage('');
 }
 
 async function handleAuthSubmit(event) {
   event.preventDefault();
+
   if (!supabaseClient) {
-    showAuthMessage('ยังไม่ได้ใส่ Publishable Key ในไฟล์ index.html', true);
+    showAuthMessage('ไม่พบการตั้งค่า Supabase กรุณาตรวจสอบ Publishable Key', true);
     return;
   }
+
   const email = document.getElementById('authEmail').value.trim();
   const password = document.getElementById('authPassword').value;
   const displayName = document.getElementById('authDisplayName').value.trim();
   const submit = document.getElementById('authSubmit');
+
   submit.disabled = true;
   submit.textContent = 'กำลังดำเนินการ...';
+
   try {
     if (authMode === 'signup') {
       const { data, error } = await supabaseClient.auth.signUp({
-        email, password,
-        options: { data: { display_name: displayName || email.split('@')[0] } }
+        email,
+        password,
+        options: {
+          data: {
+            display_name: displayName || email.split('@')[0]
+          }
+        }
       });
+
       if (error) throw error;
+
       if (data.session) {
         showAuthMessage('สมัครสมาชิกสำเร็จ กำลังเข้าสู่ระบบ...');
       } else {
         setAuthMode('login');
         showAuthMessage('สมัครสมาชิกแล้ว กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี จากนั้นกลับมาเข้าสู่ระบบ');
       }
+
     } else {
-      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      const { error } = await supabaseClient.auth.signInWithPassword({
+        email,
+        password
+      });
+
       if (error) throw error;
     }
+
   } catch (error) {
     showAuthMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', true);
   } finally {
@@ -1157,16 +1423,22 @@ async function handleAuthSubmit(event) {
 }
 
 document.getElementById('authForm').addEventListener('submit', handleAuthSubmit);
-document.getElementById('authSwitch').addEventListener('click', () => setAuthMode(authMode === 'login' ? 'signup' : 'login'));
+
+document.getElementById('authSwitch').addEventListener('click', () => {
+  setAuthMode(authMode === 'login' ? 'signup' : 'login');
+});
 
 async function signOutUser() {
   if (!supabaseClient) return;
+
   const { error } = await supabaseClient.auth.signOut();
-  if (error) alert('ออกจากระบบไม่สำเร็จ: ' + error.message);
+
+  if (error) {
+    alert('ออกจากระบบไม่สำเร็จ: ' + error.message);
+  }
 }
 
 function dateToTimestamp(dateString) {
-  // เก็บเวลาเที่ยงตามเวลาท้องถิ่น เพื่อป้องกันวันที่เลื่อนเมื่อแสดงผล
   return new Date(dateString + 'T12:00:00').toISOString();
 }
 
@@ -1175,27 +1447,210 @@ function timestampToDate(value) {
   return getLocalDateString(new Date(value));
 }
 
+// LOAD NOTIFICATION SETTINGS
+async function loadNotificationSettings() {
+  if (!currentUser || !supabaseClient) return;
+
+  const { data, error } = await supabaseClient
+    .from('user_settings')
+    .select('notification_enabled,notification_start_date,notification_end_date,daily_notification_time,timezone')
+    .eq('user_id', currentUser.id)
+    .maybeSingle();
+
+  if (error) throw error;
+
+  if (data) {
+    notificationSettings = {
+      notification_enabled: data.notification_enabled ?? true,
+      notification_start_date: data.notification_start_date || null,
+      notification_end_date: data.notification_end_date || null,
+      daily_notification_time: data.daily_notification_time
+        ? String(data.daily_notification_time).slice(0, 5)
+        : null,
+      timezone: data.timezone || 'Asia/Bangkok'
+    };
+  } else {
+    notificationSettings = {
+      notification_enabled: true,
+      notification_start_date: null,
+      notification_end_date: null,
+      daily_notification_time: null,
+      timezone: 'Asia/Bangkok'
+    };
+  }
+
+  displayNotificationSettings();
+}
+
+// DISPLAY NOTIFICATION SETTINGS
+function displayNotificationSettings() {
+  document.getElementById('notificationEnabled').checked =
+    notificationSettings.notification_enabled;
+
+  document.getElementById('notificationStartDate').value =
+    notificationSettings.notification_start_date || '';
+
+  document.getElementById('notificationEndDate').value =
+    notificationSettings.notification_end_date || '';
+
+  document.getElementById('dailyNotificationTime').value =
+    notificationSettings.daily_notification_time || '';
+
+  updateNotificationStatus();
+}
+
+// UPDATE NOTIFICATION STATUS
+function updateNotificationStatus() {
+  const enabled = document.getElementById('notificationEnabled').checked;
+  const startDate = document.getElementById('notificationStartDate').value;
+  const endDate = document.getElementById('notificationEndDate').value;
+  const time = document.getElementById('dailyNotificationTime').value;
+
+  const status = document.getElementById('notificationStatus');
+
+  if (!enabled) {
+    status.className = 'notification-status';
+    status.textContent = 'ขณะนี้ปิดการแจ้งเตือนอยู่ ระบบจะไม่ส่งการแจ้งเตือนจนกว่าจะเปิดใช้งานอีกครั้ง';
+    return;
+  }
+
+  if (!startDate || !endDate || !time) {
+    status.className = 'notification-status';
+    status.textContent = 'กรุณากำหนดวันที่เริ่มต้น วันที่สิ้นสุด และเวลาแจ้งเตือนให้ครบก่อนเปิดใช้งาน';
+    return;
+  }
+
+  if (startDate > endDate) {
+    status.className = 'notification-status error';
+    status.textContent = 'วันที่สิ้นสุดต้องไม่อยู่ก่อนวันที่เริ่มต้น';
+    return;
+  }
+
+  status.className = 'notification-status';
+  status.textContent =
+    `เปิดการแจ้งเตือน ตั้งแต่ ${formatDate(startDate)} ถึง ${formatDate(endDate)} เวลา ${time} น.`;
+}
+
+// SAVE NOTIFICATION SETTINGS
+async function saveNotificationSettings() {
+  if (!currentUser || !supabaseClient) {
+    showNotificationMessage('กรุณาเข้าสู่ระบบก่อนบันทึกการตั้งค่า', true);
+    return;
+  }
+
+  const enabled = document.getElementById('notificationEnabled').checked;
+  const startDate = document.getElementById('notificationStartDate').value;
+  const endDate = document.getElementById('notificationEndDate').value;
+  const time = document.getElementById('dailyNotificationTime').value;
+
+  if (enabled) {
+    if (!startDate || !endDate || !time) {
+      showNotificationMessage('กรุณากรอกวันที่เริ่มต้น วันที่สิ้นสุด และเวลาแจ้งเตือนให้ครบ', true);
+      return;
+    }
+
+    if (startDate > endDate) {
+      showNotificationMessage('วันที่สิ้นสุดต้องไม่อยู่ก่อนวันที่เริ่มต้น', true);
+      return;
+    }
+  }
+
+  const button = document.getElementById('saveNotificationSettings');
+  button.disabled = true;
+  button.textContent = 'กำลังบันทึก...';
+
+  try {
+    const payload = {
+      user_id: currentUser.id,
+      timezone: 'Asia/Bangkok',
+      notification_enabled: enabled,
+      notification_start_date: startDate || null,
+      notification_end_date: endDate || null,
+      daily_notification_time: time || null
+    };
+
+    const { error } = await supabaseClient
+      .from('user_settings')
+      .upsert(payload, {
+        onConflict: 'user_id'
+      });
+
+    if (error) throw error;
+
+    notificationSettings = {
+      notification_enabled: enabled,
+      notification_start_date: startDate || null,
+      notification_end_date: endDate || null,
+      daily_notification_time: time || null,
+      timezone: 'Asia/Bangkok'
+    };
+
+    updateNotificationStatus();
+    showNotificationMessage('บันทึกการตั้งค่าการแจ้งเตือนสำเร็จแล้ว');
+
+  } catch (error) {
+    showNotificationMessage('บันทึกไม่สำเร็จ: ' + error.message, true);
+  } finally {
+    button.disabled = false;
+    button.textContent = 'บันทึกการตั้งค่า';
+  }
+}
+
+// UPDATE PREVIEW WHEN INPUT CHANGES
+[
+  'notificationEnabled',
+  'notificationStartDate',
+  'notificationEndDate',
+  'dailyNotificationTime'
+].forEach(id => {
+  document.getElementById(id).addEventListener('change', () => {
+    updateNotificationStatus();
+    showNotificationMessage('');
+  });
+});
+
+// SUBJECTS
 async function getSubjectId(subjectName) {
   const name = (subjectName || '').trim();
+
   if (!name) return null;
+
   const { data: existing, error: findError } = await supabaseClient
-    .from('subjects').select('id').eq('user_id', currentUser.id).eq('name', name).maybeSingle();
+    .from('subjects')
+    .select('id')
+    .eq('user_id', currentUser.id)
+    .eq('name', name)
+    .maybeSingle();
+
   if (findError) throw findError;
   if (existing) return existing.id;
+
   const { data, error } = await supabaseClient
-    .from('subjects').insert({ user_id: currentUser.id, name }).select('id').single();
+    .from('subjects')
+    .insert({
+      user_id: currentUser.id,
+      name
+    })
+    .select('id')
+    .single();
+
   if (error) throw error;
+
   return data.id;
 }
 
+// LOAD TASKS
 async function loadTasks() {
   if (!currentUser) return;
+
   const { data, error } = await supabaseClient
     .from('tasks')
     .select('id,title,description,task_type,due_at,status,created_at,subject_id,subjects(name)')
     .eq('user_id', currentUser.id)
     .order('due_at', { ascending: true });
+
   if (error) throw error;
+
   tasks = (data || []).map(row => ({
     id: row.id,
     name: row.title,
@@ -1206,46 +1661,68 @@ async function loadTasks() {
     completed: row.status === 'completed' || row.status === 'done',
     createdAt: row.created_at
   }));
+
   renderAll();
 }
 
+// INITIALIZE APP
 async function initializeApp(user) {
   currentUser = user;
+
   document.getElementById('authScreen').hidden = true;
   document.getElementById('appLayout').hidden = false;
   document.getElementById('accountEmail').textContent = user.email || '';
+
   try {
-    await loadTasks();
+    await Promise.all([
+      loadTasks(),
+      loadNotificationSettings()
+    ]);
   } catch (error) {
-    alert('โหลดข้อมูลงานไม่สำเร็จ: ' + error.message);
+    alert('โหลดข้อมูลไม่สำเร็จ: ' + error.message);
   }
 }
 
+// INITIALIZE AUTH
 async function initializeAuth() {
   if (!supabaseClient) {
     document.getElementById('authScreen').hidden = false;
     document.getElementById('appLayout').hidden = true;
-    showAuthMessage('กรุณาใส่ Publishable Key ในตัวแปร SUPABASE_PUBLISHABLE_KEY ก่อนใช้งาน', true);
+
+    showAuthMessage('กรุณาตรวจสอบ Publishable Key ในตัวแปร SUPABASE_PUBLISHABLE_KEY', true);
     return;
   }
-  const { data: { session } } = await supabaseClient.auth.getSession();
-  if (session?.user) await initializeApp(session.user);
-  else {
+
+  const { data: { session }, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    showAuthMessage('ตรวจสอบสถานะการเข้าสู่ระบบไม่สำเร็จ: ' + error.message, true);
+    return;
+  }
+
+  if (session?.user) {
+    await initializeApp(session.user);
+  } else {
     document.getElementById('authScreen').hidden = false;
     document.getElementById('appLayout').hidden = true;
   }
+
   supabaseClient.auth.onAuthStateChange(async (_event, sessionNow) => {
-    if (sessionNow?.user) await initializeApp(sessionNow.user);
-    else {
+    if (sessionNow?.user) {
+      await initializeApp(sessionNow.user);
+    } else {
       currentUser = null;
       tasks = [];
+
       document.getElementById('appLayout').hidden = true;
       document.getElementById('authScreen').hidden = false;
+
       renderAll();
     }
   });
 }
 
+// HTML ESCAPE
 function escapeHTML(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;',
@@ -1256,9 +1733,12 @@ function escapeHTML(value) {
   })[char]);
 }
 
+// DATE FORMAT
 function formatDate(dateString) {
   if (!dateString) return '-';
+
   const date = new Date(dateString + 'T00:00:00');
+
   return date.toLocaleDateString('th-TH', {
     day: 'numeric',
     month: 'short',
@@ -1286,18 +1766,30 @@ function typeClass(type) {
 
 /* NAVIGATION */
 function showPage(page) {
-  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
-  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(el => {
+    el.classList.remove('active');
+  });
+
+  document.querySelectorAll('.nav-btn').forEach(el => {
+    el.classList.remove('active');
+  });
 
   document.getElementById(page).classList.add('active');
 
   const nav = document.querySelector(`[data-page="${page}"]`);
+
   if (nav) nav.classList.add('active');
 
   document.getElementById('pageTitle').textContent = pageInfo[page][0];
   document.getElementById('pageSubtitle').textContent = pageInfo[page][1];
 
-  if (page === 'calendar') renderCalendar();
+  if (page === 'calendar') {
+    renderCalendar();
+  }
+
+  if (page === 'settings') {
+    updateNotificationStatus();
+  }
 }
 
 document.querySelectorAll('.nav-btn').forEach(btn => {
@@ -1313,6 +1805,7 @@ function openModal(id = null) {
 
   if (id) {
     const task = tasks.find(t => t.id === id);
+
     if (!task) return;
 
     document.getElementById('modalTitle').textContent = 'แก้ไขงาน';
@@ -1332,13 +1825,19 @@ function closeModal() {
 }
 
 document.getElementById('taskModal').addEventListener('click', event => {
-  if (event.target.id === 'taskModal') closeModal();
+  if (event.target.id === 'taskModal') {
+    closeModal();
+  }
 });
 
+// SAVE TASK
 document.getElementById('taskForm').addEventListener('submit', async event => {
   event.preventDefault();
+
   if (!currentUser) return;
+
   const id = document.getElementById('taskId').value;
+
   const taskData = {
     name: document.getElementById('taskName').value.trim(),
     subject: document.getElementById('taskSubject').value.trim(),
@@ -1346,11 +1845,16 @@ document.getElementById('taskForm').addEventListener('submit', async event => {
     date: document.getElementById('taskDate').value,
     description: document.getElementById('taskDescription').value.trim()
   };
+
   if (!taskData.name || !taskData.date) return;
+
   const submitButton = event.submitter;
+
   if (submitButton) submitButton.disabled = true;
+
   try {
     const subjectId = await getSubjectId(taskData.subject);
+
     const payload = {
       user_id: currentUser.id,
       subject_id: subjectId,
@@ -1358,18 +1862,31 @@ document.getElementById('taskForm').addEventListener('submit', async event => {
       description: taskData.description || null,
       task_type: taskData.type,
       due_at: dateToTimestamp(taskData.date),
-      status: id ? (tasks.find(t => t.id === id)?.completed ? 'completed' : 'pending') : 'pending',
+      status: id
+        ? (tasks.find(t => t.id === id)?.completed ? 'completed' : 'pending')
+        : 'pending',
       updated_at: new Date().toISOString()
     };
+
     let result;
+
     if (id) {
-      result = await supabaseClient.from('tasks').update(payload).eq('id', id).eq('user_id', currentUser.id);
+      result = await supabaseClient
+        .from('tasks')
+        .update(payload)
+        .eq('id', id)
+        .eq('user_id', currentUser.id);
     } else {
-      result = await supabaseClient.from('tasks').insert(payload);
+      result = await supabaseClient
+        .from('tasks')
+        .insert(payload);
     }
+
     if (result.error) throw result.error;
+
     closeModal();
     await loadTasks();
+
   } catch (error) {
     alert('บันทึกงานไม่สำเร็จ: ' + error.message);
   } finally {
@@ -1380,19 +1897,42 @@ document.getElementById('taskForm').addEventListener('submit', async event => {
 /* TASK ACTIONS */
 async function toggleTask(id) {
   const task = tasks.find(t => t.id === id);
+
   if (!task || !currentUser) return;
+
   const nextStatus = task.completed ? 'pending' : 'completed';
-  const { error } = await supabaseClient.from('tasks')
-    .update({ status: nextStatus, updated_at: new Date().toISOString() })
-    .eq('id', id).eq('user_id', currentUser.id);
-  if (error) { alert('เปลี่ยนสถานะไม่สำเร็จ: ' + error.message); return; }
+
+  const { error } = await supabaseClient
+    .from('tasks')
+    .update({
+      status: nextStatus,
+      updated_at: new Date().toISOString()
+    })
+    .eq('id', id)
+    .eq('user_id', currentUser.id);
+
+  if (error) {
+    alert('เปลี่ยนสถานะไม่สำเร็จ: ' + error.message);
+    return;
+  }
+
   await loadTasks();
 }
 
 async function deleteTask(id) {
   if (!confirm('ต้องการลบงานนี้ใช่หรือไม่?') || !currentUser) return;
-  const { error } = await supabaseClient.from('tasks').delete().eq('id', id).eq('user_id', currentUser.id);
-  if (error) { alert('ลบงานไม่สำเร็จ: ' + error.message); return; }
+
+  const { error } = await supabaseClient
+    .from('tasks')
+    .delete()
+    .eq('id', id)
+    .eq('user_id', currentUser.id);
+
+  if (error) {
+    alert('ลบงานไม่สำเร็จ: ' + error.message);
+    return;
+  }
+
   await loadTasks();
 }
 
@@ -1407,13 +1947,17 @@ function taskHTML(task) {
 
       <div class="task-info">
         <div class="task-name">${escapeHTML(task.name)}</div>
+
         <div class="task-meta">
           <span>${escapeHTML(task.subject || 'ไม่ระบุวิชา')}</span>
           <span>ครบกำหนด ${formatDate(task.date)}</span>
           <span class="tag ${typeClass(task.type)}">${typeName(task.type)}</span>
           ${task.completed ? '<span class="tag">เสร็จแล้ว</span>' : ''}
         </div>
-        ${task.description ? `<div class="muted" style="margin-top:5px">${escapeHTML(task.description)}</div>` : ''}
+
+        ${task.description
+          ? `<div class="muted" style="margin-top:5px">${escapeHTML(task.description)}</div>`
+          : ''}
       </div>
 
       <div class="task-actions">
@@ -1443,6 +1987,7 @@ function renderDashboard() {
   document.getElementById('totalCount').textContent = total;
   document.getElementById('doneCount').textContent = done;
   document.getElementById('pendingCount').textContent = pending;
+
   document.getElementById('todayCount').textContent =
     tasks.filter(t => t.date === today && !t.completed).length;
 
@@ -1450,6 +1995,7 @@ function renderDashboard() {
 
   document.getElementById('progressPercent').textContent = percent + '%';
   document.getElementById('progressBar').style.width = percent + '%';
+
   document.getElementById('progressText').textContent =
     `ทำเสร็จแล้ว ${done} จาก ${total} รายการ`;
 
@@ -1531,10 +2077,12 @@ function renderCalendar() {
       day = previousDays - firstDay + i + 1;
       dateString = getLocalDateString(new Date(year, month - 1, day));
       muted = true;
+
     } else if (i >= firstDay + daysInMonth) {
       day = i - firstDay - daysInMonth + 1;
       dateString = getLocalDateString(new Date(year, month + 1, day));
       muted = true;
+
     } else {
       day = i - firstDay + 1;
       dateString = getLocalDateString(new Date(year, month, day));
@@ -1546,10 +2094,13 @@ function renderCalendar() {
     html += `
       <div class="calendar-cell ${muted ? 'muted-cell' : ''} ${isToday ? 'today-cell' : ''}"
         onclick="selectCalendarDate('${dateString}')">
+
         <div>${day}</div>
+
         ${dayTasks.slice(0, 2).map(t =>
           `<div class="calendar-event">${escapeHTML(t.name)}</div>`
         ).join('')}
+
         ${dayTasks.length > 2
           ? `<div class="muted">+${dayTasks.length - 2} รายการ</div>`
           : ''}
@@ -1558,6 +2109,7 @@ function renderCalendar() {
   }
 
   document.getElementById('calendarGrid').innerHTML = html;
+
   selectCalendarDate(selectedDate);
 }
 
@@ -1592,28 +2144,52 @@ function exportData() {
 /* IMPORT */
 async function importData(event) {
   const file = event.target.files[0];
+
   if (!file || !currentUser) return;
+
   try {
     const imported = JSON.parse(await file.text());
-    if (!Array.isArray(imported)) throw new Error('รูปแบบไฟล์ไม่ถูกต้อง');
-    const valid = imported.every(t => t && typeof t.name === 'string' && typeof t.date === 'string');
-    if (!valid) throw new Error('ข้อมูลในไฟล์ไม่ถูกต้อง');
-    if (!confirm('นำเข้ารายการงานเหล่านี้ไปยังบัญชีของคุณหรือไม่?')) return;
+
+    if (!Array.isArray(imported)) {
+      throw new Error('รูปแบบไฟล์ไม่ถูกต้อง');
+    }
+
+    const valid = imported.every(t =>
+      t &&
+      typeof t.name === 'string' &&
+      typeof t.date === 'string'
+    );
+
+    if (!valid) {
+      throw new Error('ข้อมูลในไฟล์ไม่ถูกต้อง');
+    }
+
+    if (!confirm('นำเข้ารายการงานเหล่านี้ไปยังบัญชีของคุณหรือไม่?')) {
+      return;
+    }
+
     for (const item of imported) {
       const subjectId = await getSubjectId(item.subject || '');
-      const { error } = await supabaseClient.from('tasks').insert({
-        user_id: currentUser.id,
-        subject_id: subjectId,
-        title: item.name,
-        description: item.description || null,
-        task_type: item.type || 'homework',
-        due_at: dateToTimestamp(item.date),
-        status: item.completed ? 'completed' : 'pending'
-      });
+
+      const { error } = await supabaseClient
+        .from('tasks')
+        .insert({
+          user_id: currentUser.id,
+          subject_id: subjectId,
+          title: item.name,
+          description: item.description || null,
+          task_type: item.type || 'homework',
+          due_at: dateToTimestamp(item.date),
+          status: item.completed ? 'completed' : 'pending'
+        });
+
       if (error) throw error;
     }
+
     await loadTasks();
+
     alert('นำเข้าข้อมูลสำเร็จ');
+
   } catch (error) {
     alert('นำเข้าข้อมูลไม่สำเร็จ: ' + error.message);
   } finally {
@@ -1623,9 +2199,23 @@ async function importData(event) {
 
 /* CLEAR */
 async function clearData() {
-  if (!confirm('ต้องการลบงานทั้งหมดในบัญชีนี้ใช่หรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้') || !currentUser) return;
-  const { error } = await supabaseClient.from('tasks').delete().eq('user_id', currentUser.id);
-  if (error) { alert('ลบข้อมูลไม่สำเร็จ: ' + error.message); return; }
+  if (
+    !confirm('ต้องการลบงานทั้งหมดในบัญชีนี้ใช่หรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้')
+    || !currentUser
+  ) {
+    return;
+  }
+
+  const { error } = await supabaseClient
+    .from('tasks')
+    .delete()
+    .eq('user_id', currentUser.id);
+
+  if (error) {
+    alert('ลบข้อมูลไม่สำเร็จ: ' + error.message);
+    return;
+  }
+
   await loadTasks();
 }
 
@@ -1636,6 +2226,7 @@ function renderAll() {
   renderCalendar();
 }
 
+// TODAY
 document.getElementById('todayText').textContent =
   new Date().toLocaleDateString('th-TH', {
     weekday: 'long',
@@ -1644,8 +2235,10 @@ document.getElementById('todayText').textContent =
     year: 'numeric'
   });
 
+// START APPLICATION
 renderAll();
 initializeAuth();
+
 </script>
 
 </body>
