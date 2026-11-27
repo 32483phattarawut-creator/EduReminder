@@ -1299,7 +1299,7 @@ const SUPABASE_URL = 'https://fghgjkyanoyfjbtdnipm.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
 
 const supabaseReady = window.supabase &&
-  SUPABASE_PUBLISHABLE_KEY !== 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
+  SUPABASE_PUBLISHABLE_KEY !== '';
 
 const supabaseClient = supabaseReady
   ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
