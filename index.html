@@ -1,1 +1,448 @@
 
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EduReminder | ระบบจัดการงานนักเรียน</title>
+
+<style>
+@font-face {
+  font-family: 'TH SarabunPSK';
+  src: url('./fonts/THSarabunPSK.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TH SarabunPSK';
+  src: url('./fonts/THSarabunPSK-Bold.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'TH SarabunPSK';
+  src: url('./fonts/THSarabunPSK-Italic.ttf') format('truetype');
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: 'TH SarabunPSK';
+  src: url('./fonts/THSarabunPSK-BoldItalic.ttf') format('truetype');
+  font-weight: 700;
+  font-style: italic;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'TH SarabunPSK', sans-serif;
+}
+
+body {
+  margin: 0;
+  background: #f4f8f5;
+  color: #263b30;
+  font-size: 20px;
+}
+
+header {
+  background: #248653;
+  color: white;
+  padding: 20px 6%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 34px;
+  font-weight: 700;
+}
+
+header p {
+  margin: 0;
+  font-size: 19px;
+}
+
+main {
+  max-width: 1050px;
+  margin: 30px auto;
+  padding: 0 18px;
+}
+
+.welcome h2 {
+  font-size: 32px;
+  margin-bottom: 0;
+}
+
+.welcome p {
+  margin-top: 0;
+  color: #718078;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 22px;
+}
+
+.card {
+  background: white;
+  border-radius: 16px;
+  padding: 20px;
+  box-shadow: 0 3px 12px #0000000a;
+}
+
+.stat-number {
+  font-size: 38px;
+  font-weight: bold;
+  color: #248653;
+}
+
+.panel {
+  margin-top: 22px;
+}
+
+h3 {
+  font-size: 27px;
+  margin: 0 0 12px;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+}
+
+input, select, button {
+  font-family: 'TH SarabunPSK', sans-serif;
+  font-size: 20px;
+  padding: 10px 13px;
+  border-radius: 9px;
+  border: 1px solid #d6e2d9;
+}
+
+input, select {
+  width: 100%;
+  background: white;
+}
+
+button {
+  background: #248653;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #176b40;
+}
+
+.task {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 0;
+  border-bottom: 1px solid #edf1ed;
+}
+
+.task strong {
+  font-size: 22px;
+}
+
+.task small {
+  display: block;
+  color: #718078;
+  font-size: 18px;
+}
+
+.task label {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.task label input {
+  width: auto;
+}
+
+.delete {
+  background: #fcebea;
+  color: #b53d35;
+  padding: 7px 15px;
+}
+
+.empty {
+  color: #849189;
+  text-align: center;
+  padding: 25px;
+}
+
+.footer {
+  text-align: center;
+  padding: 25px;
+  color: #849189;
+  font-size: 17px;
+}
+
+@media(max-width:650px) {
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  header {
+    padding: 18px;
+  }
+
+  header h1 {
+    font-size: 29px;
+  }
+
+  .task {
+    align-items: flex-start;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div>
+    <h1>🌱 EduReminder</h1>
+    <p>จัดการงาน เรียน และกำหนดส่งในที่เดียว</p>
+  </div>
+  <span>📚 Student Planner</span>
+</header>
+
+<main>
+
+<section class="welcome">
+  <h2>สวัสดีครับ 👋</h2>
+  <p>วันนี้มาเช็กงานที่ต้องทำกันเถอะ</p>
+</section>
+
+<section class="stats">
+
+  <div class="card">
+    <div>งานทั้งหมด</div>
+    <div class="stat-number" id="total">0</div>
+  </div>
+
+  <div class="card">
+    <div>กำลังดำเนินการ</div>
+    <div class="stat-number" id="pending">0</div>
+  </div>
+
+  <div class="card">
+    <div>ทำเสร็จแล้ว</div>
+    <div class="stat-number" id="done">0</div>
+  </div>
+
+</section>
+
+<section class="card panel">
+
+  <h3>➕ เพิ่มงานใหม่</h3>
+
+  <div class="form">
+
+    <input
+      id="taskName"
+      placeholder="กรอกชื่องานหรือการบ้าน"
+    >
+
+    <select id="subject">
+      <option value="คณิตศาสตร์">คณิตศาสตร์</option>
+      <option value="วิทยาศาสตร์">วิทยาศาสตร์</option>
+      <option value="ภาษาไทย">ภาษาไทย</option>
+      <option value="ภาษาอังกฤษ">ภาษาอังกฤษ</option>
+      <option value="สังคมศึกษา">สังคมศึกษา</option>
+      <option value="ประวัติศาสตร์">ประวัติศาสตร์</option>
+      <option value="สุขศึกษา">สุขศึกษา</option>
+      <option value="ศิลปะ">ศิลปะ</option>
+      <option value="อื่น ๆ">อื่น ๆ</option>
+    </select>
+
+    <input id="deadline" type="date">
+
+    <button onclick="addTask()">เพิ่มงาน</button>
+
+  </div>
+
+</section>
+
+<section class="card panel">
+
+  <h3>📋 รายการงานของฉัน</h3>
+
+  <div id="taskList"></div>
+
+</section>
+
+</main>
+
+<div class="footer">
+  EduReminder © 2026 | Your Student Planner 🌱
+</div>
+
+<script>
+
+let tasks = JSON.parse(
+  localStorage.getItem("eduTasks") || "[]"
+);
+
+function save() {
+  localStorage.setItem(
+    "eduTasks",
+    JSON.stringify(tasks)
+  );
+  render();
+}
+
+function addTask() {
+
+  const name = document
+    .getElementById("taskName")
+    .value.trim();
+
+  const subject = document
+    .getElementById("subject")
+    .value;
+
+  const deadline = document
+    .getElementById("deadline")
+    .value;
+
+  if (!name) {
+    alert("กรุณากรอกชื่องาน");
+    return;
+  }
+
+  tasks.push({
+    id: Date.now(),
+    name: name,
+    subject: subject,
+    deadline: deadline,
+    done: false
+  });
+
+  document.getElementById("taskName").value = "";
+  document.getElementById("deadline").value = "";
+
+  save();
+}
+
+function toggleTask(id) {
+
+  tasks = tasks.map(task =>
+    task.id === id
+      ? {...task, done: !task.done}
+      : task
+  );
+
+  save();
+}
+
+function deleteTask(id) {
+
+  if (confirm("ต้องการลบงานนี้หรือไม่?")) {
+
+    tasks = tasks.filter(
+      task => task.id !== id
+    );
+
+    save();
+  }
+}
+
+function escapeHTML(value) {
+
+  return String(value).replace(
+    /[&<>"']/g,
+    character => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[character]
+  );
+}
+
+function render() {
+
+  document.getElementById("total").textContent =
+    tasks.length;
+
+  document.getElementById("pending").textContent =
+    tasks.filter(task => !task.done).length;
+
+  document.getElementById("done").textContent =
+    tasks.filter(task => task.done).length;
+
+  const list = document.getElementById("taskList");
+
+  if (tasks.length === 0) {
+
+    list.innerHTML =
+      '<div class="empty">ยังไม่มีงาน ลองเพิ่มงานแรกของคุณได้เลย 🌱</div>';
+
+    return;
+  }
+
+  list.innerHTML = tasks.map(task => `
+
+    <div class="task">
+
+      <div>
+
+        <label>
+
+          <input
+            type="checkbox"
+            ${task.done ? "checked" : ""}
+            onchange="toggleTask(${task.id})"
+          >
+
+          <strong style="
+            ${task.done
+              ? "text-decoration:line-through;color:#89958e"
+              : ""}
+          ">
+            ${escapeHTML(task.name)}
+          </strong>
+
+        </label>
+
+        <small>
+          ${escapeHTML(task.subject)}
+          · กำหนดส่ง: ${escapeHTML(task.deadline || "ไม่ระบุ")}
+        </small>
+
+      </div>
+
+      <button
+        class="delete"
+        onclick="deleteTask(${task.id})"
+      >
+        ลบ
+      </button>
+
+    </div>
+
+  `).join("");
+}
+
+render();
+
+</script>
+
+</body>
+</html>
