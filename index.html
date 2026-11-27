@@ -864,6 +864,78 @@ function formatDateOnly(dateString){
   return new Date(year,month-1,day).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
 }
 
+let currentLineLinkCode = '';
+
+async function createLineLinkCode(){
+  if(!currentUser){
+    showToast('กรุณาเข้าสู่ระบบก่อน');
+    return;
+  }
+
+  const button = el('createLineCodeButton');
+  button.disabled = true;
+  button.textContent = 'กำลังสร้างรหัส...';
+  setMessage('lineLinkMessage','');
+
+  try{
+    const {data,error} = await supabaseClient.functions.invoke(
+      'create-line-link-code',
+      {body:{}}
+    );
+
+    if(error) throw error;
+    if(!data || !data.success || !data.code){
+      throw new Error(data?.error || 'ไม่สามารถสร้างรหัสได้');
+    }
+
+    currentLineLinkCode = data.code;
+
+    el('lineLinkCode').textContent = data.code;
+    el('lineLinkExpiry').textContent =
+      'รหัสหมดอายุเวลา ' +
+      new Date(data.expires_at).toLocaleTimeString('th-TH',{
+        hour:'2-digit',
+        minute:'2-digit'
+      }) +
+      ' น.';
+
+    el('lineLinkResult').classList.remove('hidden');
+
+    setMessage(
+      'lineLinkMessage',
+      'สร้างรหัสเชื่อมต่อสำเร็จ กรุณาส่งรหัสไปยัง LINE Official Account',
+      'success'
+    );
+
+    showToast('สร้างรหัสเชื่อมต่อ LINE สำเร็จ');
+
+  }catch(error){
+    console.error('LINE link error:',error);
+
+    setMessage(
+      'lineLinkMessage',
+      'สร้างรหัสไม่สำเร็จ: ' + (error.message || 'เกิดข้อผิดพลาด'),
+      'error'
+    );
+
+  }finally{
+    button.disabled = false;
+    button.textContent = 'สร้างรหัสเชื่อมต่อ LINE';
+  }
+}
+
+function copyLineLinkCode(){
+  if(!currentLineLinkCode) return;
+
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(currentLineLinkCode)
+      .then(()=>showToast('คัดลอกรหัสแล้ว'))
+      .catch(()=>showToast('คัดลอกไม่สำเร็จ กรุณาคัดลอกรหัสด้วยตนเอง'));
+  }else{
+    showToast('กรุณาคัดลอกรหัสด้วยตนเอง');
+  }
+}
+
 async function saveNotificationSettings(){
   const enabled = el('notificationEnabled').checked;
   const start = el('notificationStartDate').value||null;
