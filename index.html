@@ -4,8 +4,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#718b78">
-<title>EduReminder | Student Organizer</title>
+<title>EduReminder | Student Planner</title>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,18 +12,17 @@
 
 <style>
 :root {
-  --green: #718b78;
-  --green-dark: #536d5b;
-  --green-light: #eaf0e9;
-  --bg: #f7f9f6;
+  --green: #789b83;
+  --green-dark: #52765e;
+  --green-light: #eaf1eb;
+  --bg: #f6f8f5;
   --white: #ffffff;
-  --text: #28372d;
+  --text: #29372e;
   --muted: #849087;
-  --border: #e8ede8;
-  --red: #c96e6e;
-  --orange: #c58b4e;
-  --blue: #6d8eaa;
-  --shadow: 0 5px 20px rgba(50,75,55,.06);
+  --border: #e7ece7;
+  --red: #d66b6b;
+  --yellow: #d6a64e;
+  --shadow: 0 5px 20px rgba(45,70,50,.06);
 }
 
 * {
@@ -36,7 +34,6 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
-  font-size: 15px;
 }
 
 button, input, select, textarea {
@@ -47,62 +44,43 @@ button {
   cursor: pointer;
 }
 
-svg {
-  width: 21px;
-  height: 21px;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
-  flex-shrink: 0;
-}
-
-.app {
+.layout {
   display: flex;
   min-height: 100vh;
 }
 
 /* SIDEBAR */
-
 .sidebar {
   width: 245px;
-  background: var(--white);
+  background: white;
   border-right: 1px solid var(--border);
-  padding: 25px 17px;
+  padding: 25px 18px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
   display: flex;
   flex-direction: column;
-  position: fixed;
-  height: 100vh;
-  z-index: 20;
-  transition: transform .25s;
+  z-index: 10;
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 11px;
-  padding: 5px 9px 30px;
+  padding: 5px 8px 30px;
 }
 
-.brand-icon {
-  width: 43px;
-  height: 43px;
-  border-radius: 14px;
-  background: var(--green);
-  color: white;
-  display: grid;
-  place-items: center;
-}
-
-.brand-icon svg {
-  width: 25px;
-  height: 25px;
-  stroke-width: 2;
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  border-radius: 50%;
+  flex-shrink: 0;
 }
 
 .brand-name {
-  font-size: 21px;
+  font-size: 19px;
   font-weight: 800;
   color: var(--green-dark);
 }
@@ -110,138 +88,106 @@ svg {
 .brand-sub {
   font-size: 11px;
   color: var(--muted);
-  letter-spacing: .7px;
 }
 
-.nav-label {
-  font-size: 12px;
+.menu-label {
+  font-size: 11px;
   color: #a0aaa2;
-  padding: 10px 13px;
-  font-weight: 600;
+  font-weight: 700;
+  padding: 12px 12px 8px;
 }
 
-.nav-item {
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 3px 0;
   border: 0;
   background: transparent;
-  color: #758178;
-  width: 100%;
+  color: #718076;
+  border-radius: 10px;
   text-align: left;
-  padding: 12px 14px;
-  border-radius: 11px;
-  margin: 3px 0;
   font-size: 14px;
-  display: flex;
-  gap: 12px;
-  align-items: center;
   transition: .2s;
 }
 
-.nav-item svg {
-  width: 19px;
-  height: 19px;
-}
-
-.nav-item:hover,
-.nav-item.active {
+.nav-btn:hover,
+.nav-btn.active {
   background: var(--green-light);
   color: var(--green-dark);
+}
+
+.nav-btn.active {
   font-weight: 700;
+}
+
+.nav-icon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
 }
 
 .sidebar-bottom {
   margin-top: auto;
-  padding: 15px 10px;
-  border-top: 1px solid var(--border);
-  color: var(--muted);
+  padding: 14px;
+  background: var(--green-light);
+  border-radius: 12px;
   font-size: 12px;
-  line-height: 1.8;
+  color: var(--green-dark);
+  line-height: 1.7;
 }
 
 /* MAIN */
-
 .main {
   margin-left: 245px;
   width: calc(100% - 245px);
-  padding: 30px 38px;
+  padding: 30px 36px;
   max-width: 1600px;
 }
 
 .topbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   gap: 15px;
   margin-bottom: 28px;
 }
 
-.greeting h1 {
-  margin: 0;
-  font-size: 27px;
+.page-title {
+  font-size: 25px;
   font-weight: 800;
+  margin: 0;
 }
 
-.greeting p {
-  color: var(--muted);
-  margin: 3px 0 0;
+.page-subtitle {
   font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
 }
 
 .today {
-  background: white;
-  border: 1px solid var(--border);
-  padding: 10px 16px;
-  border-radius: 12px;
-  color: var(--green-dark);
   font-size: 13px;
-}
-
-.mobile-menu {
-  display: none;
-  border: 0;
-  background: white;
-  border-radius: 10px;
-  padding: 8px;
-  color: var(--green-dark);
-}
-
-/* PAGES */
-
-.page {
-  display: none;
-}
-
-.page.active {
-  display: block;
-}
-
-.section-title {
-  font-size: 18px;
-  font-weight: 700;
-  margin: 25px 0 14px;
-}
-
-.muted {
   color: var(--muted);
+  background: white;
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
 }
 
 /* BUTTONS */
-
 .btn {
   border: 0;
+  border-radius: 9px;
   padding: 10px 16px;
-  border-radius: 10px;
-  font-size: 13px;
   font-weight: 600;
+  font-size: 13px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 7px;
+  gap: 8px;
   transition: .2s;
-}
-
-.btn svg {
-  width: 17px;
-  height: 17px;
 }
 
 .btn-primary {
@@ -269,18 +215,23 @@ svg {
   color: var(--text);
 }
 
-/* STATISTICS */
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
 
+/* CARDS */
 .stats {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
+  margin-bottom: 22px;
 }
 
 .stat-card {
   background: white;
   border: 1px solid var(--border);
-  border-radius: 15px;
+  border-radius: 14px;
   padding: 19px;
   box-shadow: var(--shadow);
 }
@@ -289,78 +240,92 @@ svg {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--muted);
+  font-size: 13px;
 }
 
 .stat-icon {
-  width: 39px;
-  height: 39px;
-  border-radius: 12px;
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  background: var(--green-light);
   display: grid;
   place-items: center;
-  background: var(--green-light);
   color: var(--green-dark);
 }
 
 .stat-icon svg {
-  width: 21px;
-  height: 21px;
+  width: 19px;
+  height: 19px;
 }
 
 .stat-number {
   font-size: 29px;
   font-weight: 800;
-  margin-top: 12px;
+  margin-top: 10px;
 }
 
-.stat-label {
+.stat-note {
+  font-size: 11px;
   color: var(--muted);
-  font-size: 12px;
+  margin-top: 2px;
 }
 
-/* PANELS */
+/* CONTENT */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+}
 
 .panel {
   background: white;
   border: 1px solid var(--border);
-  border-radius: 15px;
+  border-radius: 14px;
   padding: 20px;
   box-shadow: var(--shadow);
+  margin-bottom: 18px;
+  min-width: 0;
 }
 
 .panel-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 14px;
+  gap: 10px;
+  margin-bottom: 17px;
 }
 
-.panel-header h3 {
-  margin: 0;
+.panel-title {
   font-size: 16px;
+  font-weight: 700;
+  margin: 0;
 }
 
-/* TASKS */
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
 
+/* TASK */
 .task-list {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
-.task-row {
+.task-item {
   display: flex;
   align-items: center;
-  gap: 13px;
+  gap: 12px;
   padding: 13px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 11px;
   transition: .2s;
 }
 
-.task-row:hover {
-  border-color: #cbd9cc;
-  background: #fcfdfb;
+.task-item:hover {
+  border-color: #cbdacb;
 }
 
 .task-check {
@@ -376,34 +341,66 @@ svg {
 }
 
 .task-name {
+  font-size: 14px;
   font-weight: 600;
   overflow-wrap: anywhere;
 }
 
-.task-meta {
-  font-size: 12px;
-  color: var(--muted);
-  margin-top: 3px;
+.task-completed .task-name {
+  text-decoration: line-through;
+  color: #a2aaa3;
 }
 
-.task-row.done .task-name {
-  text-decoration: line-through;
-  color: #aab2ab;
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.tag.exam {
+  background: #fff2df;
+  color: #b47d29;
+}
+
+.tag.homework {
+  background: #eaf0ff;
+  color: #647db4;
+}
+
+.tag.project {
+  background: #f2eafb;
+  color: #936eb0;
+}
+
+.tag.other {
+  background: #f0f1f0;
+  color: #747e76;
 }
 
 .task-actions {
   display: flex;
-  gap: 6px;
+  gap: 5px;
 }
 
 .icon-btn {
   border: 0;
-  background: #f4f7f3;
-  color: #728276;
-  border-radius: 8px;
-  padding: 7px 9px;
-  display: grid;
-  place-items: center;
+  background: transparent;
+  color: #879188;
+  padding: 6px;
+  border-radius: 7px;
 }
 
 .icon-btn:hover {
@@ -414,187 +411,178 @@ svg {
 .icon-btn svg {
   width: 17px;
   height: 17px;
-}
-
-.tag {
-  font-size: 11px;
-  padding: 4px 9px;
-  border-radius: 20px;
-  white-space: nowrap;
-  background: var(--green-light);
-  color: var(--green-dark);
-}
-
-.tag.exam {
-  background: #fceeee;
-  color: #bd6666;
-}
-
-.tag.work {
-  background: #fff2e5;
-  color: #b88044;
-}
-
-.tag.homework {
-  background: #edf3fa;
-  color: #6686a2;
-}
-
-.tag.other {
-  background: #f0eff7;
-  color: #8075a1;
+  display: block;
 }
 
 .empty {
   text-align: center;
-  color: var(--muted);
   padding: 35px 10px;
-  font-size: 14px;
-}
-
-/* TOOLBAR */
-
-.toolbar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 17px;
-}
-
-.toolbar input,
-.toolbar select {
-  padding: 10px 13px;
-  border: 1px solid var(--border);
-  background: white;
-  border-radius: 10px;
-  outline: none;
-  color: var(--text);
+  color: var(--muted);
   font-size: 13px;
 }
 
-.toolbar input {
+/* SEARCH */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 17px;
+}
+
+.field {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 12px;
+  outline: none;
+  color: var(--text);
+  font-size: 13px;
+  min-width: 0;
+}
+
+.field:focus {
+  border-color: var(--green);
+}
+
+.search-field {
   flex: 1;
-  min-width: 160px;
+  min-width: 150px;
 }
 
 /* CALENDAR */
-
-.calendar-header {
+.calendar-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
-  margin-bottom: 15px;
+  align-items: center;
+  margin-bottom: 17px;
+  gap: 10px;
 }
 
-.calendar-header h2 {
+.calendar-month {
   font-size: 18px;
-  margin: 0;
+  font-weight: 700;
 }
 
 .calendar-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 7px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
 }
 
 .calendar-day-name {
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
   color: var(--muted);
-  padding: 9px 0;
+  padding: 8px 0;
 }
 
 .calendar-cell {
-  min-height: 90px;
-  background: #fbfcfa;
+  min-height: 75px;
+  background: #fafcf9;
   border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 8px;
+  border-radius: 8px;
+  padding: 7px;
   font-size: 12px;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.calendar-cell.other {
-  opacity: .4;
+.calendar-cell:hover {
+  border-color: var(--green);
 }
 
 .calendar-cell.today-cell {
-  border: 2px solid var(--green);
   background: var(--green-light);
+  border-color: var(--green);
+}
+
+.calendar-cell.muted-cell {
+  opacity: .35;
 }
 
 .calendar-event {
-  background: var(--green-light);
-  color: var(--green-dark);
-  border-radius: 5px;
-  padding: 3px 5px;
+  background: var(--green);
+  color: white;
+  border-radius: 4px;
+  padding: 2px 4px;
   margin-top: 4px;
-  font-size: 10px;
+  font-size: 9px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-/* MODAL */
+/* SETTINGS */
+.setting-row {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
 
-.modal {
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.setting-desc {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+/* MODAL */
+.modal-backdrop {
   position: fixed;
   inset: 0;
-  background: rgba(30,45,33,.4);
+  background: rgba(25,40,30,.4);
   display: none;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   padding: 15px;
   z-index: 30;
 }
 
-.modal.show {
+.modal-backdrop.show {
   display: flex;
 }
 
-.modal-box {
+.modal {
+  background: white;
   width: 100%;
   max-width: 480px;
+  border-radius: 16px;
+  padding: 23px;
   max-height: 90vh;
   overflow-y: auto;
-  background: white;
-  border-radius: 18px;
-  padding: 24px;
   box-shadow: 0 15px 50px rgba(0,0,0,.15);
 }
 
-.modal-box h2 {
+.modal-title {
+  font-size: 19px;
+  font-weight: 800;
   margin: 0 0 20px;
-  font-size: 20px;
 }
 
 .form-group {
   margin-bottom: 14px;
 }
 
-.form-group label {
+.form-label {
   display: block;
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 600;
   margin-bottom: 6px;
 }
 
-.form-group input,
-.form-group select,
-.form-group textarea {
+.form-group .field {
   width: 100%;
-  padding: 11px 12px;
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  outline: none;
-  background: white;
-  color: var(--text);
-  font-size: 14px;
-}
-
-.form-group input:focus,
-.form-group select:focus,
-.form-group textarea:focus {
-  border-color: var(--green);
 }
 
 .form-actions {
@@ -604,85 +592,72 @@ svg {
   margin-top: 20px;
 }
 
-/* SETTINGS */
-
-.setting-item {
-  padding: 16px 0;
-  border-bottom: 1px solid var(--border);
+/* PAGE */
+.page {
+  display: none;
 }
 
-.setting-item:last-child {
-  border-bottom: 0;
-}
-
-.setting-item strong {
+.page.active {
   display: block;
-  margin-bottom: 4px;
 }
 
-.setting-item p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
+/* MOBILE */
+.mobile-header {
+  display: none;
 }
 
-/* PROGRESS */
-
-.progress-track {
-  height: 10px;
-  background: #edf1ec;
-  border-radius: 20px;
-  overflow: hidden;
-}
-
-.progress-bar {
-  height: 100%;
-  width: 0;
-  background: var(--green);
-  border-radius: 20px;
-  transition: .3s;
-}
-
-/* RESPONSIVE */
-
-@media(max-width: 950px) {
+@media(max-width: 1000px) {
   .stats {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .main {
-    padding: 25px;
+  .content-grid {
+    grid-template-columns: 1fr;
   }
 }
 
-@media(max-width: 650px) {
+@media(max-width: 700px) {
   .sidebar {
-    transform: translateX(-100%);
-    box-shadow: var(--shadow);
+    width: 68px;
+    padding: 15px 8px;
   }
 
-  .sidebar.open {
-    transform: translateX(0);
+  .brand {
+    justify-content: center;
+    padding: 5px 0 25px;
+  }
+
+  .brand-logo {
+    width: 43px;
+    height: 43px;
+  }
+
+  .brand-name,
+  .brand-sub,
+  .menu-label,
+  .nav-text,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .nav-btn {
+    justify-content: center;
+    padding: 13px 5px;
+  }
+
+  .nav-icon {
+    width: 21px;
+    height: 21px;
   }
 
   .main {
-    margin-left: 0;
-    width: 100%;
-    padding: 20px 15px;
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 20px 13px;
   }
 
-  .mobile-menu {
-    display: grid;
-    place-items: center;
-  }
-
-  .topbar {
-    align-items: flex-start;
-  }
-
-  .greeting h1 {
-    font-size: 22px;
+  .page-title {
+    font-size: 21px;
   }
 
   .today {
@@ -690,7 +665,7 @@ svg {
   }
 
   .stats {
-    gap: 10px;
+    gap: 9px;
   }
 
   .stat-card {
@@ -701,22 +676,31 @@ svg {
     font-size: 24px;
   }
 
-  .task-row {
-    flex-wrap: wrap;
+  .panel {
+    padding: 14px;
   }
 
-  .task-actions {
-    width: 100%;
-    justify-content: flex-end;
+  .task-item {
+    padding: 10px 8px;
   }
 
   .calendar-cell {
-    min-height: 65px;
+    min-height: 58px;
     padding: 4px;
   }
 
   .calendar-event {
-    font-size: 9px;
+    font-size: 8px;
+  }
+}
+
+@media(max-width: 380px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .task-actions {
+    flex-direction: column;
   }
 }
 </style>
@@ -724,63 +708,61 @@ svg {
 
 <body>
 
-<div class="app">
+<div class="layout">
 
 <!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar">
 
   <div class="brand">
-    <div class="brand-icon">
-      <svg viewBox="0 0 24 24">
-        <rect x="4" y="4" width="16" height="16" rx="4"/>
-        <path d="M8 12h8M12 8v8"/>
-      </svg>
-    </div>
+    <img src="logo.png" alt="EduReminder Logo" class="brand-logo">
     <div>
       <div class="brand-name">EduReminder</div>
-      <div class="brand-sub">STUDENT ORGANIZER</div>
+      <div class="brand-sub">Student Planner</div>
     </div>
   </div>
 
-  <div class="nav-label">เมนูหลัก</div>
+  <div class="menu-label">เมนูหลัก</div>
 
-  <button class="nav-item active" data-page="dashboard">
-    <svg viewBox="0 0 24 24">
-      <path d="m3 10 9-7 9 7"/>
-      <path d="M5 9v12h14V9M9 21v-8h6v8"/>
+  <button class="nav-btn active" data-page="dashboard">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <rect x="3" y="3" width="8" height="8" rx="1"/>
+      <rect x="13" y="3" width="8" height="5" rx="1"/>
+      <rect x="13" y="10" width="8" height="11" rx="1"/>
+      <rect x="3" y="13" width="8" height="8" rx="1"/>
     </svg>
-    ภาพรวม
+    <span class="nav-text">ภาพรวม</span>
   </button>
 
-  <button class="nav-item" data-page="tasks">
-    <svg viewBox="0 0 24 24">
-      <rect x="4" y="4" width="16" height="17" rx="2"/>
-      <path d="M8 9h8M8 13h8M8 17h5"/>
+  <button class="nav-btn" data-page="tasks">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M9 5h11M9 12h11M9 19h11"/>
+      <path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/>
     </svg>
-    รายการงาน
+    <span class="nav-text">งานทั้งหมด</span>
   </button>
 
-  <button class="nav-item" data-page="calendar">
-    <svg viewBox="0 0 24 24">
+  <button class="nav-btn" data-page="calendar">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
       <rect x="3" y="5" width="18" height="16" rx="2"/>
-      <path d="M16 3v4M8 3v4M3 10h18M8 14h2M14 14h2"/>
+      <path d="M16 3v4M8 3v4M3 10h18"/>
     </svg>
-    ปฏิทิน
+    <span class="nav-text">ปฏิทิน</span>
   </button>
 
-  <div class="nav-label">ระบบ</div>
+  <div class="menu-label">ระบบ</div>
 
-  <button class="nav-item" data-page="settings">
-    <svg viewBox="0 0 24 24">
+  <button class="nav-btn" data-page="settings">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
       <circle cx="12" cy="12" r="3"/>
-      <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 2.9-.2-.1a1.7 1.7 0 0 0-1.8.1l-.2.1h-3.4l-.1-.2a1.7 1.7 0 0 0-1.5-1l-.2-.1-1.7.8-1.7-2.9.1-.2a1.7 1.7 0 0 0 0-1.8l-.1-.2-1.7-2.9 1.7-2.9 1.7.8.2-.1a1.7 1.7 0 0 0 1.5-1l.1-.2h3.4l.2.1a1.7 1.7 0 0 0 1.8.1l.2-.1 1.7 2.9-.1.1a1.7 1.7 0 0 0-.3 1.9z"/>
+      <path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.7a8 8 0 0 1-2 .9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-2-.9l-1.7.7-1.4-2.4 1.4-1.1a8 8 0 0 1 0-2.1l-1.4-1.1 1.4-2.4 1.7.7a8 8 0 0 1 2-.9l.3-1.8h2.8l.3 1.8a8 8 0 0 1 2 .9l1.7-.7 1.4 2.4-1.4 1.1a8 8 0 0 1 0 2.1z" transform="translate(-1 -1)"/>
     </svg>
-    ตั้งค่า
+    <span class="nav-text">ตั้งค่า</span>
   </button>
 
   <div class="sidebar-bottom">
     EduReminder<br>
-    ระบบช่วยจัดการงานนักเรียน
+    จัดการงานและการเรียน<br>
+    ได้อย่างเป็นระบบ
   </div>
 
 </aside>
@@ -788,20 +770,13 @@ svg {
 <!-- MAIN -->
 <main class="main">
 
-  <header class="topbar">
-    <div style="display:flex;gap:12px;align-items:center">
-      <button class="mobile-menu" id="mobileMenu" aria-label="เปิดเมนู">
-        <svg viewBox="0 0 24 24">
-          <path d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-      <div class="greeting">
-        <h1 id="pageTitle">ภาพรวม</h1>
-        <p id="pageSubtitle">จัดการงานของคุณให้เป็นระบบมากขึ้น</p>
-      </div>
+  <div class="topbar">
+    <div>
+      <h1 class="page-title" id="pageTitle">ภาพรวม</h1>
+      <div class="page-subtitle" id="pageSubtitle">สรุปงานและกำหนดการของคุณ</div>
     </div>
     <div class="today" id="todayText"></div>
-  </header>
+  </div>
 
   <!-- DASHBOARD -->
   <section class="page active" id="dashboard">
@@ -810,87 +785,95 @@ svg {
 
       <div class="stat-card">
         <div class="stat-top">
-          <span class="stat-label">งานทั้งหมด</span>
+          งานทั้งหมด
           <span class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M8 4h12v17H4V4h4"/>
-              <path d="M8 2h8v4H8zM8 11h8M8 15h8"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
             </svg>
           </span>
         </div>
         <div class="stat-number" id="totalCount">0</div>
-        <div class="stat-label">รายการงานทั้งหมด</div>
+        <div class="stat-note">รายการทั้งหมด</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-top">
-          <span class="stat-label">กำลังดำเนินการ</span>
+          ยังไม่เสร็จ
           <span class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <path d="M12 20h9"/>
-              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 2"/>
             </svg>
           </span>
         </div>
         <div class="stat-number" id="pendingCount">0</div>
-        <div class="stat-label">งานที่ยังไม่เสร็จ</div>
+        <div class="stat-note">รายการที่ต้องทำ</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-top">
-          <span class="stat-label">เสร็จแล้ว</span>
+          เสร็จแล้ว
           <span class="stat-icon">
-            <svg viewBox="0 0 24 24">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
               <circle cx="12" cy="12" r="9"/>
               <path d="m8 12 3 3 5-6"/>
             </svg>
           </span>
         </div>
         <div class="stat-number" id="doneCount">0</div>
-        <div class="stat-label">งานที่ทำเสร็จแล้ว</div>
+        <div class="stat-note">รายการที่ทำสำเร็จ</div>
       </div>
 
       <div class="stat-card">
         <div class="stat-top">
-          <span class="stat-label">ใกล้ถึงกำหนด</span>
+          งานวันนี้
           <span class="stat-icon">
-            <svg viewBox="0 0 24 24">
-              <circle cx="12" cy="12" r="9"/>
-              <path d="M12 7v5l3 2"/>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="5" width="18" height="16" rx="2"/>
+              <path d="M16 3v4M8 3v4M3 10h18"/>
             </svg>
           </span>
         </div>
-        <div class="stat-number" id="urgentCount">0</div>
-        <div class="stat-label">งานที่ครบกำหนดใน 3 วัน</div>
+        <div class="stat-number" id="todayCount">0</div>
+        <div class="stat-note">รายการที่ครบกำหนดวันนี้</div>
       </div>
 
     </div>
 
-    <div class="section-title">งานที่ต้องจัดการ</div>
+    <div class="content-grid">
 
-    <div class="panel">
-      <div class="panel-header">
-        <h3>รายการงานล่าสุด</h3>
-        <button class="btn btn-light" onclick="showPage('tasks')">
-          ดูทั้งหมด
-          <svg viewBox="0 0 24 24">
-            <path d="M5 12h14M13 6l6 6-6 6"/>
-          </svg>
-        </button>
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">งานที่กำลังจะมาถึง</h3>
+          <button class="btn btn-light" onclick="showPage('tasks')">ดูทั้งหมด</button>
+        </div>
+        <div class="task-list" id="upcomingTasks"></div>
       </div>
-      <div class="task-list" id="dashboardTasks"></div>
-    </div>
 
-    <div class="section-title">ความคืบหน้าของคุณ</div>
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">ความคืบหน้า</h3>
+        </div>
 
-    <div class="panel">
-      <div style="display:flex;justify-content:space-between;margin-bottom:10px">
-        <strong>ความสำเร็จของงาน</strong>
-        <strong id="progressText">0%</strong>
+        <div class="stat-number" id="progressPercent">0%</div>
+        <div class="muted">สัดส่วนงานที่ทำเสร็จแล้ว</div>
+
+        <div style="height:9px;background:#edf1ed;border-radius:20px;margin:17px 0;overflow:hidden">
+          <div id="progressBar" style="height:100%;width:0%;background:var(--green);border-radius:20px;transition:.3s"></div>
+        </div>
+
+        <div class="muted" id="progressText">ยังไม่มีข้อมูล</div>
+
+        <div style="margin-top:25px">
+          <button class="btn btn-primary" style="width:100%" onclick="openModal()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 5v14M5 12h14"/>
+            </svg>
+            เพิ่มงานใหม่
+          </button>
+        </div>
       </div>
-      <div class="progress-track">
-        <div class="progress-bar" id="progressBar"></div>
-      </div>
+
     </div>
 
   </section>
@@ -901,10 +884,9 @@ svg {
     <div class="panel">
 
       <div class="panel-header">
-        <h3>รายการงานทั้งหมด</h3>
-
+        <h3 class="panel-title">จัดการงานทั้งหมด</h3>
         <button class="btn btn-primary" onclick="openModal()">
-          <svg viewBox="0 0 24 24">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M12 5v14M5 12h14"/>
           </svg>
           เพิ่มงาน
@@ -912,17 +894,17 @@ svg {
       </div>
 
       <div class="toolbar">
-        <input id="searchInput" type="search" placeholder="ค้นหาชื่องานหรือวิชา...">
+        <input class="field search-field" id="searchInput" placeholder="ค้นหาชื่องานหรือวิชา..." oninput="renderTasks()">
 
-        <select id="filterType">
+        <select class="field" id="filterType" onchange="renderTasks()">
           <option value="all">ทุกประเภท</option>
           <option value="homework">การบ้าน</option>
-          <option value="work">ชิ้นงาน</option>
-          <option value="exam">การสอบ</option>
+          <option value="exam">สอบ</option>
+          <option value="project">โครงงาน</option>
           <option value="other">อื่น ๆ</option>
         </select>
 
-        <select id="filterStatus">
+        <select class="field" id="filterStatus" onchange="renderTasks()">
           <option value="all">ทุกสถานะ</option>
           <option value="pending">ยังไม่เสร็จ</option>
           <option value="done">เสร็จแล้ว</option>
@@ -932,7 +914,6 @@ svg {
       <div class="task-list" id="allTasks"></div>
 
     </div>
-
   </section>
 
   <!-- CALENDAR -->
@@ -940,24 +921,22 @@ svg {
 
     <div class="panel">
 
-      <div class="calendar-header">
-        <button class="btn btn-light" id="prevMonth" aria-label="เดือนก่อนหน้า">
-          <svg viewBox="0 0 24 24">
-            <path d="m15 18-6-6 6-6"/>
-          </svg>
-        </button>
-
-        <h2 id="monthTitle"></h2>
-
-        <button class="btn btn-light" id="nextMonth" aria-label="เดือนถัดไป">
-          <svg viewBox="0 0 24 24">
-            <path d="m9 18 6-6-6-6"/>
-          </svg>
-        </button>
+      <div class="calendar-head">
+        <button class="btn btn-outline" onclick="changeMonth(-1)">ก่อนหน้า</button>
+        <div class="calendar-month" id="calendarMonth"></div>
+        <button class="btn btn-outline" onclick="changeMonth(1)">ถัดไป</button>
       </div>
 
       <div class="calendar-grid" id="calendarGrid"></div>
 
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3 class="panel-title">งานตามวันที่เลือก</h3>
+        <span class="muted" id="selectedDateText"></span>
+      </div>
+      <div class="task-list" id="selectedDateTasks"></div>
     </div>
 
   </section>
@@ -966,51 +945,44 @@ svg {
   <section class="page" id="settings">
 
     <div class="panel">
-      <h3 style="margin-top:0">ตั้งค่าระบบ</h3>
-
-      <div class="setting-item">
-        <strong>EduReminder</strong>
-        <p>ระบบจัดการการบ้าน งาน และกำหนดส่งสำหรับนักเรียน</p>
+      <div class="panel-header">
+        <h3 class="panel-title">การตั้งค่าระบบ</h3>
       </div>
 
-      <div class="setting-item">
-        <strong>รูปแบบตัวอักษร</strong>
-        <p>Sarabun จาก Google Fonts</p>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">ส่งออกข้อมูล</div>
+          <div class="setting-desc">ดาวน์โหลดรายการงานทั้งหมดเป็นไฟล์ JSON</div>
+        </div>
+        <button class="btn btn-light" onclick="exportData()">ส่งออก</button>
       </div>
 
-      <div class="setting-item">
-        <strong>การจัดเก็บข้อมูล</strong>
-        <p>ข้อมูลปัจจุบันบันทึกไว้ในเบราว์เซอร์ของอุปกรณ์นี้ด้วย LocalStorage</p>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">นำเข้าข้อมูล</div>
+          <div class="setting-desc">นำเข้าข้อมูลจากไฟล์ JSON ที่เคยส่งออกไว้</div>
+        </div>
+        <button class="btn btn-light" onclick="document.getElementById('importFile').click()">นำเข้า</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden onchange="importData(event)">
       </div>
 
-      <div class="setting-item">
-        <strong>การแจ้งเตือนผ่าน LINE</strong>
-        <p>ยังไม่ได้เชื่อมต่อ LINE Messaging API</p>
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">ลบข้อมูลงานทั้งหมด</div>
+          <div class="setting-desc">ลบรายการงานที่บันทึกไว้ในเบราว์เซอร์นี้</div>
+        </div>
+        <button class="btn btn-danger" onclick="clearData()">ลบข้อมูล</button>
       </div>
 
-      <div class="setting-item">
-        <strong>สำรองข้อมูล</strong>
-        <p>ดาวน์โหลดรายการงานทั้งหมดเป็นไฟล์ JSON</p>
-        <button class="btn btn-light" style="margin-top:12px" onclick="exportData()">
-          <svg viewBox="0 0 24 24">
-            <path d="M12 3v12M7 10l5 5 5-5M4 20h16"/>
-          </svg>
-          ดาวน์โหลดข้อมูล
-        </button>
-      </div>
+    </div>
 
-      <div class="setting-item">
-        <strong>ลบข้อมูลทั้งหมด</strong>
-        <p>ลบรายการงานที่บันทึกไว้ในเบราว์เซอร์นี้</p>
-        <button class="btn btn-danger" style="margin-top:12px" onclick="clearData()">
-          <svg viewBox="0 0 24 24">
-            <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
-            <path d="M10 11v5M14 11v5"/>
-          </svg>
-          ลบข้อมูลทั้งหมด
-        </button>
-      </div>
-
+    <div class="panel">
+      <h3 class="panel-title">เกี่ยวกับ EduReminder</h3>
+      <p class="muted" style="line-height:1.9">
+        EduReminder เป็นระบบช่วยจัดการการบ้าน งาน โครงงาน และการสอบ
+        เพื่อให้การวางแผนการเรียนเป็นเรื่องง่ายและเป็นระบบมากขึ้น
+      </p>
+      <div class="muted">Version 1.0</div>
     </div>
 
   </section>
@@ -1018,42 +990,44 @@ svg {
 </main>
 </div>
 
-<!-- TASK MODAL -->
-<div class="modal" id="taskModal">
-  <div class="modal-box">
+<!-- MODAL -->
+<div class="modal-backdrop" id="taskModal">
+  <div class="modal">
 
-    <h2 id="modalTitle">เพิ่มรายการงาน</h2>
+    <h2 class="modal-title" id="modalTitle">เพิ่มงานใหม่</h2>
 
     <form id="taskForm">
 
+      <input type="hidden" id="taskId">
+
       <div class="form-group">
-        <label for="taskName">ชื่องาน *</label>
-        <input id="taskName" required maxlength="120" placeholder="เช่น ทำแบบฝึกหัดคณิตศาสตร์">
+        <label class="form-label">ชื่องาน *</label>
+        <input class="field" id="taskName" required placeholder="กรอกชื่องาน">
       </div>
 
       <div class="form-group">
-        <label for="taskSubject">วิชา</label>
-        <input id="taskSubject" maxlength="80" placeholder="เช่น คณิตศาสตร์">
+        <label class="form-label">ชื่อวิชา</label>
+        <input class="field" id="taskSubject" placeholder="กรอกชื่อวิชา">
       </div>
 
       <div class="form-group">
-        <label for="taskType">ประเภทงาน</label>
-        <select id="taskType">
+        <label class="form-label">ประเภทงาน</label>
+        <select class="field" id="taskType">
           <option value="homework">การบ้าน</option>
-          <option value="work">ชิ้นงาน</option>
-          <option value="exam">การสอบ</option>
+          <option value="exam">สอบ</option>
+          <option value="project">โครงงาน</option>
           <option value="other">อื่น ๆ</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label for="taskDate">วันกำหนดส่ง</label>
-        <input type="date" id="taskDate">
+        <label class="form-label">วันครบกำหนด *</label>
+        <input class="field" type="date" id="taskDate" required>
       </div>
 
       <div class="form-group">
-        <label for="taskNote">รายละเอียดเพิ่มเติม</label>
-        <textarea id="taskNote" rows="3" maxlength="500" placeholder="รายละเอียดของงาน..."></textarea>
+        <label class="form-label">รายละเอียดเพิ่มเติม</label>
+        <textarea class="field" id="taskDescription" rows="3" placeholder="รายละเอียดของงาน"></textarea>
       </div>
 
       <div class="form-actions">
@@ -1062,34 +1036,43 @@ svg {
       </div>
 
     </form>
+
   </div>
 </div>
 
 <script>
 /* DATA */
-
 const STORAGE_KEY = 'eduTasks';
 
-let tasks = loadTasks();
-let editingId = null;
-let calendarDate = new Date();
+let tasks = [];
 
-function loadTasks() {
-  try {
-    const data = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
+try {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+  tasks = Array.isArray(saved) ? saved : [];
+} catch (error) {
+  tasks = [];
+}
+
+let currentMonth = new Date();
+let selectedDate = getLocalDateString(new Date());
+
+const pageInfo = {
+  dashboard: ['ภาพรวม', 'สรุปงานและกำหนดการของคุณ'],
+  tasks: ['งานทั้งหมด', 'จัดการการบ้าน งาน และการสอบ'],
+  calendar: ['ปฏิทิน', 'ตรวจสอบกำหนดการของคุณ'],
+  settings: ['ตั้งค่า', 'จัดการข้อมูลและการตั้งค่าระบบ']
+};
+
+function getLocalDateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
 }
 
 function saveTasks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   renderAll();
-}
-
-function makeId() {
-  return Date.now().toString() + Math.random().toString(16).slice(2);
 }
 
 function escapeHTML(value) {
@@ -1102,36 +1085,38 @@ function escapeHTML(value) {
   })[char]);
 }
 
-function formatDate(date) {
-  if (!date) return 'ไม่ระบุกำหนดส่ง';
-
-  const parts = date.split('-');
-  if (parts.length !== 3) return date;
-
-  return `${parts[2]}/${parts[1]}/${parts[0]}`;
+function formatDate(dateString) {
+  if (!dateString) return '-';
+  const date = new Date(dateString + 'T00:00:00');
+  return date.toLocaleDateString('th-TH', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
 }
 
-function todayString() {
-  const d = new Date();
-  const y = d.getFullYear();
-  const m = String(d.getMonth() + 1).padStart(2, '0');
-  const day = String(d.getDate()).padStart(2, '0');
+function typeName(type) {
+  return {
+    homework: 'การบ้าน',
+    exam: 'สอบ',
+    project: 'โครงงาน',
+    other: 'อื่น ๆ'
+  }[type] || 'อื่น ๆ';
+}
 
-  return `${y}-${m}-${day}`;
+function typeClass(type) {
+  return {
+    homework: 'homework',
+    exam: 'exam',
+    project: 'project',
+    other: 'other'
+  }[type] || 'other';
 }
 
 /* NAVIGATION */
-
-const pageInfo = {
-  dashboard: ['ภาพรวม', 'จัดการงานของคุณให้เป็นระบบมากขึ้น'],
-  tasks: ['รายการงาน', 'ติดตามและจัดการงานทั้งหมดของคุณ'],
-  calendar: ['ปฏิทิน', 'ดูวันกำหนดส่งงานในแต่ละเดือน'],
-  settings: ['ตั้งค่า', 'จัดการข้อมูลและการตั้งค่าระบบ']
-};
-
 function showPage(page) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
 
   document.getElementById(page).classList.add('active');
 
@@ -1141,260 +1126,34 @@ function showPage(page) {
   document.getElementById('pageTitle').textContent = pageInfo[page][0];
   document.getElementById('pageSubtitle').textContent = pageInfo[page][1];
 
-  document.getElementById('sidebar').classList.remove('open');
-
   if (page === 'calendar') renderCalendar();
 }
 
-document.querySelectorAll('.nav-item').forEach(button => {
-  button.addEventListener('click', () => showPage(button.dataset.page));
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
 });
 
-document.getElementById('mobileMenu').addEventListener('click', () => {
-  document.getElementById('sidebar').classList.toggle('open');
-});
+/* TASK MODAL */
+function openModal(id = null) {
+  document.getElementById('taskForm').reset();
+  document.getElementById('taskId').value = '';
+  document.getElementById('modalTitle').textContent = 'เพิ่มงานใหม่';
 
-/* TASK TYPES */
+  document.getElementById('taskDate').value = getLocalDateString(new Date());
 
-const typeNames = {
-  homework: 'การบ้าน',
-  work: 'ชิ้นงาน',
-  exam: 'การสอบ',
-  other: 'อื่น ๆ'
-};
+  if (id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
 
-function taskTag(type) {
-  return `<span class="tag ${escapeHTML(type)}">${typeNames[type] || 'อื่น ๆ'}</span>`;
-}
-
-/* TASK ICONS */
-
-const editIcon = `
-<svg viewBox="0 0 24 24">
-  <path d="M12 20h9"/>
-  <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z"/>
-</svg>`;
-
-const deleteIcon = `
-<svg viewBox="0 0 24 24">
-  <path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6"/>
-  <path d="M10 11v5M14 11v5"/>
-</svg>`;
-
-/* RENDER TASK */
-
-function taskHTML(task) {
-  const statusClass = task.done ? 'done' : '';
-
-  return `
-    <div class="task-row ${statusClass}">
-      <input
-        class="task-check"
-        type="checkbox"
-        ${task.done ? 'checked' : ''}
-        aria-label="เปลี่ยนสถานะงาน"
-        onchange="toggleTask('${task.id}')"
-      >
-
-      <div class="task-info">
-        <div class="task-name">${escapeHTML(task.name)}</div>
-        <div class="task-meta">
-          ${escapeHTML(task.subject || 'ไม่ระบุวิชา')}
-          · ${formatDate(task.date)}
-        </div>
-        ${task.note ? `<div class="task-meta">${escapeHTML(task.note)}</div>` : ''}
-      </div>
-
-      ${taskTag(task.type)}
-
-      <div class="task-actions">
-        <button class="icon-btn" onclick="editTask('${task.id}')" aria-label="แก้ไข">
-          ${editIcon}
-        </button>
-        <button class="icon-btn" onclick="deleteTask('${task.id}')" aria-label="ลบ">
-          ${deleteIcon}
-        </button>
-      </div>
-    </div>
-  `;
-}
-
-/* DASHBOARD */
-
-function renderDashboard() {
-  const total = tasks.length;
-  const done = tasks.filter(t => t.done).length;
-  const pending = total - done;
-
-  const today = todayString();
-  const future = new Date();
-  future.setDate(future.getDate() + 3);
-
-  const end =
-    `${future.getFullYear()}-${String(future.getMonth()+1).padStart(2,'0')}-${String(future.getDate()).padStart(2,'0')}`;
-
-  const urgent = tasks.filter(t =>
-    !t.done && t.date && t.date >= today && t.date <= end
-  ).length;
-
-  document.getElementById('totalCount').textContent = total;
-  document.getElementById('pendingCount').textContent = pending;
-  document.getElementById('doneCount').textContent = done;
-  document.getElementById('urgentCount').textContent = urgent;
-
-  const percent = total ? Math.round(done / total * 100) : 0;
-
-  document.getElementById('progressText').textContent = percent + '%';
-  document.getElementById('progressBar').style.width = percent + '%';
-
-  const sorted = [...tasks]
-    .filter(t => !t.done)
-    .sort((a,b) => {
-      if (!a.date) return 1;
-      if (!b.date) return -1;
-      return a.date.localeCompare(b.date);
-    })
-    .slice(0, 5);
-
-  document.getElementById('dashboardTasks').innerHTML =
-    sorted.length
-      ? sorted.map(taskHTML).join('')
-      : '<div class="empty">ไม่มีงานที่ค้างอยู่</div>';
-}
-
-/* ALL TASKS */
-
-function renderTasks() {
-  const search = document.getElementById('searchInput').value.toLowerCase().trim();
-  const type = document.getElementById('filterType').value;
-  const status = document.getElementById('filterStatus').value;
-
-  const filtered = [...tasks]
-    .filter(t => {
-      const matchesSearch =
-        t.name.toLowerCase().includes(search) ||
-        (t.subject || '').toLowerCase().includes(search);
-
-      const matchesType = type === 'all' || t.type === type;
-
-      const matchesStatus =
-        status === 'all' ||
-        (status === 'done' && t.done) ||
-        (status === 'pending' && !t.done);
-
-      return matchesSearch && matchesType && matchesStatus;
-    })
-    .sort((a,b) => {
-      if (!a.date) return 1;
-      if (!b.date) return -1;
-      return a.date.localeCompare(b.date);
-    });
-
-  document.getElementById('allTasks').innerHTML =
-    filtered.length
-      ? filtered.map(taskHTML).join('')
-      : '<div class="empty">ไม่พบรายการงาน</div>';
-}
-
-document.getElementById('searchInput').addEventListener('input', renderTasks);
-document.getElementById('filterType').addEventListener('change', renderTasks);
-document.getElementById('filterStatus').addEventListener('change', renderTasks);
-
-/* CALENDAR */
-
-function renderCalendar() {
-  const year = calendarDate.getFullYear();
-  const month = calendarDate.getMonth();
-
-  const monthNames = [
-    'มกราคม','กุมภาพันธ์','มีนาคม','เมษายน',
-    'พฤษภาคม','มิถุนายน','กรกฎาคม','สิงหาคม',
-    'กันยายน','ตุลาคม','พฤศจิกายน','ธันวาคม'
-  ];
-
-  document.getElementById('monthTitle').textContent =
-    `${monthNames[month]} ${year + 543}`;
-
-  const grid = document.getElementById('calendarGrid');
-
-  const weekdays = ['อา','จ','อ','พ','พฤ','ศ','ส'];
-
-  let html = weekdays.map(d =>
-    `<div class="calendar-day-name">${d}</div>`
-  ).join('');
-
-  const firstDay = new Date(year, month, 1).getDay();
-  const daysInMonth = new Date(year, month + 1, 0).getDate();
-  const previousDays = new Date(year, month, 0).getDate();
-
-  const totalCells = Math.ceil((firstDay + daysInMonth) / 7) * 7;
-
-  for (let i = 0; i < totalCells; i++) {
-    let day;
-    let cellMonth = month;
-    let cellYear = year;
-    let other = false;
-
-    if (i < firstDay) {
-      day = previousDays - firstDay + i + 1;
-      cellMonth--;
-
-      if (cellMonth < 0) {
-        cellMonth = 11;
-        cellYear--;
-      }
-
-      other = true;
-    } else if (i >= firstDay + daysInMonth) {
-      day = i - firstDay - daysInMonth + 1;
-      cellMonth++;
-
-      if (cellMonth > 11) {
-        cellMonth = 0;
-        cellYear++;
-      }
-
-      other = true;
-    } else {
-      day = i - firstDay + 1;
-    }
-
-    const date =
-      `${cellYear}-${String(cellMonth+1).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
-
-    const isToday = date === todayString();
-    const events = tasks.filter(t => t.date === date);
-
-    html += `
-      <div class="calendar-cell ${other ? 'other' : ''} ${isToday ? 'today-cell' : ''}">
-        <strong>${day}</strong>
-        ${events.slice(0,3).map(t =>
-          `<div class="calendar-event" title="${escapeHTML(t.name)}">${escapeHTML(t.name)}</div>`
-        ).join('')}
-        ${events.length > 3 ? `<div class="calendar-event">อีก ${events.length-3} งาน</div>` : ''}
-      </div>
-    `;
+    document.getElementById('modalTitle').textContent = 'แก้ไขงาน';
+    document.getElementById('taskId').value = task.id;
+    document.getElementById('taskName').value = task.name;
+    document.getElementById('taskSubject').value = task.subject || '';
+    document.getElementById('taskType').value = task.type || 'homework';
+    document.getElementById('taskDate').value = task.date;
+    document.getElementById('taskDescription').value = task.description || '';
   }
 
-  grid.innerHTML = html;
-}
-
-document.getElementById('prevMonth').addEventListener('click', () => {
-  calendarDate.setMonth(calendarDate.getMonth() - 1);
-  renderCalendar();
-});
-
-document.getElementById('nextMonth').addEventListener('click', () => {
-  calendarDate.setMonth(calendarDate.getMonth() + 1);
-  renderCalendar();
-});
-
-/* MODAL */
-
-function openModal() {
-  editingId = null;
-  document.getElementById('taskForm').reset();
-  document.getElementById('modalTitle').textContent = 'เพิ่มรายการงาน';
   document.getElementById('taskModal').classList.add('show');
 }
 
@@ -1402,47 +1161,35 @@ function closeModal() {
   document.getElementById('taskModal').classList.remove('show');
 }
 
-function editTask(id) {
-  const task = tasks.find(t => t.id === id);
-  if (!task) return;
+document.getElementById('taskModal').addEventListener('click', event => {
+  if (event.target.id === 'taskModal') closeModal();
+});
 
-  editingId = id;
+document.getElementById('taskForm').addEventListener('submit', event => {
+  event.preventDefault();
 
-  document.getElementById('taskName').value = task.name;
-  document.getElementById('taskSubject').value = task.subject || '';
-  document.getElementById('taskType').value = task.type || 'homework';
-  document.getElementById('taskDate').value = task.date || '';
-  document.getElementById('taskNote').value = task.note || '';
+  const id = document.getElementById('taskId').value;
 
-  document.getElementById('modalTitle').textContent = 'แก้ไขรายการงาน';
-  document.getElementById('taskModal').classList.add('show');
-}
-
-document.getElementById('taskForm').addEventListener('submit', e => {
-  e.preventDefault();
-
-  const name = document.getElementById('taskName').value.trim();
-  if (!name) return;
-
-  const data = {
-    name,
+  const taskData = {
+    name: document.getElementById('taskName').value.trim(),
     subject: document.getElementById('taskSubject').value.trim(),
     type: document.getElementById('taskType').value,
     date: document.getElementById('taskDate').value,
-    note: document.getElementById('taskNote').value.trim()
+    description: document.getElementById('taskDescription').value.trim()
   };
 
-  if (editingId) {
-    const index = tasks.findIndex(t => t.id === editingId);
+  if (!taskData.name || !taskData.date) return;
 
+  if (id) {
+    const index = tasks.findIndex(t => t.id === id);
     if (index !== -1) {
-      tasks[index] = { ...tasks[index], ...data };
+      tasks[index] = { ...tasks[index], ...taskData };
     }
   } else {
     tasks.push({
-      id: makeId(),
-      ...data,
-      done: false,
+      id: String(Date.now()) + Math.random().toString(16).slice(2),
+      ...taskData,
+      completed: false,
       createdAt: new Date().toISOString()
     });
   }
@@ -1452,58 +1199,286 @@ document.getElementById('taskForm').addEventListener('submit', e => {
 });
 
 /* TASK ACTIONS */
-
 function toggleTask(id) {
   const task = tasks.find(t => t.id === id);
   if (!task) return;
 
-  task.done = !task.done;
+  task.completed = !task.completed;
   saveTasks();
 }
 
 function deleteTask(id) {
-  if (!confirm('ต้องการลบรายการงานนี้หรือไม่?')) return;
+  if (!confirm('ต้องการลบงานนี้ใช่หรือไม่?')) return;
 
   tasks = tasks.filter(t => t.id !== id);
   saveTasks();
 }
 
-/* EXPORT */
+/* TASK HTML */
+function taskHTML(task) {
+  return `
+    <div class="task-item ${task.completed ? 'task-completed' : ''}">
 
-function exportData() {
-  const blob = new Blob(
-    [JSON.stringify(tasks, null, 2)],
-    { type: 'application/json' }
-  );
+      <input
+        class="task-check"
+        type="checkbox"
+        ${task.completed ? 'checked' : ''}
+        aria-label="ทำเครื่องหมายงานเสร็จ"
+        onchange="toggleTask('${task.id}')"
+      >
 
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+      <div class="task-info">
+        <div class="task-name">${escapeHTML(task.name)}</div>
 
-  link.href = url;
-  link.download = 'EduReminder-backup.json';
-  link.click();
+        <div class="task-meta">
+          <span>${escapeHTML(task.subject || 'ไม่ระบุวิชา')}</span>
+          <span>ครบกำหนด ${formatDate(task.date)}</span>
+          <span class="tag ${typeClass(task.type)}">${typeName(task.type)}</span>
+          ${task.completed ? '<span class="tag">เสร็จแล้ว</span>' : ''}
+        </div>
 
-  URL.revokeObjectURL(url);
+        ${task.description ? `<div class="muted" style="margin-top:5px">${escapeHTML(task.description)}</div>` : ''}
+      </div>
+
+      <div class="task-actions">
+
+        <button class="icon-btn" title="แก้ไข" aria-label="แก้ไขงาน" onclick="openModal('${task.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20z"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn" title="ลบ" aria-label="ลบงาน" onclick="deleteTask('${task.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/>
+          </svg>
+        </button>
+
+      </div>
+    </div>
+  `;
 }
 
-/* CLEAR DATA */
+/* DASHBOARD */
+function renderDashboard() {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.completed).length;
+  const pending = total - done;
+  const today = getLocalDateString(new Date());
 
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('pendingCount').textContent = pending;
+  document.getElementById('todayCount').textContent =
+    tasks.filter(t => t.date === today && !t.completed).length;
+
+  const percent = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('progressBar').style.width = percent + '%';
+  document.getElementById('progressText').textContent =
+    `ทำเสร็จแล้ว ${done} จาก ${total} รายการ`;
+
+  const upcoming = tasks
+    .filter(t => !t.completed)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 5);
+
+  document.getElementById('upcomingTasks').innerHTML =
+    upcoming.length
+      ? upcoming.map(taskHTML).join('')
+      : '<div class="empty">ยังไม่มีงานที่ต้องทำ</div>';
+}
+
+/* ALL TASKS */
+function renderTasks() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const type = document.getElementById('filterType').value;
+  const status = document.getElementById('filterStatus').value;
+
+  let filtered = tasks.filter(task => {
+    const matchesSearch =
+      (task.name || '').toLowerCase().includes(search) ||
+      (task.subject || '').toLowerCase().includes(search);
+
+    const matchesType = type === 'all' || task.type === type;
+
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'done' && task.completed) ||
+      (status === 'pending' && !task.completed);
+
+    return matchesSearch && matchesType && matchesStatus;
+  });
+
+  filtered.sort((a, b) => {
+    if (a.completed !== b.completed) return a.completed ? 1 : -1;
+    return a.date.localeCompare(b.date);
+  });
+
+  document.getElementById('allTasks').innerHTML =
+    filtered.length
+      ? filtered.map(taskHTML).join('')
+      : '<div class="empty">ไม่พบรายการงาน</div>';
+}
+
+/* CALENDAR */
+function changeMonth(amount) {
+  currentMonth.setMonth(currentMonth.getMonth() + amount);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
+
+  document.getElementById('calendarMonth').textContent =
+    currentMonth.toLocaleDateString('th-TH', {
+      month: 'long',
+      year: 'numeric'
+    });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const previousDays = new Date(year, month, 0).getDate();
+
+  const names = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
+
+  let html = names.map(day =>
+    `<div class="calendar-day-name">${day}</div>`
+  ).join('');
+
+  for (let i = 0; i < 42; i++) {
+    let day;
+    let dateString;
+    let muted = false;
+
+    if (i < firstDay) {
+      day = previousDays - firstDay + i + 1;
+      dateString = getLocalDateString(new Date(year, month - 1, day));
+      muted = true;
+    } else if (i >= firstDay + daysInMonth) {
+      day = i - firstDay - daysInMonth + 1;
+      dateString = getLocalDateString(new Date(year, month + 1, day));
+      muted = true;
+    } else {
+      day = i - firstDay + 1;
+      dateString = getLocalDateString(new Date(year, month, day));
+    }
+
+    const isToday = dateString === getLocalDateString(new Date());
+
+    const dayTasks = tasks.filter(t => t.date === dateString);
+
+    html += `
+      <div class="calendar-cell ${muted ? 'muted-cell' : ''} ${isToday ? 'today-cell' : ''}"
+        onclick="selectCalendarDate('${dateString}')">
+
+        <div>${day}</div>
+
+        ${dayTasks.slice(0, 2).map(t =>
+          `<div class="calendar-event">${escapeHTML(t.name)}</div>`
+        ).join('')}
+
+        ${dayTasks.length > 2
+          ? `<div class="muted">+${dayTasks.length - 2} รายการ</div>`
+          : ''}
+      </div>
+    `;
+  }
+
+  document.getElementById('calendarGrid').innerHTML = html;
+
+  selectCalendarDate(selectedDate);
+}
+
+function selectCalendarDate(dateString) {
+  selectedDate = dateString;
+
+  document.getElementById('selectedDateText').textContent =
+    formatDate(dateString);
+
+  const dayTasks = tasks.filter(t => t.date === dateString);
+
+  document.getElementById('selectedDateTasks').innerHTML =
+    dayTasks.length
+      ? dayTasks.map(taskHTML).join('')
+      : '<div class="empty">ไม่มีงานในวันนี้</div>';
+}
+
+/* EXPORT */
+function exportData() {
+  const data = JSON.stringify(tasks, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'edureminder-backup.json';
+  link.click();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/* IMPORT */
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = () => {
+    try {
+      const imported = JSON.parse(reader.result);
+
+      if (!Array.isArray(imported)) {
+        throw new Error('รูปแบบไฟล์ไม่ถูกต้อง');
+      }
+
+      const valid = imported.every(t =>
+        t &&
+        typeof t.id === 'string' &&
+        typeof t.name === 'string' &&
+        typeof t.date === 'string'
+      );
+
+      if (!valid) {
+        throw new Error('ข้อมูลในไฟล์ไม่ถูกต้อง');
+      }
+
+      if (!confirm('การนำเข้าจะแทนที่รายการงานปัจจุบัน ต้องการดำเนินการหรือไม่?')) {
+        event.target.value = '';
+        return;
+      }
+
+      tasks = imported;
+      saveTasks();
+      alert('นำเข้าข้อมูลสำเร็จ');
+
+    } catch (error) {
+      alert('ไม่สามารถนำเข้าไฟล์ได้ กรุณาตรวจสอบไฟล์ JSON');
+    }
+
+    event.target.value = '';
+  };
+
+  reader.readAsText(file);
+}
+
+/* CLEAR */
 function clearData() {
-  if (!confirm('ยืนยันการลบงานทั้งหมด? ข้อมูลนี้ไม่สามารถกู้คืนได้')) return;
+  if (!confirm('ต้องการลบงานทั้งหมดใช่หรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้')) return;
 
   tasks = [];
   saveTasks();
 }
 
-/* RENDER ALL */
-
+/* RENDER */
 function renderAll() {
   renderDashboard();
   renderTasks();
   renderCalendar();
 }
-
-/* DATE */
 
 document.getElementById('todayText').textContent =
   new Date().toLocaleDateString('th-TH', {
@@ -1513,10 +1488,8 @@ document.getElementById('todayText').textContent =
     year: 'numeric'
   });
 
-/* INITIALIZE */
-
 renderAll();
-
 </script>
+
 </body>
 </html>
