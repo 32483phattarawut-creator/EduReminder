@@ -1,1036 +1,1649 @@
+
 <!DOCTYPE html>
 <html lang="th">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>EduReminder | Student Planner</title>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
 <style>
 :root {
-  --green:#6f927d;
-  --green-dark:#466b56;
-  --green-light:#eaf1eb;
-  --green-soft:#f4f7f3;
-  --text:#26352c;
-  --muted:#87938a;
-  --border:#e7ece7;
-  --white:#fff;
-  --danger:#c76d6d;
-  --warning:#c59a52;
-  --shadow:0 8px 28px rgba(45,75,55,.06);
+  --green: #789b83;
+  --green-dark: #52765e;
+  --green-light: #eaf1eb;
+  --bg: #f6f8f5;
+  --white: #ffffff;
+  --text: #29372e;
+  --muted: #849087;
+  --border: #e7ece7;
+  --red: #d66b6b;
+  --shadow: 0 5px 20px rgba(45,70,50,.06);
 }
-*{box-sizing:border-box}
-body{margin:0;background:#f7f9f6;color:var(--text);font-family:'Sarabun',sans-serif;font-size:15px}
-button,input,textarea,select{font:inherit}
-button{cursor:pointer}
-.hidden{display:none!important}
-.app{display:flex;min-height:100vh}
-.sidebar{width:250px;background:#fff;border-right:1px solid var(--border);padding:25px 18px;display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:10}
-.brand{display:flex;align-items:center;gap:12px;padding:0 8px 30px}
-.brand img{width:45px;height:45px;object-fit:contain}
-.brand-name{font-size:20px;font-weight:700;color:var(--green-dark)}
-.brand-sub{font-size:11px;color:var(--muted)}
-.nav-title{font-size:11px;color:#a0aaa2;font-weight:700;letter-spacing:1px;padding:10px 12px}
-.nav-btn{width:100%;display:flex;align-items:center;gap:13px;padding:12px 14px;border:0;background:transparent;border-radius:11px;color:#718077;text-align:left;margin:3px 0;transition:background .2s,color .2s}
-.nav-btn svg{width:20px;height:20px;min-width:20px;display:block;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.nav-btn:hover,.nav-btn.active{background:var(--green-light);color:var(--green-dark);font-weight:600}
-.sidebar-bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:16px}
-.user-mini{padding:10px 8px;overflow:hidden}
-.user-email{font-size:12px;color:var(--muted);overflow-wrap:anywhere}
-.main{margin-left:250px;width:calc(100% - 250px);padding:30px 36px;max-width:1600px}
-.topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;gap:15px}
-.page-title{font-size:25px;font-weight:700;margin:0}
-.page-subtitle{font-size:13px;color:var(--muted);margin-top:4px}
-.top-actions{display:flex;align-items:center;gap:10px}
-.date-label{color:var(--muted);font-size:13px}
-.panel{background:#fff;border:1px solid var(--border);border-radius:16px;padding:22px;box-shadow:var(--shadow);margin-bottom:20px}
-.panel-title{font-size:17px;font-weight:700;margin:0 0 16px}
-.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-bottom:20px}
-.stat-card{background:#fff;border:1px solid var(--border);border-radius:15px;padding:19px;box-shadow:var(--shadow)}
-.stat-label{color:var(--muted);font-size:13px}
-.stat-value{font-size:29px;font-weight:700;color:var(--green-dark);margin-top:8px}
-.stat-note{font-size:11px;color:#9aa59c;margin-top:3px}
-.content-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:20px}
-.btn{border:0;border-radius:10px;padding:10px 16px;font-weight:600;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
-.btn-primary{background:var(--green);color:#fff}
-.btn-primary:hover{background:var(--green-dark)}
-.btn-light{background:var(--green-light);color:var(--green-dark)}
-.btn-outline{background:#fff;border:1px solid var(--border);color:var(--text)}
-.btn-danger{background:#fff0f0;color:var(--danger)}
-.btn-small{padding:6px 10px;font-size:12px}
-.btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8}
-button:disabled{opacity:.6;cursor:not-allowed}
-.form-group{margin-bottom:15px}
-.form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
-.form-control{width:100%;border:1px solid #e2e9e2;background:#fff;border-radius:9px;padding:11px 12px;outline:none;color:var(--text)}
-.form-control:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(111,146,125,.12)}
-textarea.form-control{min-height:85px;resize:vertical}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.password-field{position:relative}
-.password-field .form-control{padding-right:48px}
-.password-toggle{position:absolute;right:9px;top:50%;transform:translateY(-50%);width:34px;height:34px;border:0;background:transparent;color:#87938a;display:flex;align-items:center;justify-content:center;border-radius:7px;padding:6px}
-.password-toggle:hover{background:var(--green-light);color:var(--green-dark)}
-.password-toggle:focus-visible{outline:2px solid var(--green);outline-offset:2px}
-.password-toggle svg{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.task-list{display:flex;flex-direction:column;gap:10px}
-.task-item{border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:flex-start;gap:12px}
-.task-check{width:19px;height:19px;accent-color:var(--green);margin-top:3px;flex-shrink:0}
-.task-info{flex:1;min-width:0}
-.task-title{font-weight:600;overflow-wrap:anywhere}
-.task-title.completed{text-decoration:line-through;color:#a1aaa3}
-.task-description{font-size:12px;color:var(--muted);margin-top:3px;overflow-wrap:anywhere}
-.task-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
-.tag{font-size:11px;padding:3px 8px;border-radius:20px;background:var(--green-light);color:var(--green-dark)}
-.tag.overdue{background:#fff0f0;color:var(--danger)}
-.task-actions{display:flex;gap:5px}
-.icon-btn{border:0;background:transparent;color:#93a097;padding:5px;border-radius:7px}
-.icon-btn:hover{background:var(--green-light);color:var(--green-dark)}
-.icon-btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8}
-.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:13px}
-.filter-row{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:16px}
-.filter-row .form-control{width:auto;min-width:140px;padding:8px 10px}
-.calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
-.calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
-.calendar-day-name{text-align:center;font-size:12px;color:var(--muted);padding:9px 0}
-.calendar-cell{min-height:85px;background:#fbfcfa;border:1px solid var(--border);border-radius:9px;padding:7px;font-size:12px;cursor:pointer}
-.calendar-cell.today{border:1.5px solid var(--green);background:var(--green-light)}
-.calendar-cell.muted{opacity:.35}
-.calendar-number{font-weight:600}
-.calendar-dot{height:5px;width:5px;border-radius:50%;background:var(--green);display:inline-block;margin:2px}
-.setting-row{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--border)}
-.setting-row:last-child{border-bottom:0}
-.setting-description{font-size:12px;color:var(--muted);margin-top:3px}
-.switch{position:relative;width:46px;height:25px;flex-shrink:0}
-.switch input{opacity:0;width:0;height:0}
-.switch-slider{position:absolute;inset:0;background:#d9e0da;border-radius:30px;transition:.2s;cursor:pointer}
-.switch-slider:before{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
-.switch input:checked+.switch-slider{background:var(--green)}
-.switch input:checked+.switch-slider:before{transform:translateX(21px)}
-.status-box{padding:13px;border-radius:10px;background:var(--green-soft);font-size:13px;color:var(--green-dark);margin-top:15px;line-height:1.8}
-.message{font-size:13px;margin-top:10px}
-.message.error{color:var(--danger)}
-.message.success{color:var(--green-dark)}
-.auth-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#f4f8f3,#e8f0e9)}
-.auth-card{width:100%;max-width:420px;background:#fff;padding:34px;border-radius:20px;box-shadow:0 15px 50px rgba(50,80,55,.1)}
-.auth-brand{text-align:center;margin-bottom:25px}
-.auth-brand img{width:75px;height:75px;object-fit:contain}
-.auth-brand h1{font-size:25px;color:var(--green-dark);margin:8px 0 0}
-.auth-brand p{font-size:13px;color:var(--muted);margin:3px}
-.auth-tabs{display:flex;background:#f3f6f2;border-radius:10px;padding:4px;margin-bottom:20px}
-.auth-tab{flex:1;border:0;padding:9px;border-radius:8px;background:transparent;color:var(--muted)}
-.auth-tab.active{background:#fff;color:var(--green-dark);font-weight:700;box-shadow:0 2px 7px #0000000a}
-.modal-backdrop{position:fixed;inset:0;background:rgba(20,35,25,.35);display:flex;align-items:center;justify-content:center;padding:15px;z-index:30}
-.modal{background:#fff;border-radius:16px;padding:24px;width:100%;max-width:520px;max-height:90vh;overflow:auto;box-shadow:0 20px 60px #0002}
-.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.modal-head h3{margin:0;font-size:19px}
-.toast{position:fixed;right:22px;bottom:22px;background:#344c3c;color:white;padding:13px 18px;border-radius:10px;box-shadow:var(--shadow);z-index:50;font-size:13px;max-width:90vw}
-.mobile-menu{display:none}
-@media(max-width:950px){
- .sidebar{width:215px}.main{margin-left:215px;width:calc(100% - 215px);padding:25px 22px}
- .stats{grid-template-columns:repeat(2,1fr)}.content-grid{grid-template-columns:1fr}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Sarabun', sans-serif !important;
 }
-@media(max-width:650px){
- .sidebar{width:250px;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow)}
- .sidebar.open{transform:translateX(0)}
- .main{margin-left:0;width:100%;padding:20px 14px}
- .mobile-menu{display:inline-flex}
- .topbar{align-items:flex-start}.page-title{font-size:21px}
- .stats{gap:9px}.stat-card{padding:14px}.stat-value{font-size:24px}
- .panel{padding:16px}.form-row{grid-template-columns:1fr}
- .calendar-cell{min-height:62px;padding:4px}.calendar-dot{height:4px;width:4px}
- .date-label{display:none}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
 }
+
+button, input, select, textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 245px;
+  background: white;
+  border-right: 1px solid var(--border);
+  padding: 25px 18px;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 5px 8px 30px;
+}
+
+.brand-logo {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  object-position: center;
+  border-radius: 0;
+  display: block;
+  flex-shrink: 0;
+}
+
+.brand-name {
+  font-size: 19px;
+  font-weight: 800;
+  color: var(--green-dark);
+}
+
+.brand-sub {
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.menu-label {
+  font-size: 11px;
+  color: #a0aaa2;
+  font-weight: 700;
+  padding: 12px 12px 8px;
+}
+
+.nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  margin: 3px 0;
+  border: 0;
+  background: transparent;
+  color: #718076;
+  border-radius: 10px;
+  text-align: left;
+  font-size: 14px;
+  transition: .2s;
+}
+
+.nav-btn:hover,
+.nav-btn.active {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+.nav-btn.active {
+  font-weight: 700;
+}
+
+.nav-icon {
+  width: 19px;
+  height: 19px;
+  flex-shrink: 0;
+}
+
+.sidebar-bottom {
+  margin-top: auto;
+  padding: 14px;
+  background: var(--green-light);
+  border-radius: 12px;
+  font-size: 12px;
+  color: var(--green-dark);
+  line-height: 1.7;
+}
+
+/* MAIN */
+.main {
+  margin-left: 245px;
+  width: calc(100% - 245px);
+  padding: 30px 36px;
+  max-width: 1600px;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 28px;
+}
+
+.page-title {
+  font-size: 25px;
+  font-weight: 800;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
+.today {
+  font-size: 13px;
+  color: var(--muted);
+  background: white;
+  padding: 10px 15px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}
+
+/* BUTTONS */
+.btn {
+  border: 0;
+  border-radius: 9px;
+  padding: 10px 16px;
+  font-weight: 600;
+  font-size: 13px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: .2s;
+}
+
+.btn-primary {
+  background: var(--green);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--green-dark);
+}
+
+.btn-light {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+.btn-danger {
+  background: #fbeeee;
+  color: var(--red);
+}
+
+.btn-outline {
+  background: white;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn svg {
+  width: 16px;
+  height: 16px;
+}
+
+/* CARDS */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 22px;
+}
+
+.stat-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 19px;
+  box-shadow: var(--shadow);
+}
+
+.stat-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat-icon {
+  width: 35px;
+  height: 35px;
+  border-radius: 10px;
+  background: var(--green-light);
+  display: grid;
+  place-items: center;
+  color: var(--green-dark);
+}
+
+.stat-icon svg {
+  width: 19px;
+  height: 19px;
+}
+
+.stat-number {
+  font-size: 29px;
+  font-weight: 800;
+  margin-top: 10px;
+}
+
+.stat-note {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* CONTENT */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 18px;
+}
+
+.panel {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  margin-bottom: 18px;
+  min-width: 0;
+}
+
+.panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 17px;
+}
+
+.panel-title {
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.muted {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+/* TASK */
+.task-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px;
+  border: 1px solid var(--border);
+  border-radius: 11px;
+  transition: .2s;
+}
+
+.task-item:hover {
+  border-color: #cbdacb;
+}
+
+.task-check {
+  width: 18px;
+  height: 18px;
+  accent-color: var(--green);
+  flex-shrink: 0;
+}
+
+.task-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-name {
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.task-completed .task-name {
+  text-decoration: line-through;
+  color: #a2aaa3;
+}
+
+.task-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.tag {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 20px;
+  background: var(--green-light);
+  color: var(--green-dark);
+  font-size: 10px;
+  white-space: nowrap;
+}
+
+.tag.exam {
+  background: #fff2df;
+  color: #b47d29;
+}
+
+.tag.homework {
+  background: #eaf0ff;
+  color: #647db4;
+}
+
+.tag.project {
+  background: #f2eafb;
+  color: #936eb0;
+}
+
+.tag.other {
+  background: #f0f1f0;
+  color: #747e76;
+}
+
+.task-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.icon-btn {
+  border: 0;
+  background: transparent;
+  color: #879188;
+  padding: 6px;
+  border-radius: 7px;
+}
+
+.icon-btn:hover {
+  background: var(--green-light);
+  color: var(--green-dark);
+}
+
+.icon-btn svg {
+  width: 17px;
+  height: 17px;
+  display: block;
+}
+
+.empty {
+  text-align: center;
+  padding: 35px 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+/* SEARCH */
+.toolbar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 17px;
+}
+
+.field {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 9px;
+  padding: 10px 12px;
+  outline: none;
+  color: var(--text);
+  font-size: 13px;
+  min-width: 0;
+}
+
+.field:focus {
+  border-color: var(--green);
+}
+
+.search-field {
+  flex: 1;
+  min-width: 150px;
+}
+
+/* CALENDAR */
+.calendar-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 17px;
+  gap: 10px;
+}
+
+.calendar-month {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 5px;
+}
+
+.calendar-day-name {
+  text-align: center;
+  font-size: 11px;
+  color: var(--muted);
+  padding: 8px 0;
+}
+
+.calendar-cell {
+  min-height: 75px;
+  background: #fafcf9;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 7px;
+  font-size: 12px;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.calendar-cell:hover {
+  border-color: var(--green);
+}
+
+.calendar-cell.today-cell {
+  background: var(--green-light);
+  border-color: var(--green);
+}
+
+.calendar-cell.muted-cell {
+  opacity: .35;
+}
+
+.calendar-event {
+  background: var(--green);
+  color: white;
+  border-radius: 4px;
+  padding: 2px 4px;
+  margin-top: 4px;
+  font-size: 9px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* SETTINGS */
+.setting-row {
+  padding: 15px 0;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.setting-row:last-child {
+  border-bottom: 0;
+}
+
+.setting-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.setting-desc {
+  color: var(--muted);
+  font-size: 11px;
+  margin-top: 3px;
+}
+
+/* MODAL */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(25,40,30,.4);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  z-index: 30;
+}
+
+.modal-backdrop.show {
+  display: flex;
+}
+
+.modal {
+  background: white;
+  width: 100%;
+  max-width: 480px;
+  border-radius: 16px;
+  padding: 23px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 15px 50px rgba(0,0,0,.15);
+}
+
+.modal-title {
+  font-size: 19px;
+  font-weight: 800;
+  margin: 0 0 20px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.form-group .field {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 9px;
+  margin-top: 20px;
+}
+
+/* PAGE */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
+}
+
+/* MOBILE */
+@media(max-width: 1000px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media(max-width: 700px) {
+  .sidebar {
+    width: 68px;
+    padding: 15px 8px;
+  }
+
+  .brand {
+    justify-content: center;
+    padding: 5px 0 25px;
+  }
+
+  .brand-logo {
+    width: 43px;
+    height: 43px;
+    object-fit: contain;
+    border-radius: 0;
+  }
+
+  .brand-name,
+  .brand-sub,
+  .menu-label,
+  .nav-text,
+  .sidebar-bottom {
+    display: none;
+  }
+
+  .nav-btn {
+    justify-content: center;
+    padding: 13px 5px;
+  }
+
+  .nav-icon {
+    width: 21px;
+    height: 21px;
+  }
+
+  .main {
+    margin-left: 68px;
+    width: calc(100% - 68px);
+    padding: 20px 13px;
+  }
+
+  .page-title {
+    font-size: 21px;
+  }
+
+  .today {
+    display: none;
+  }
+
+  .stats {
+    gap: 9px;
+  }
+
+  .stat-card {
+    padding: 13px;
+  }
+
+  .stat-number {
+    font-size: 24px;
+  }
+
+  .panel {
+    padding: 14px;
+  }
+
+  .task-item {
+    padding: 10px 8px;
+  }
+
+  .calendar-cell {
+    min-height: 58px;
+    padding: 4px;
+  }
+
+  .calendar-event {
+    font-size: 8px;
+  }
+}
+
+@media(max-width: 380px) {
+  .stats {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .task-actions {
+    flex-direction: column;
+  }
+}
+
+/* AUTH */
+.auth-screen {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  padding: 22px; background: var(--bg);
+}
+.auth-card {
+  width: 100%; max-width: 420px; background: #fff; border: 1px solid var(--border);
+  border-radius: 18px; padding: 28px; box-shadow: var(--shadow);
+}
+.auth-brand { display:flex; align-items:center; gap:12px; justify-content:center; margin-bottom:22px; }
+.auth-brand img { width:52px; height:52px; object-fit:contain; }
+.auth-title { text-align:center; font-size:22px; font-weight:800; margin:0; }
+.auth-desc { text-align:center; color:var(--muted); font-size:13px; margin:6px 0 22px; }
+.auth-card .field { width:100%; }
+.auth-message { font-size:12px; color:var(--green-dark); line-height:1.7; margin-top:12px; min-height:18px; }
+.auth-switch { text-align:center; font-size:13px; color:var(--muted); margin-top:16px; }
+.auth-switch button { border:0; background:transparent; color:var(--green-dark); font-weight:700; }
+.auth-screen[hidden], .layout[hidden] { display:none !important; }
+.account-email { color:var(--muted); font-size:12px; overflow-wrap:anywhere; }
+@media(max-width:700px) { .auth-card { padding:22px; } }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
+
 <body>
 
-<div id="authScreen" class="auth-screen">
+<section class="auth-screen" id="authScreen">
   <div class="auth-card">
     <div class="auth-brand">
       <img src="./logo.png" alt="EduReminder Logo">
-      <h1>EduReminder</h1>
-      <p>Student Planner & Reminder</p>
+      <div><div class="brand-name">EduReminder</div><div class="brand-sub">Student Planner</div></div>
     </div>
-    <div class="auth-tabs">
-      <button class="auth-tab active" id="loginTab" onclick="switchAuth('login')">เข้าสู่ระบบ</button>
-      <button class="auth-tab" id="signupTab" onclick="switchAuth('signup')">สมัครสมาชิก</button>
-    </div>
+    <h1 class="auth-title" id="authTitle">เข้าสู่ระบบ</h1>
+    <p class="auth-desc" id="authDesc">เข้าสู่ระบบเพื่อจัดการงานและกำหนดการเรียนของคุณ</p>
     <form id="authForm">
-      <div class="form-group">
-        <label for="authEmail">อีเมล</label>
-        <input class="form-control" id="authEmail" type="email" placeholder="example@email.com" required>
+      <div class="form-group" id="displayNameGroup" hidden>
+        <label class="form-label" for="authDisplayName">ชื่อที่แสดง</label>
+        <input class="field" id="authDisplayName" autocomplete="name" placeholder="กรอกชื่อของคุณ">
       </div>
       <div class="form-group">
-        <label for="authPassword">รหัสผ่าน</label>
-        <div class="password-field">
-          <input class="form-control" id="authPassword" type="password" placeholder="กรอกรหัสผ่าน" minlength="6" required autocomplete="current-password">
-          <button class="password-toggle" type="button" id="passwordToggle" onclick="togglePasswordVisibility()" aria-label="แสดงรหัสผ่าน" aria-pressed="false">
-            <svg viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
-              <circle cx="12" cy="12" r="3"/>
-            </svg>
-          </button>
-        </div>
+        <label class="form-label" for="authEmail">อีเมล</label>
+        <input class="field" id="authEmail" type="email" autocomplete="email" required placeholder="name@example.com">
       </div>
-      <div class="form-group hidden" id="displayNameGroup">
-        <label for="displayName">ชื่อที่แสดง</label>
-        <input class="form-control" id="displayName" type="text" placeholder="ชื่อของคุณ">
+      <div class="form-group">
+        <label class="form-label" for="authPassword">รหัสผ่าน</label>
+        <input class="field" id="authPassword" type="password" minlength="6" autocomplete="current-password" required placeholder="อย่างน้อย 6 ตัวอักษร">
       </div>
       <button class="btn btn-primary" id="authSubmit" type="submit" style="width:100%">เข้าสู่ระบบ</button>
-      <div id="authMessage" class="message"></div>
+      <div class="auth-message" id="authMessage" role="status"></div>
     </form>
+    <div class="auth-switch"><span id="authSwitchText">ยังไม่มีบัญชี?</span> <button type="button" id="authSwitch">สมัครสมาชิก</button></div>
   </div>
+</section>
+
+<div class="layout" id="appLayout" hidden>
+
+<aside class="sidebar">
+
+  <div class="brand">
+    <img src="./logo.png" alt="EduReminder Logo" class="brand-logo">
+    <div>
+      <div class="brand-name">EduReminder</div>
+      <div class="brand-sub">Student Planner</div>
+    </div>
+  </div>
+
+  <div class="menu-label">เมนูหลัก</div>
+
+  <button class="nav-btn active" data-page="dashboard">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <rect x="3" y="3" width="8" height="8" rx="1"/>
+      <rect x="13" y="3" width="8" height="5" rx="1"/>
+      <rect x="13" y="10" width="8" height="11" rx="1"/>
+      <rect x="3" y="13" width="8" height="8" rx="1"/>
+    </svg>
+    <span class="nav-text">ภาพรวม</span>
+  </button>
+
+  <button class="nav-btn" data-page="tasks">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <path d="M9 5h11M9 12h11M9 19h11"/>
+      <path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/>
+    </svg>
+    <span class="nav-text">งานทั้งหมด</span>
+  </button>
+
+  <button class="nav-btn" data-page="calendar">
+    <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+      <rect x="3" y="5" width="18" height="16" rx="2"/>
+      <path d="M16 3v4M8 3v4M3 10h18"/>
+    </svg>
+    <span class="nav-text">ปฏิทิน</span>
+  </button>
+
+  <div class="menu-label">ระบบ</div>
+
+  <button class="nav-btn" data-page="settings">
+    <svg class="nav-icon" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path fill="currentColor" d="M600.704 64a32 32 0 0130.464 22.208l35.2 109.376c14.784 7.232 28.928 15.36 42.432 24.512l112.384-24.192a32 32 0 0134.432 15.36L944.32 364.8a32 32 0 01-4.032 37.504l-77.12 85.12a357.12 357.12 0 010 49.024l77.12 85.248a32 32 0 014.032 37.504l-88.704 153.6a32 32 0 01-34.432 15.296L708.8 803.904c-13.44 9.088-27.648 17.28-42.368 24.512l-35.264 109.376A32 32 0 01600.704 960H423.296a32 32 0 01-30.464-22.208L357.696 828.48a351.616 351.616 0 01-42.56-24.64l-112.32 24.256a32 32 0 01-34.432-15.36L79.68 659.2a32 32 0 014.032-37.504l77.12-85.248a357.12 357.12 0 010-48.896l-77.12-85.248A32 32 0 0179.68 364.8l88.704-153.6a32 32 0 0134.432-15.296l112.32 24.256c13.568-9.152 27.776-17.408 42.56-24.64l35.2-109.312A32 32 0 01423.232 64H600.64zm-23.424 64H446.72l-36.352 113.088-24.512 11.968a294.113 294.113 0 00-34.816 20.096l-22.656 15.36-116.224-25.088-65.28 113.152 79.68 88.192-1.92 27.136a293.12 293.12 0 000 40.192l1.92 27.136-79.808 88.192 65.344 113.152 116.224-25.024 22.656 15.296a294.113 294.113 0 0034.816 20.096l24.512 11.968L446.72 896h130.688l36.48-113.152 24.448-11.904a288.282 288.282 0 0034.752-20.096l22.592-15.296 116.288 25.024 65.28-113.152-79.744-88.192 1.92-27.136a293.12 293.12 0 000-40.256l-1.92-27.136 79.808-88.128-65.344-113.152-116.288 24.96-22.592-15.232a287.616 287.616 0 00-34.752-20.096l-24.448-11.904L577.344 128zM512 320a192 192 0 110 384 192 192 0 010-384zm0 64a128 128 0 100 256 128 128 0 000-256z"/>
+    </svg>
+    <span class="nav-text">ตั้งค่า</span>
+  </button>
+
+  <div class="sidebar-bottom">
+    EduReminder<br>
+    จัดการงานและการเรียน<br>
+    ได้อย่างเป็นระบบ
+  </div>
+
+</aside>
+
+<main class="main">
+
+  <div class="topbar">
+    <div>
+      <h1 class="page-title" id="pageTitle">ภาพรวม</h1>
+      <div class="page-subtitle" id="pageSubtitle">สรุปงานและกำหนดการของคุณ</div>
+    </div>
+    <div class="today" id="todayText"></div>
+  </div>
+
+  <section class="page active" id="dashboard">
+
+    <div class="stats">
+
+      <div class="stat-card">
+        <div class="stat-top">งานทั้งหมด
+          <span class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/>
+            </svg>
+          </span>
+        </div>
+        <div class="stat-number" id="totalCount">0</div>
+        <div class="stat-note">รายการทั้งหมด</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">ยังไม่เสร็จ
+          <span class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="M12 7v5l3 2"/>
+            </svg>
+          </span>
+        </div>
+        <div class="stat-number" id="pendingCount">0</div>
+        <div class="stat-note">รายการที่ต้องทำ</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">เสร็จแล้ว
+          <span class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <circle cx="12" cy="12" r="9"/>
+              <path d="m8 12 3 3 5-6"/>
+            </svg>
+          </span>
+        </div>
+        <div class="stat-number" id="doneCount">0</div>
+        <div class="stat-note">รายการที่ทำสำเร็จ</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-top">งานวันนี้
+          <span class="stat-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="5" width="18" height="16" rx="2"/>
+              <path d="M16 3v4M8 3v4M3 10h18"/>
+            </svg>
+          </span>
+        </div>
+        <div class="stat-number" id="todayCount">0</div>
+        <div class="stat-note">รายการที่ครบกำหนดวันนี้</div>
+      </div>
+
+    </div>
+
+    <div class="content-grid">
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">งานที่กำลังจะมาถึง</h3>
+          <button class="btn btn-light" onclick="showPage('tasks')">ดูทั้งหมด</button>
+        </div>
+        <div class="task-list" id="upcomingTasks"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <h3 class="panel-title">ความคืบหน้า</h3>
+        </div>
+
+        <div class="stat-number" id="progressPercent">0%</div>
+        <div class="muted">สัดส่วนงานที่ทำเสร็จแล้ว</div>
+
+        <div style="height:9px;background:#edf1ed;border-radius:20px;margin:17px 0;overflow:hidden">
+          <div id="progressBar" style="height:100%;width:0%;background:var(--green);border-radius:20px;transition:.3s"></div>
+        </div>
+
+        <div class="muted" id="progressText">ยังไม่มีข้อมูล</div>
+
+        <div style="margin-top:25px">
+          <button class="btn btn-primary" style="width:100%" onclick="openModal()">เพิ่มงานใหม่</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section class="page" id="tasks">
+    <div class="panel">
+      <div class="panel-header">
+        <h3 class="panel-title">จัดการงานทั้งหมด</h3>
+        <button class="btn btn-primary" onclick="openModal()">เพิ่มงาน</button>
+      </div>
+
+      <div class="toolbar">
+        <input class="field search-field" id="searchInput" placeholder="ค้นหาชื่องานหรือวิชา..." oninput="renderTasks()">
+
+        <select class="field" id="filterType" onchange="renderTasks()">
+          <option value="all">ทุกประเภท</option>
+          <option value="homework">การบ้าน</option>
+          <option value="exam">สอบ</option>
+          <option value="project">โครงงาน</option>
+          <option value="other">อื่น ๆ</option>
+        </select>
+
+        <select class="field" id="filterStatus" onchange="renderTasks()">
+          <option value="all">ทุกสถานะ</option>
+          <option value="pending">ยังไม่เสร็จ</option>
+          <option value="done">เสร็จแล้ว</option>
+        </select>
+      </div>
+
+      <div class="task-list" id="allTasks"></div>
+    </div>
+  </section>
+
+  <section class="page" id="calendar">
+    <div class="panel">
+      <div class="calendar-head">
+        <button class="btn btn-outline" onclick="changeMonth(-1)">ก่อนหน้า</button>
+        <div class="calendar-month" id="calendarMonth"></div>
+        <button class="btn btn-outline" onclick="changeMonth(1)">ถัดไป</button>
+      </div>
+      <div class="calendar-grid" id="calendarGrid"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3 class="panel-title">งานตามวันที่เลือก</h3>
+        <span class="muted" id="selectedDateText"></span>
+      </div>
+      <div class="task-list" id="selectedDateTasks"></div>
+    </div>
+  </section>
+
+  <section class="page" id="settings">
+
+    <div class="panel">
+      <div class="panel-header">
+        <h3 class="panel-title">การตั้งค่าระบบ</h3>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">บัญชีผู้ใช้</div>
+          <div class="setting-desc account-email" id="accountEmail">-</div>
+        </div>
+        <button class="btn btn-outline" onclick="signOutUser()">ออกจากระบบ</button>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">ส่งออกข้อมูล</div>
+          <div class="setting-desc">ดาวน์โหลดรายการงานทั้งหมดเป็นไฟล์ JSON</div>
+        </div>
+        <button class="btn btn-light" onclick="exportData()">ส่งออก</button>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">นำเข้าข้อมูล</div>
+          <div class="setting-desc">นำเข้าข้อมูลจากไฟล์ JSON ที่เคยส่งออกไว้</div>
+        </div>
+        <button class="btn btn-light" onclick="document.getElementById('importFile').click()">นำเข้า</button>
+        <input type="file" id="importFile" accept=".json,application/json" hidden onchange="importData(event)">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-title">ลบข้อมูลงานทั้งหมด</div>
+          <div class="setting-desc">ลบรายการงานที่บันทึกไว้ในเบราว์เซอร์นี้</div>
+        </div>
+        <button class="btn btn-danger" onclick="clearData()">ลบข้อมูล</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3 class="panel-title">เกี่ยวกับ EduReminder</h3>
+      <p class="muted" style="line-height:1.9">
+        EduReminder เป็นระบบช่วยจัดการการบ้าน งาน โครงงาน และการสอบ
+        เพื่อให้การวางแผนการเรียนเป็นเรื่องง่ายและเป็นระบบมากขึ้น
+      </p>
+      <div class="muted">Version 1.0</div>
+    </div>
+
+  </section>
+
+</main>
 </div>
 
-<div id="app" class="app hidden">
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <img src="./logo.png" alt="EduReminder">
-      <div><div class="brand-name">EduReminder</div><div class="brand-sub">STUDENT PLANNER</div></div>
-    </div>
-    <div class="nav-title">เมนูหลัก</div>
-    <button class="nav-btn active" data-page="dashboard" onclick="showPage('dashboard',this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="5" rx="1"/><rect x="13" y="10" width="8" height="11" rx="1"/><rect x="3" y="13" width="8" height="8" rx="1"/></svg>ภาพรวม
-    </button>
-    <button class="nav-btn" data-page="tasks" onclick="showPage('tasks',this)">
-      <svg viewBox="0 0 24 24"><path d="M9 5h11M9 12h11M9 19h11"/><path d="m3 5 1.5 1.5L7 4M3 12l1.5 1.5L7 11M3 19l1.5 1.5L7 18"/></svg>งานทั้งหมด
-    </button>
-    <button class="nav-btn" data-page="calendar" onclick="showPage('calendar',this)">
-      <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M16 3v4M8 3v4M3 10h18"/></svg>ปฏิทิน
-    </button>
-    <div class="nav-title" style="margin-top:15px">บัญชีผู้ใช้</div>
-    <button class="nav-btn" data-page="settings" onclick="showPage('settings',this)">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M10 2.8h4l.65 2.45a7.7 7.7 0 0 1 1.65.68l2.3-1.12 2.83 2.83-1.12 2.3a7.7 7.7 0 0 1 .68 1.65L23.4 12.2v4l-2.41.65a7.7 7.7 0 0 1-.68 1.65l1.12 2.3-2.83 2.83-2.3-1.12a7.7 7.7 0 0 1-1.65.68L14 23.6h-4l-.65-2.41a7.7 7.7 0 0 1-1.65-.68l-2.3 1.12-2.83-2.83 1.12-2.3a7.7 7.7 0 0 1-.68-1.65L.6 14.2v-4l2.41-.65a7.7 7.7 0 0 1 .68-1.65l-1.12-2.3L5.4 2.77l2.3 1.12a7.7 7.7 0 0 1 1.65-.68L10 2.8Z" transform="translate(1.2 0) scale(.9)"/>
-        <circle cx="12" cy="12" r="3.2"/>
-      </svg>
-      <span>ตั้งค่า</span>
-    </button>
-    <div class="sidebar-bottom">
-      <div class="user-mini"><div style="font-weight:600;font-size:13px">บัญชีของคุณ</div><div class="user-email" id="userEmail">-</div></div>
-      <button class="nav-btn" onclick="signOut()">
-        <svg viewBox="0 0 24 24"><path d="M10 17l5-5-5-5M15 12H3"/><path d="M12 3h6a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-6"/></svg>ออกจากระบบ
-      </button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <header class="topbar">
-      <div style="display:flex;align-items:center;gap:12px">
-        <button class="btn btn-light mobile-menu" onclick="toggleSidebar()" aria-label="เปิดเมนู">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
-        </button>
-        <div><h1 class="page-title" id="pageTitle">ภาพรวม</h1><div class="page-subtitle" id="pageSubtitle">จัดการงานและติดตามกำหนดส่งของคุณ</div></div>
-      </div>
-      <div class="top-actions">
-        <span class="date-label" id="todayLabel"></span>
-        <button class="btn btn-primary" onclick="openTaskModal()">
-          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>เพิ่มงาน
-        </button>
-      </div>
-    </header>
-
-    <section id="page-dashboard">
-      <div class="stats">
-        <div class="stat-card"><div class="stat-label">งานทั้งหมด</div><div class="stat-value" id="statTotal">0</div><div class="stat-note">รายการงานในระบบ</div></div>
-        <div class="stat-card"><div class="stat-label">งานที่ยังไม่เสร็จ</div><div class="stat-value" id="statPending">0</div><div class="stat-note">รอดำเนินการ</div></div>
-        <div class="stat-card"><div class="stat-label">งานที่เสร็จแล้ว</div><div class="stat-value" id="statCompleted">0</div><div class="stat-note">ทำสำเร็จแล้ว</div></div>
-        <div class="stat-card"><div class="stat-label">งานใกล้ถึงกำหนด</div><div class="stat-value" id="statUpcoming">0</div><div class="stat-note">ภายใน 7 วัน</div></div>
-      </div>
-      <div class="content-grid">
-        <div class="panel">
-          <h2 class="panel-title">งานที่กำลังจะถึงกำหนด</h2>
-          <div id="dashboardTasks" class="task-list"></div>
-        </div>
-        <div class="panel">
-          <h2 class="panel-title">ความคืบหน้าของงาน</h2>
-          <div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:8px"><span>ความสำเร็จ</span><strong id="progressText">0%</strong></div>
-          <div style="height:9px;background:#edf1ed;border-radius:20px;overflow:hidden"><div id="progressBar" style="height:100%;width:0;background:var(--green);border-radius:20px;transition:.3s"></div></div>
-          <div style="margin-top:22px;font-size:13px;color:var(--muted)" id="progressCaption">เริ่มเพิ่มงานเพื่อดูความคืบหน้า</div>
-          <div style="margin-top:25px;padding:15px;background:var(--green-soft);border-radius:12px">
-            <div style="font-weight:700;color:var(--green-dark)">วางแผนให้เป็นระบบ</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:5px">เพิ่มงานและกำหนดวันส่ง เพื่อช่วยให้คุณไม่พลาดทุกกำหนดการ</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="page-tasks" class="hidden">
-      <div class="panel">
-        <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-          <h2 class="panel-title" style="margin:0">รายการงานทั้งหมด</h2>
-          <button class="btn btn-outline btn-small" onclick="exportTasks()">ส่งออกข้อมูล JSON</button>
-        </div>
-        <div class="filter-row" style="margin-top:18px">
-          <input class="form-control" id="searchTask" placeholder="ค้นหาชื่องาน..." oninput="renderTasks()">
-          <select class="form-control" id="statusFilter" onchange="renderTasks()"><option value="all">ทุกสถานะ</option><option value="pending">ยังไม่เสร็จ</option><option value="completed">เสร็จแล้ว</option></select>
-          <select class="form-control" id="typeFilter" onchange="renderTasks()"><option value="all">ทุกประเภท</option><option value="homework">การบ้าน</option><option value="exam">สอบ</option><option value="project">โครงงาน</option><option value="other">อื่น ๆ</option></select>
-        </div>
-        <div id="allTasks" class="task-list"></div>
-      </div>
-    </section>
-
-    <section id="page-calendar" class="hidden">
-      <div class="panel">
-        <div class="calendar-head">
-          <button class="btn btn-light btn-small" onclick="changeMonth(-1)">ก่อนหน้า</button>
-          <h2 class="panel-title" id="calendarTitle" style="margin:0">ปฏิทิน</h2>
-          <button class="btn btn-light btn-small" onclick="changeMonth(1)">ถัดไป</button>
-        </div>
-        <div class="calendar-grid" id="calendarGrid"></div>
-      </div>
-      <div class="panel"><h2 class="panel-title" id="selectedDateTitle">งานตามวันที่</h2><div id="selectedDateTasks" class="task-list"></div></div>
-    </section>
-
-    <section id="page-settings" class="hidden">
-      <div class="panel">
-        <h2 class="panel-title">ตั้งค่าการแจ้งเตือน</h2>
-        <div class="setting-row">
-          <div><div style="font-weight:600">เปิดใช้งานการแจ้งเตือน</div><div class="setting-description">เปิดหรือปิดการแจ้งเตือนประจำวัน</div></div>
-          <label class="switch"><input type="checkbox" id="notificationEnabled" checked onchange="updateNotificationPreview()"><span class="switch-slider"></span></label>
-        </div>
-        <div style="margin-top:18px">
-          <div class="form-row">
-            <div class="form-group"><label>เริ่มแจ้งเตือนวันที่</label><input class="form-control" type="date" id="notificationStartDate" onchange="updateNotificationPreview()"></div>
-            <div class="form-group"><label>สิ้นสุดการแจ้งเตือนวันที่</label><input class="form-control" type="date" id="notificationEndDate" onchange="updateNotificationPreview()"></div>
-          </div>
-          <div class="form-group"><label>เวลาแจ้งเตือนทุกวัน</label><input class="form-control" type="time" id="dailyNotificationTime" onchange="updateNotificationPreview()"></div>
-          <div class="status-box" id="notificationStatus">กรุณากำหนดช่วงวันที่และเวลาที่ต้องการรับการแจ้งเตือน</div>
-          <button class="btn btn-primary" style="margin-top:16px" onclick="saveNotificationSettings()">บันทึกการตั้งค่า</button>
-          <div class="message" id="notificationSettingsMessage"></div>
-        </div>
-      </div>
-
-      <div class="panel">
-        <h2 class="panel-title">เชื่อมต่อ LINE</h2>
-        <p style="font-size:13px;color:var(--muted);line-height:1.8">
-          เชื่อมต่อบัญชี LINE เพื่อรับการแจ้งเตือนงานจาก EduReminder ตามวันที่และเวลาที่กำหนด
-        </p>
-        <button class="btn btn-primary" id="createLineCodeButton" onclick="createLineLinkCode()">สร้างรหัสเชื่อมต่อ LINE</button>
-        <div id="lineLinkResult" class="hidden" style="margin-top:18px">
-          <div style="font-size:12px;color:var(--muted)">รหัสเชื่อมต่อของคุณ</div>
-          <div id="lineLinkCode" style="font-size:30px;font-weight:700;letter-spacing:5px;color:var(--green-dark);margin:8px 0"></div>
-          <div id="lineLinkExpiry" style="font-size:12px;color:var(--muted)"></div>
-          <button class="btn btn-outline btn-small" style="margin-top:12px" onclick="copyLineLinkCode()">คัดลอกรหัส</button>
-          <div class="status-box">
-            1. เพิ่มเพื่อน LINE Official Account ชื่อ EduReminder<br>
-            2. ส่งรหัสด้านบนไปในแชต LINE<br>
-            3. รอข้อความยืนยันการเชื่อมต่อจาก EduReminder<br><br>
-            รหัสนี้ใช้ได้เพียงครั้งเดียวและหมดอายุภายใน 10 นาที
-          </div>
-        </div>
-        <div id="lineLinkMessage" class="message"></div>
-      </div>
-
-      <div class="panel">
-        <h2 class="panel-title">ข้อมูลบัญชี</h2>
-        <div class="setting-row"><div><div style="font-weight:600">อีเมลที่ใช้งาน</div><div class="setting-description" id="settingsEmail">-</div></div></div>
-        <div class="setting-row"><div><div style="font-weight:600">เขตเวลา</div><div class="setting-description">Asia/Bangkok (ประเทศไทย)</div></div></div>
-      </div>
-      <div class="panel">
-        <h2 class="panel-title">ข้อมูลและสำรองข้อมูล</h2>
-        <p style="font-size:13px;color:var(--muted)">ดาวน์โหลดข้อมูลงานทั้งหมดในรูปแบบ JSON เพื่อเก็บสำรองไว้</p>
-        <button class="btn btn-outline" onclick="exportTasks()">ดาวน์โหลดข้อมูลสำรอง</button>
-      </div>
-    </section>
-  </main>
-</div>
-
-<div class="modal-backdrop hidden" id="taskModal">
+<div class="modal-backdrop" id="taskModal">
   <div class="modal">
-    <div class="modal-head"><h3 id="taskModalTitle">เพิ่มงานใหม่</h3><button class="icon-btn" onclick="closeTaskModal()" aria-label="ปิด"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div>
+    <h2 class="modal-title" id="modalTitle">เพิ่มงานใหม่</h2>
+
     <form id="taskForm">
       <input type="hidden" id="taskId">
-      <div class="form-group"><label>ชื่องาน *</label><input class="form-control" id="taskTitle" required maxlength="200" placeholder="เช่น การบ้านคณิตศาสตร์"></div>
-      <div class="form-group"><label>รายละเอียด</label><textarea class="form-control" id="taskDescription" placeholder="รายละเอียดเพิ่มเติม (ไม่บังคับ)"></textarea></div>
-      <div class="form-row">
-        <div class="form-group"><label>ประเภทงาน</label><select class="form-control" id="taskType"><option value="homework">การบ้าน</option><option value="exam">สอบ</option><option value="project">โครงงาน</option><option value="other">อื่น ๆ</option></select></div>
-        <div class="form-group"><label>กำหนดส่ง</label><input class="form-control" type="datetime-local" id="taskDue"></div>
+
+      <div class="form-group">
+        <label class="form-label">ชื่องาน *</label>
+        <input class="field" id="taskName" required placeholder="กรอกชื่องาน">
       </div>
-      <div class="form-group"><label>รายวิชา</label><select class="form-control" id="taskSubject"><option value="">ไม่ระบุรายวิชา</option></select></div>
-      <div class="message" id="taskFormMessage"></div>
-      <div style="display:flex;justify-content:flex-end;gap:9px;margin-top:20px"><button type="button" class="btn btn-outline" onclick="closeTaskModal()">ยกเลิก</button><button type="submit" class="btn btn-primary" id="taskSaveButton">บันทึกงาน</button></div>
+
+      <div class="form-group">
+        <label class="form-label">ชื่อวิชา</label>
+        <input class="field" id="taskSubject" placeholder="กรอกชื่อวิชา">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">ประเภทงาน</label>
+        <select class="field" id="taskType">
+          <option value="homework">การบ้าน</option>
+          <option value="exam">สอบ</option>
+          <option value="project">โครงงาน</option>
+          <option value="other">อื่น ๆ</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">วันครบกำหนด *</label>
+        <input class="field" type="date" id="taskDate" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">รายละเอียดเพิ่มเติม</label>
+        <textarea class="field" id="taskDescription" rows="3" placeholder="รายละเอียดของงาน"></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal()">ยกเลิก</button>
+        <button type="submit" class="btn btn-primary">บันทึกงาน</button>
+      </div>
     </form>
   </div>
 </div>
-<div id="toast" class="toast hidden"></div>
 
 <script>
+// ตั้งค่า Supabase: ใส่ Publishable Key ที่คัดลอกมาจาก Project Settings > API Keys
 const SUPABASE_URL = 'https://fghgjkyanoyfjbtdnipm.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
 
-const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
+const supabaseReady = window.supabase && SUPABASE_PUBLISHABLE_KEY !== 'วาง_PUBLISHABLE_KEY_ที่นี่';
+const supabaseClient = supabaseReady
+  ? window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY)
+  : null;
 
 let currentUser = null;
 let tasks = [];
-let subjects = [];
-let currentAuthMode = 'login';
-let calendarDate = new Date();
-let selectedCalendarDate = new Date();
-let currentLineLinkCode = '';
-
-let notificationSettings = {
-  notification_enabled:true,
-  notification_start_date:null,
-  notification_end_date:null,
-  daily_notification_time:null,
-  timezone:'Asia/Bangkok'
-};
+let authMode = 'login';
+let currentMonth = new Date();
+let selectedDate = getLocalDateString(new Date());
 
 const pageInfo = {
-  dashboard:['ภาพรวม','จัดการงานและติดตามกำหนดส่งของคุณ'],
-  tasks:['งานทั้งหมด','จัดการและติดตามงานทุกประเภท'],
-  calendar:['ปฏิทิน','ดูงานและกำหนดส่งตามวันที่'],
-  settings:['ตั้งค่า','จัดการบัญชีและการแจ้งเตือน']
+  dashboard: ['ภาพรวม', 'สรุปงานและกำหนดการของคุณ'],
+  tasks: ['งานทั้งหมด', 'จัดการการบ้าน งาน และการสอบ'],
+  calendar: ['ปฏิทิน', 'ตรวจสอบกำหนดการของคุณ'],
+  settings: ['ตั้งค่า', 'จัดการข้อมูลและการตั้งค่าระบบ']
 };
 
-function el(id){return document.getElementById(id);}
-
-function togglePasswordVisibility(){
-  const passwordInput=el('authPassword');
-  const toggleButton=el('passwordToggle');
-  if(!passwordInput||!toggleButton)return;
-
-  const show=passwordInput.type==='password';
-  passwordInput.type=show?'text':'password';
-  toggleButton.setAttribute('aria-label',show?'ซ่อนรหัสผ่าน':'แสดงรหัสผ่าน');
-  toggleButton.setAttribute('aria-pressed',String(show));
-
-  toggleButton.innerHTML=show
-    ? `<svg viewBox="0 0 24 24" aria-hidden="true">
-         <path d="M3 3l18 18"/>
-         <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8"/>
-         <path d="M9.9 5.2A10.8 10.8 0 0 1 12 5c6.4 0 10 7 10 7a15.8 15.8 0 0 1-3 3.8"/>
-         <path d="M6.2 6.2C3.5 8 2 12 2 12s3.6 7 10 7a10.5 10.5 0 0 0 4-.8"/>
-       </svg>`
-    : `<svg viewBox="0 0 24 24" aria-hidden="true">
-         <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/>
-         <circle cx="12" cy="12" r="3"/>
-       </svg>`;
+function getLocalDateString(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
 }
 
-function showToast(message){
-  const toast=el('toast');
-  toast.textContent=message;
-  toast.classList.remove('hidden');
-  clearTimeout(showToast.timer);
-  showToast.timer=setTimeout(()=>toast.classList.add('hidden'),3000);
+function saveTasks() {
+  renderAll();
 }
 
-function setMessage(id,message,type=''){
-  const node=el(id);
-  if(!node)return;
-  node.textContent=message;
-  node.className='message '+type;
+function showAuthMessage(message, isError = false) {
+  const el = document.getElementById('authMessage');
+  el.textContent = message;
+  el.style.color = isError ? 'var(--red)' : 'var(--green-dark)';
 }
 
-function escapeHTML(value){
-  return String(value??'').replace(/[&<>"']/g,char=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[char]));
+function setAuthMode(mode) {
+  authMode = mode;
+  const signup = mode === 'signup';
+  document.getElementById('authTitle').textContent = signup ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+  document.getElementById('authDesc').textContent = signup
+    ? 'สร้างบัญชีเพื่อเริ่มจัดการงานและกำหนดการเรียน'
+    : 'เข้าสู่ระบบเพื่อจัดการงานและกำหนดการเรียนของคุณ';
+  document.getElementById('authSubmit').textContent = signup ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+  document.getElementById('displayNameGroup').hidden = !signup;
+  document.getElementById('authPassword').autocomplete = signup ? 'new-password' : 'current-password';
+  document.getElementById('authSwitchText').textContent = signup ? 'มีบัญชีอยู่แล้ว?' : 'ยังไม่มีบัญชี?';
+  document.getElementById('authSwitch').textContent = signup ? 'เข้าสู่ระบบ' : 'สมัครสมาชิก';
+  showAuthMessage('');
 }
 
-function friendlyError(message){
-  if(!message)return 'เกิดข้อผิดพลาด กรุณาลองใหม่';
-  const lower=message.toLowerCase();
-  if(lower.includes('invalid login'))return 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
-  if(lower.includes('already registered'))return 'อีเมลนี้สมัครสมาชิกแล้ว';
-  if(lower.includes('email not confirmed'))return 'กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ';
-  if(lower.includes('invalid api key')||lower.includes('invalid key'))return 'Supabase API Key ไม่ถูกต้อง กรุณาตรวจสอบ Publishable Key ในโค้ด';
-  return message;
-}
-
-function switchAuth(mode){
-  currentAuthMode=mode;
-  el('loginTab').classList.toggle('active',mode==='login');
-  el('signupTab').classList.toggle('active',mode==='signup');
-  el('displayNameGroup').classList.toggle('hidden',mode!=='signup');
-  el('authSubmit').textContent=mode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
-  el('authPassword').value='';
-  el('authPassword').type='password';
-  el('passwordToggle').setAttribute('aria-label','แสดงรหัสผ่าน');
-  el('passwordToggle').setAttribute('aria-pressed','false');
-  el('passwordToggle').innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>`;
-  setMessage('authMessage','');
-}
-
-el('authForm').addEventListener('submit',async function(event){
+async function handleAuthSubmit(event) {
   event.preventDefault();
-  const email=el('authEmail').value.trim();
-  const password=el('authPassword').value;
-  const button=el('authSubmit');
-  button.disabled=true;
-  button.textContent='กำลังดำเนินการ...';
-  setMessage('authMessage','');
-
-  try{
-    if(currentAuthMode==='signup'){
-      const displayName=el('displayName').value.trim();
-      const {data,error}=await supabaseClient.auth.signUp({
-        email,password,options:{data:{display_name:displayName}}
+  if (!supabaseClient) {
+    showAuthMessage('ยังไม่ได้ใส่ Publishable Key ในไฟล์ index.html', true);
+    return;
+  }
+  const email = document.getElementById('authEmail').value.trim();
+  const password = document.getElementById('authPassword').value;
+  const displayName = document.getElementById('authDisplayName').value.trim();
+  const submit = document.getElementById('authSubmit');
+  submit.disabled = true;
+  submit.textContent = 'กำลังดำเนินการ...';
+  try {
+    if (authMode === 'signup') {
+      const { data, error } = await supabaseClient.auth.signUp({
+        email, password,
+        options: { data: { display_name: displayName || email.split('@')[0] } }
       });
-      if(error)throw error;
-      if(data.session)showToast('สมัครสมาชิกสำเร็จ');
-      else setMessage('authMessage','สมัครสมาชิกสำเร็จ กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี','success');
-    }else{
-      const {error}=await supabaseClient.auth.signInWithPassword({email,password});
-      if(error)throw error;
+      if (error) throw error;
+      if (data.session) {
+        showAuthMessage('สมัครสมาชิกสำเร็จ กำลังเข้าสู่ระบบ...');
+      } else {
+        setAuthMode('login');
+        showAuthMessage('สมัครสมาชิกแล้ว กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี จากนั้นกลับมาเข้าสู่ระบบ');
+      }
+    } else {
+      const { error } = await supabaseClient.auth.signInWithPassword({ email, password });
+      if (error) throw error;
     }
-  }catch(error){
-    setMessage('authMessage',friendlyError(error.message),'error');
-  }finally{
-    button.disabled=false;
-    button.textContent=currentAuthMode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
+  } catch (error) {
+    showAuthMessage(error.message || 'เกิดข้อผิดพลาด กรุณาลองใหม่', true);
+  } finally {
+    submit.disabled = false;
+    submit.textContent = authMode === 'signup' ? 'สมัครสมาชิก' : 'เข้าสู่ระบบ';
+  }
+}
+
+document.getElementById('authForm').addEventListener('submit', handleAuthSubmit);
+document.getElementById('authSwitch').addEventListener('click', () => setAuthMode(authMode === 'login' ? 'signup' : 'login'));
+
+async function signOutUser() {
+  if (!supabaseClient) return;
+  const { error } = await supabaseClient.auth.signOut();
+  if (error) alert('ออกจากระบบไม่สำเร็จ: ' + error.message);
+}
+
+function dateToTimestamp(dateString) {
+  // เก็บเวลาเที่ยงตามเวลาท้องถิ่น เพื่อป้องกันวันที่เลื่อนเมื่อแสดงผล
+  return new Date(dateString + 'T12:00:00').toISOString();
+}
+
+function timestampToDate(value) {
+  if (!value) return '';
+  return getLocalDateString(new Date(value));
+}
+
+async function getSubjectId(subjectName) {
+  const name = (subjectName || '').trim();
+  if (!name) return null;
+  const { data: existing, error: findError } = await supabaseClient
+    .from('subjects').select('id').eq('user_id', currentUser.id).eq('name', name).maybeSingle();
+  if (findError) throw findError;
+  if (existing) return existing.id;
+  const { data, error } = await supabaseClient
+    .from('subjects').insert({ user_id: currentUser.id, name }).select('id').single();
+  if (error) throw error;
+  return data.id;
+}
+
+async function loadTasks() {
+  if (!currentUser) return;
+  const { data, error } = await supabaseClient
+    .from('tasks')
+    .select('id,title,description,task_type,due_at,status,created_at,subject_id,subjects(name)')
+    .eq('user_id', currentUser.id)
+    .order('due_at', { ascending: true });
+  if (error) throw error;
+  tasks = (data || []).map(row => ({
+    id: row.id,
+    name: row.title,
+    subject: row.subjects?.name || '',
+    type: row.task_type || 'homework',
+    date: timestampToDate(row.due_at),
+    description: row.description || '',
+    completed: row.status === 'completed' || row.status === 'done',
+    createdAt: row.created_at
+  }));
+  renderAll();
+}
+
+async function initializeApp(user) {
+  currentUser = user;
+  document.getElementById('authScreen').hidden = true;
+  document.getElementById('appLayout').hidden = false;
+  document.getElementById('accountEmail').textContent = user.email || '';
+  try {
+    await loadTasks();
+  } catch (error) {
+    alert('โหลดข้อมูลงานไม่สำเร็จ: ' + error.message);
+  }
+}
+
+async function initializeAuth() {
+  if (!supabaseClient) {
+    document.getElementById('authScreen').hidden = false;
+    document.getElementById('appLayout').hidden = true;
+    showAuthMessage('กรุณาใส่ Publishable Key ในตัวแปร SUPABASE_PUBLISHABLE_KEY ก่อนใช้งาน', true);
+    return;
+  }
+  const { data: { session } } = await supabaseClient.auth.getSession();
+  if (session?.user) await initializeApp(session.user);
+  else {
+    document.getElementById('authScreen').hidden = false;
+    document.getElementById('appLayout').hidden = true;
+  }
+  supabaseClient.auth.onAuthStateChange(async (_event, sessionNow) => {
+    if (sessionNow?.user) await initializeApp(sessionNow.user);
+    else {
+      currentUser = null;
+      tasks = [];
+      document.getElementById('appLayout').hidden = true;
+      document.getElementById('authScreen').hidden = false;
+      renderAll();
+    }
+  });
+}
+
+function escapeHTML(value) {
+  return String(value ?? '').replace(/[&<>"']/g, char => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  })[char]);
+}
+
+function formatDate(dateString) {
+  if (!dateString) return '-';
+  const date = new Date(dateString + 'T00:00:00');
+  return date.toLocaleDateString('th-TH', {
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+}
+
+function typeName(type) {
+  return {
+    homework: 'การบ้าน',
+    exam: 'สอบ',
+    project: 'โครงงาน',
+    other: 'อื่น ๆ'
+  }[type] || 'อื่น ๆ';
+}
+
+function typeClass(type) {
+  return {
+    homework: 'homework',
+    exam: 'exam',
+    project: 'project',
+    other: 'other'
+  }[type] || 'other';
+}
+
+/* NAVIGATION */
+function showPage(page) {
+  document.querySelectorAll('.page').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+
+  document.getElementById(page).classList.add('active');
+
+  const nav = document.querySelector(`[data-page="${page}"]`);
+  if (nav) nav.classList.add('active');
+
+  document.getElementById('pageTitle').textContent = pageInfo[page][0];
+  document.getElementById('pageSubtitle').textContent = pageInfo[page][1];
+
+  if (page === 'calendar') renderCalendar();
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => showPage(btn.dataset.page));
+});
+
+/* TASK MODAL */
+function openModal(id = null) {
+  document.getElementById('taskForm').reset();
+  document.getElementById('taskId').value = '';
+  document.getElementById('modalTitle').textContent = 'เพิ่มงานใหม่';
+  document.getElementById('taskDate').value = getLocalDateString(new Date());
+
+  if (id) {
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
+    document.getElementById('modalTitle').textContent = 'แก้ไขงาน';
+    document.getElementById('taskId').value = task.id;
+    document.getElementById('taskName').value = task.name;
+    document.getElementById('taskSubject').value = task.subject || '';
+    document.getElementById('taskType').value = task.type || 'homework';
+    document.getElementById('taskDate').value = task.date;
+    document.getElementById('taskDescription').value = task.description || '';
+  }
+
+  document.getElementById('taskModal').classList.add('show');
+}
+
+function closeModal() {
+  document.getElementById('taskModal').classList.remove('show');
+}
+
+document.getElementById('taskModal').addEventListener('click', event => {
+  if (event.target.id === 'taskModal') closeModal();
+});
+
+document.getElementById('taskForm').addEventListener('submit', async event => {
+  event.preventDefault();
+  if (!currentUser) return;
+  const id = document.getElementById('taskId').value;
+  const taskData = {
+    name: document.getElementById('taskName').value.trim(),
+    subject: document.getElementById('taskSubject').value.trim(),
+    type: document.getElementById('taskType').value,
+    date: document.getElementById('taskDate').value,
+    description: document.getElementById('taskDescription').value.trim()
+  };
+  if (!taskData.name || !taskData.date) return;
+  const submitButton = event.submitter;
+  if (submitButton) submitButton.disabled = true;
+  try {
+    const subjectId = await getSubjectId(taskData.subject);
+    const payload = {
+      user_id: currentUser.id,
+      subject_id: subjectId,
+      title: taskData.name,
+      description: taskData.description || null,
+      task_type: taskData.type,
+      due_at: dateToTimestamp(taskData.date),
+      status: id ? (tasks.find(t => t.id === id)?.completed ? 'completed' : 'pending') : 'pending',
+      updated_at: new Date().toISOString()
+    };
+    let result;
+    if (id) {
+      result = await supabaseClient.from('tasks').update(payload).eq('id', id).eq('user_id', currentUser.id);
+    } else {
+      result = await supabaseClient.from('tasks').insert(payload);
+    }
+    if (result.error) throw result.error;
+    closeModal();
+    await loadTasks();
+  } catch (error) {
+    alert('บันทึกงานไม่สำเร็จ: ' + error.message);
+  } finally {
+    if (submitButton) submitButton.disabled = false;
   }
 });
 
-async function signOut(){
-  const {error}=await supabaseClient.auth.signOut();
-  if(error){showToast(error.message);return;}
-  currentUser=null;
-  el('app').classList.add('hidden');
-  el('authScreen').classList.remove('hidden');
+/* TASK ACTIONS */
+async function toggleTask(id) {
+  const task = tasks.find(t => t.id === id);
+  if (!task || !currentUser) return;
+  const nextStatus = task.completed ? 'pending' : 'completed';
+  const { error } = await supabaseClient.from('tasks')
+    .update({ status: nextStatus, updated_at: new Date().toISOString() })
+    .eq('id', id).eq('user_id', currentUser.id);
+  if (error) { alert('เปลี่ยนสถานะไม่สำเร็จ: ' + error.message); return; }
+  await loadTasks();
 }
 
-supabaseClient.auth.onAuthStateChange((event,session)=>{
-  if(session?.user){
-    setTimeout(()=>initializeApp(session.user),0);
-  }else if(event==='SIGNED_OUT'){
-    currentUser=null;
-    el('app').classList.add('hidden');
-    el('authScreen').classList.remove('hidden');
-  }
-});
+async function deleteTask(id) {
+  if (!confirm('ต้องการลบงานนี้ใช่หรือไม่?') || !currentUser) return;
+  const { error } = await supabaseClient.from('tasks').delete().eq('id', id).eq('user_id', currentUser.id);
+  if (error) { alert('ลบงานไม่สำเร็จ: ' + error.message); return; }
+  await loadTasks();
+}
 
-async function initializeApp(user){
-  if(currentUser?.id===user.id && !el('app').classList.contains('hidden'))return;
-  currentUser=user;
-  el('authScreen').classList.add('hidden');
-  el('app').classList.remove('hidden');
-  el('userEmail').textContent=user.email||'-';
-  el('settingsEmail').textContent=user.email||'-';
-  el('todayLabel').textContent=new Date().toLocaleDateString('th-TH',{
-    weekday:'long',day:'numeric',month:'long',year:'numeric'
+/* TASK DISPLAY */
+function taskHTML(task) {
+  return `
+    <div class="task-item ${task.completed ? 'task-completed' : ''}">
+      <input class="task-check" type="checkbox"
+        ${task.completed ? 'checked' : ''}
+        aria-label="ทำเครื่องหมายงานเสร็จ"
+        onchange="toggleTask('${task.id}')">
+
+      <div class="task-info">
+        <div class="task-name">${escapeHTML(task.name)}</div>
+        <div class="task-meta">
+          <span>${escapeHTML(task.subject || 'ไม่ระบุวิชา')}</span>
+          <span>ครบกำหนด ${formatDate(task.date)}</span>
+          <span class="tag ${typeClass(task.type)}">${typeName(task.type)}</span>
+          ${task.completed ? '<span class="tag">เสร็จแล้ว</span>' : ''}
+        </div>
+        ${task.description ? `<div class="muted" style="margin-top:5px">${escapeHTML(task.description)}</div>` : ''}
+      </div>
+
+      <div class="task-actions">
+        <button class="icon-btn" title="แก้ไข" aria-label="แก้ไขงาน" onclick="openModal('${task.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="m14 5 5 5M4 20l4.5-1 11-11a2.1 2.1 0 0 0-3-3l-11 11L4 20z"/>
+          </svg>
+        </button>
+
+        <button class="icon-btn" title="ลบ" aria-label="ลบงาน" onclick="deleteTask('${task.id}')">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  `;
+}
+
+/* DASHBOARD */
+function renderDashboard() {
+  const total = tasks.length;
+  const done = tasks.filter(t => t.completed).length;
+  const pending = total - done;
+  const today = getLocalDateString(new Date());
+
+  document.getElementById('totalCount').textContent = total;
+  document.getElementById('doneCount').textContent = done;
+  document.getElementById('pendingCount').textContent = pending;
+  document.getElementById('todayCount').textContent =
+    tasks.filter(t => t.date === today && !t.completed).length;
+
+  const percent = total ? Math.round(done / total * 100) : 0;
+
+  document.getElementById('progressPercent').textContent = percent + '%';
+  document.getElementById('progressBar').style.width = percent + '%';
+  document.getElementById('progressText').textContent =
+    `ทำเสร็จแล้ว ${done} จาก ${total} รายการ`;
+
+  const upcoming = tasks
+    .filter(t => !t.completed)
+    .sort((a, b) => a.date.localeCompare(b.date))
+    .slice(0, 5);
+
+  document.getElementById('upcomingTasks').innerHTML =
+    upcoming.length
+      ? upcoming.map(taskHTML).join('')
+      : '<div class="empty">ยังไม่มีงานที่ต้องทำ</div>';
+}
+
+/* ALL TASKS */
+function renderTasks() {
+  const search = document.getElementById('searchInput').value.toLowerCase();
+  const type = document.getElementById('filterType').value;
+  const status = document.getElementById('filterStatus').value;
+
+  let filtered = tasks.filter(task => {
+    const matchesSearch =
+      (task.name || '').toLowerCase().includes(search) ||
+      (task.subject || '').toLowerCase().includes(search);
+
+    const matchesType = type === 'all' || task.type === type;
+
+    const matchesStatus =
+      status === 'all' ||
+      (status === 'done' && task.completed) ||
+      (status === 'pending' && !task.completed);
+
+    return matchesSearch && matchesType && matchesStatus;
   });
 
-  try{
-    await Promise.all([loadSubjects(),loadTasks(),loadNotificationSettings()]);
-    renderDashboard();
-    renderTasks();
-    renderCalendar();
-  }catch(error){
-    showToast('โหลดข้อมูลไม่สำเร็จ: '+error.message);
+  filtered.sort((a, b) => {
+    if (a.completed !== b.completed) return a.completed ? 1 : -1;
+    return a.date.localeCompare(b.date);
+  });
+
+  document.getElementById('allTasks').innerHTML =
+    filtered.length
+      ? filtered.map(taskHTML).join('')
+      : '<div class="empty">ไม่พบรายการงาน</div>';
+}
+
+/* CALENDAR */
+function changeMonth(amount) {
+  currentMonth.setMonth(currentMonth.getMonth() + amount);
+  renderCalendar();
+}
+
+function renderCalendar() {
+  const year = currentMonth.getFullYear();
+  const month = currentMonth.getMonth();
+
+  document.getElementById('calendarMonth').textContent =
+    currentMonth.toLocaleDateString('th-TH', {
+      month: 'long',
+      year: 'numeric'
+    });
+
+  const firstDay = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  const previousDays = new Date(year, month, 0).getDate();
+
+  const names = ['อา', 'จ', 'อ', 'พ', 'พฤ', 'ศ', 'ส'];
+
+  let html = names.map(day =>
+    `<div class="calendar-day-name">${day}</div>`
+  ).join('');
+
+  for (let i = 0; i < 42; i++) {
+    let day;
+    let dateString;
+    let muted = false;
+
+    if (i < firstDay) {
+      day = previousDays - firstDay + i + 1;
+      dateString = getLocalDateString(new Date(year, month - 1, day));
+      muted = true;
+    } else if (i >= firstDay + daysInMonth) {
+      day = i - firstDay - daysInMonth + 1;
+      dateString = getLocalDateString(new Date(year, month + 1, day));
+      muted = true;
+    } else {
+      day = i - firstDay + 1;
+      dateString = getLocalDateString(new Date(year, month, day));
+    }
+
+    const isToday = dateString === getLocalDateString(new Date());
+    const dayTasks = tasks.filter(t => t.date === dateString);
+
+    html += `
+      <div class="calendar-cell ${muted ? 'muted-cell' : ''} ${isToday ? 'today-cell' : ''}"
+        onclick="selectCalendarDate('${dateString}')">
+        <div>${day}</div>
+        ${dayTasks.slice(0, 2).map(t =>
+          `<div class="calendar-event">${escapeHTML(t.name)}</div>`
+        ).join('')}
+        ${dayTasks.length > 2
+          ? `<div class="muted">+${dayTasks.length - 2} รายการ</div>`
+          : ''}
+      </div>
+    `;
+  }
+
+  document.getElementById('calendarGrid').innerHTML = html;
+  selectCalendarDate(selectedDate);
+}
+
+function selectCalendarDate(dateString) {
+  selectedDate = dateString;
+
+  document.getElementById('selectedDateText').textContent =
+    formatDate(dateString);
+
+  const dayTasks = tasks.filter(t => t.date === dateString);
+
+  document.getElementById('selectedDateTasks').innerHTML =
+    dayTasks.length
+      ? dayTasks.map(taskHTML).join('')
+      : '<div class="empty">ไม่มีงานในวันนี้</div>';
+}
+
+/* EXPORT */
+function exportData() {
+  const data = JSON.stringify(tasks, null, 2);
+  const blob = new Blob([data], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = 'edureminder-backup.json';
+  link.click();
+
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+/* IMPORT */
+async function importData(event) {
+  const file = event.target.files[0];
+  if (!file || !currentUser) return;
+  try {
+    const imported = JSON.parse(await file.text());
+    if (!Array.isArray(imported)) throw new Error('รูปแบบไฟล์ไม่ถูกต้อง');
+    const valid = imported.every(t => t && typeof t.name === 'string' && typeof t.date === 'string');
+    if (!valid) throw new Error('ข้อมูลในไฟล์ไม่ถูกต้อง');
+    if (!confirm('นำเข้ารายการงานเหล่านี้ไปยังบัญชีของคุณหรือไม่?')) return;
+    for (const item of imported) {
+      const subjectId = await getSubjectId(item.subject || '');
+      const { error } = await supabaseClient.from('tasks').insert({
+        user_id: currentUser.id,
+        subject_id: subjectId,
+        title: item.name,
+        description: item.description || null,
+        task_type: item.type || 'homework',
+        due_at: dateToTimestamp(item.date),
+        status: item.completed ? 'completed' : 'pending'
+      });
+      if (error) throw error;
+    }
+    await loadTasks();
+    alert('นำเข้าข้อมูลสำเร็จ');
+  } catch (error) {
+    alert('นำเข้าข้อมูลไม่สำเร็จ: ' + error.message);
+  } finally {
+    event.target.value = '';
   }
 }
 
-async function loadSubjects(){
-  const {data,error}=await supabaseClient.from('subjects')
-    .select('*').eq('user_id',currentUser.id).order('name');
-  if(error)throw error;
-  subjects=data||[];
-  updateSubjectOptions();
+/* CLEAR */
+async function clearData() {
+  if (!confirm('ต้องการลบงานทั้งหมดในบัญชีนี้ใช่หรือไม่? การดำเนินการนี้ไม่สามารถย้อนกลับได้') || !currentUser) return;
+  const { error } = await supabaseClient.from('tasks').delete().eq('user_id', currentUser.id);
+  if (error) { alert('ลบข้อมูลไม่สำเร็จ: ' + error.message); return; }
+  await loadTasks();
 }
 
-function updateSubjectOptions(){
-  const select=el('taskSubject');
-  if(!select)return;
-  const selected=select.value;
-  select.innerHTML='<option value="">ไม่ระบุรายวิชา</option>';
-  subjects.forEach(subject=>{
-    const option=document.createElement('option');
-    option.value=subject.id;
-    option.textContent=subject.name;
-    select.appendChild(option);
-  });
-  select.value=selected;
-}
-
-async function loadTasks(){
-  const {data,error}=await supabaseClient.from('tasks')
-    .select('*').eq('user_id',currentUser.id)
-    .order('due_at',{ascending:true,nullsFirst:false});
-  if(error)throw error;
-  tasks=data||[];
+/* RENDER */
+function renderAll() {
   renderDashboard();
   renderTasks();
   renderCalendar();
 }
 
-function getSubjectName(subjectId){
-  if(!subjectId)return '';
-  const subject=subjects.find(item=>item.id===subjectId);
-  return subject?subject.name:'';
-}
-
-function typeName(type){
-  return {homework:'การบ้าน',exam:'สอบ',project:'โครงงาน',other:'อื่น ๆ'}[type]||'อื่น ๆ';
-}
-
-function formatDate(dateValue){
-  if(!dateValue)return 'ไม่กำหนดวันส่ง';
-  const date=new Date(dateValue);
-  if(Number.isNaN(date.getTime()))return 'ไม่กำหนดวันส่ง';
-  return date.toLocaleString('th-TH',{
-    day:'numeric',month:'short',year:'numeric',
-    hour:'2-digit',minute:'2-digit'
-  });
-}
-
-function isOverdue(task){
-  return task.status!=='completed'&&task.due_at&&new Date(task.due_at)<new Date();
-}
-
-function taskHTML(task){
-  const completed=task.status==='completed';
-  const subjectName=getSubjectName(task.subject_id);
-  return `
-    <div class="task-item">
-      <input class="task-check" type="checkbox" ${completed?'checked':''} onchange="toggleTask('${task.id}',this.checked)" aria-label="ทำเครื่องหมายว่างานเสร็จแล้ว">
-      <div class="task-info">
-        <div class="task-title ${completed?'completed':''}">${escapeHTML(task.title)}</div>
-        ${task.description?`<div class="task-description">${escapeHTML(task.description)}</div>`:''}
-        <div class="task-meta">
-          <span class="tag">${typeName(task.task_type)}</span>
-          ${subjectName?`<span class="tag">${escapeHTML(subjectName)}</span>`:''}
-          <span class="tag ${isOverdue(task)?'overdue':''}">${formatDate(task.due_at)}</span>
-        </div>
-      </div>
-      <div class="task-actions">
-        <button class="icon-btn" onclick="editTask('${task.id}')" title="แก้ไข" aria-label="แก้ไขงาน">
-          <svg viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l4-.8L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/></svg>
-        </button>
-        <button class="icon-btn" onclick="deleteTask('${task.id}')" title="ลบ" aria-label="ลบงาน">
-          <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>
-        </button>
-      </div>
-    </div>`;
-}
-
-function renderDashboard(){
-  const total=tasks.length;
-  const completed=tasks.filter(task=>task.status==='completed').length;
-  const pending=total-completed;
-  const now=new Date();
-  const nextWeek=new Date();
-  nextWeek.setDate(now.getDate()+7);
-  const upcoming=tasks.filter(task=>
-    task.status!=='completed'&&task.due_at&&
-    new Date(task.due_at)>=now&&new Date(task.due_at)<=nextWeek
-  ).length;
-
-  el('statTotal').textContent=total;
-  el('statPending').textContent=pending;
-  el('statCompleted').textContent=completed;
-  el('statUpcoming').textContent=upcoming;
-
-  const percent=total?Math.round(completed/total*100):0;
-  el('progressText').textContent=percent+'%';
-  el('progressBar').style.width=percent+'%';
-  el('progressCaption').textContent=total
-    ?`ทำงานสำเร็จแล้ว ${completed} จาก ${total} รายการ`
-    :'เริ่มเพิ่มงานเพื่อดูความคืบหน้า';
-
-  const upcomingTasks=tasks.filter(task=>task.status!=='completed')
-    .sort((a,b)=>{
-      if(!a.due_at)return 1;
-      if(!b.due_at)return -1;
-      return new Date(a.due_at)-new Date(b.due_at);
-    }).slice(0,5);
-
-  el('dashboardTasks').innerHTML=upcomingTasks.length
-    ?upcomingTasks.map(taskHTML).join('')
-    :'<div class="empty">ยังไม่มีงานที่ต้องดำเนินการ</div>';
-}
-
-function renderTasks(){
-  if(!el('allTasks'))return;
-  const search=(el('searchTask')?.value||'').toLowerCase();
-  const status=el('statusFilter')?.value||'all';
-  const type=el('typeFilter')?.value||'all';
-
-  const filtered=tasks.filter(task=>{
-    const matchesSearch=(task.title||'').toLowerCase().includes(search);
-    const matchesStatus=status==='all'||task.status===status;
-    const matchesType=type==='all'||task.task_type===type;
-    return matchesSearch&&matchesStatus&&matchesType;
+document.getElementById('todayText').textContent =
+  new Date().toLocaleDateString('th-TH', {
+    weekday: 'long',
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric'
   });
 
-  el('allTasks').innerHTML=filtered.length
-    ?filtered.map(taskHTML).join('')
-    :'<div class="empty">ไม่พบรายการงาน</div>';
-}
-
-async function saveTask(event){
-  event.preventDefault();
-  if(!currentUser)return;
-
-  const id=el('taskId').value;
-  const title=el('taskTitle').value.trim();
-  if(!title){setMessage('taskFormMessage','กรุณากรอกชื่องาน','error');return;}
-
-  const dueValue=el('taskDue').value;
-  const payload={
-    user_id:currentUser.id,
-    title,
-    description:el('taskDescription').value.trim()||null,
-    task_type:el('taskType').value,
-    subject_id:el('taskSubject').value||null,
-    due_at:dueValue?new Date(dueValue).toISOString():null,
-    updated_at:new Date().toISOString()
-  };
-
-  const button=el('taskSaveButton');
-  button.disabled=true;
-  button.textContent='กำลังบันทึก...';
-
-  try{
-    let result;
-    if(id){
-      result=await supabaseClient.from('tasks').update(payload)
-        .eq('id',id).eq('user_id',currentUser.id);
-    }else{
-      payload.status='pending';
-      result=await supabaseClient.from('tasks').insert(payload);
-    }
-    if(result.error)throw result.error;
-    closeTaskModal();
-    await loadTasks();
-    showToast(id?'แก้ไขงานสำเร็จ':'เพิ่มงานสำเร็จ');
-  }catch(error){
-    setMessage('taskFormMessage',error.message,'error');
-  }finally{
-    button.disabled=false;
-    button.textContent='บันทึกงาน';
-  }
-}
-el('taskForm').addEventListener('submit',saveTask);
-
-function openTaskModal(){
-  el('taskForm').reset();
-  el('taskId').value='';
-  el('taskModalTitle').textContent='เพิ่มงานใหม่';
-  el('taskSaveButton').textContent='บันทึกงาน';
-  setMessage('taskFormMessage','');
-  updateSubjectOptions();
-  el('taskModal').classList.remove('hidden');
-}
-
-function closeTaskModal(){
-  el('taskModal').classList.add('hidden');
-}
-
-function editTask(id){
-  const task=tasks.find(item=>item.id===id);
-  if(!task)return;
-  el('taskId').value=task.id;
-  el('taskTitle').value=task.title||'';
-  el('taskDescription').value=task.description||'';
-  el('taskType').value=task.task_type||'homework';
-  updateSubjectOptions();
-  el('taskSubject').value=task.subject_id||'';
-  el('taskDue').value=task.due_at
-    ?new Date(new Date(task.due_at).getTime()-new Date(task.due_at).getTimezoneOffset()*60000).toISOString().slice(0,16)
-    :'';
-  el('taskModalTitle').textContent='แก้ไขงาน';
-  setMessage('taskFormMessage','');
-  el('taskModal').classList.remove('hidden');
-}
-
-async function toggleTask(id,checked){
-  const newStatus=checked?'completed':'pending';
-  const {error}=await supabaseClient.from('tasks')
-    .update({status:newStatus,updated_at:new Date().toISOString()})
-    .eq('id',id).eq('user_id',currentUser.id);
-  if(error){
-    showToast('เปลี่ยนสถานะไม่สำเร็จ: '+error.message);
-    await loadTasks();
-    return;
-  }
-  await loadTasks();
-  showToast(checked?'ทำเครื่องหมายเสร็จแล้ว':'เปลี่ยนเป็นงานที่ยังไม่เสร็จ');
-}
-
-async function deleteTask(id){
-  if(!confirm('คุณต้องการลบงานนี้ใช่หรือไม่?'))return;
-  const {error}=await supabaseClient.from('tasks').delete()
-    .eq('id',id).eq('user_id',currentUser.id);
-  if(error){showToast('ลบงานไม่สำเร็จ: '+error.message);return;}
-  await loadTasks();
-  showToast('ลบงานสำเร็จ');
-}
-
-function showPage(page){
-  Object.keys(pageInfo).forEach(key=>{
-    el('page-'+key).classList.toggle('hidden',key!==page);
-  });
-  document.querySelectorAll('.nav-btn[data-page]').forEach(item=>{
-    item.classList.toggle('active',item.dataset.page===page);
-  });
-  el('pageTitle').textContent=pageInfo[page][0];
-  el('pageSubtitle').textContent=pageInfo[page][1];
-  el('sidebar').classList.remove('open');
-  if(page==='dashboard')renderDashboard();
-  if(page==='tasks')renderTasks();
-  if(page==='calendar')renderCalendar();
-}
-
-function toggleSidebar(){
-  el('sidebar').classList.toggle('open');
-}
-
-function localDateKey(date){
-  const y=date.getFullYear();
-  const m=String(date.getMonth()+1).padStart(2,'0');
-  const d=String(date.getDate()).padStart(2,'0');
-  return `${y}-${m}-${d}`;
-}
-
-function renderCalendar(){
-  const year=calendarDate.getFullYear();
-  const month=calendarDate.getMonth();
-  el('calendarTitle').textContent=new Date(year,month,1)
-    .toLocaleDateString('th-TH',{month:'long',year:'numeric'});
-
-  const firstDay=new Date(year,month,1).getDay();
-  const daysInMonth=new Date(year,month+1,0).getDate();
-  const previousDays=new Date(year,month,0).getDate();
-  const today=new Date();
-  const names=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
-  let html=names.map(name=>`<div class="calendar-day-name">${name}</div>`).join('');
-
-  for(let i=0;i<42;i++){
-    let day,cellMonth=month,muted=false;
-    if(i<firstDay){
-      day=previousDays-firstDay+i+1;
-      cellMonth=month-1;
-      muted=true;
-    }else if(i>=firstDay+daysInMonth){
-      day=i-(firstDay+daysInMonth)+1;
-      cellMonth=month+1;
-      muted=true;
-    }else{
-      day=i-firstDay+1;
-    }
-
-    const cellDate=new Date(year,cellMonth,day);
-    const dateKey=localDateKey(cellDate);
-    const dayTasks=tasks.filter(task=>task.due_at&&localDateKey(new Date(task.due_at))===dateKey);
-    const isToday=cellDate.toDateString()===today.toDateString();
-
-    html+=`<div class="calendar-cell ${muted?'muted':''} ${isToday?'today':''}" onclick="selectCalendarDay('${dateKey}')">
-      <div class="calendar-number">${day}</div>
-      <div style="margin-top:5px">${dayTasks.slice(0,4).map(()=>'<span class="calendar-dot"></span>').join('')}</div>
-      ${dayTasks.length?`<div style="font-size:10px;color:var(--muted)">${dayTasks.length} งาน</div>`:''}
-    </div>`;
-  }
-  el('calendarGrid').innerHTML=html;
-  renderSelectedDateTasks();
-}
-
-function changeMonth(offset){
-  calendarDate.setMonth(calendarDate.getMonth()+offset);
-  renderCalendar();
-}
-
-function selectCalendarDay(dateString){
-  const [year,month,day]=dateString.split('-').map(Number);
-  selectedCalendarDate=new Date(year,month-1,day);
-  renderSelectedDateTasks();
-}
-
-function renderSelectedDateTasks(){
-  const dateKey=localDateKey(selectedCalendarDate);
-  el('selectedDateTitle').textContent='งานวันที่ '+selectedCalendarDate.toLocaleDateString('th-TH',{
-    day:'numeric',month:'long',year:'numeric'
-  });
-  const dayTasks=tasks.filter(task=>task.due_at&&localDateKey(new Date(task.due_at))===dateKey);
-  el('selectedDateTasks').innerHTML=dayTasks.length
-    ?dayTasks.map(taskHTML).join('')
-    :'<div class="empty">ไม่มีงานที่กำหนดส่งในวันนี้</div>';
-}
-
-async function loadNotificationSettings(){
-  const {data,error}=await supabaseClient.from('user_settings')
-    .select('notification_enabled,notification_start_date,notification_end_date,daily_notification_time,timezone')
-    .eq('user_id',currentUser.id).maybeSingle();
-
-  if(error)throw error;
-
-  if(data){
-    notificationSettings={...notificationSettings,...data};
-  }else{
-    const {error:insertError}=await supabaseClient.from('user_settings')
-      .upsert({user_id:currentUser.id,timezone:'Asia/Bangkok'},{onConflict:'user_id'});
-    if(insertError)throw insertError;
-  }
-  displayNotificationSettings();
-}
-
-function displayNotificationSettings(){
-  el('notificationEnabled').checked=!!notificationSettings.notification_enabled;
-  el('notificationStartDate').value=notificationSettings.notification_start_date||'';
-  el('notificationEndDate').value=notificationSettings.notification_end_date||'';
-  el('dailyNotificationTime').value=notificationSettings.daily_notification_time
-    ?String(notificationSettings.daily_notification_time).slice(0,5)
-    :'';
-  updateNotificationPreview();
-}
-
-function formatDateOnly(dateString){
-  if(!dateString)return '';
-  const [year,month,day]=dateString.split('-').map(Number);
-  return new Date(year,month-1,day).toLocaleDateString('th-TH',{
-    day:'numeric',month:'short',year:'numeric'
-  });
-}
-
-function updateNotificationPreview(){
-  const enabled=el('notificationEnabled').checked;
-  const start=el('notificationStartDate').value;
-  const end=el('notificationEndDate').value;
-  const time=el('dailyNotificationTime').value;
-  const status=el('notificationStatus');
-
-  if(!enabled){
-    status.textContent='ปิดการแจ้งเตือนอยู่ ระบบจะไม่ส่งการแจ้งเตือนในขณะนี้';
-    return;
-  }
-  if(!start||!end||!time){
-    status.textContent='กรุณากำหนดวันเริ่มต้น วันสิ้นสุด และเวลาแจ้งเตือนให้ครบถ้วน';
-    return;
-  }
-  if(start>end){
-    status.textContent='วันที่เริ่มต้นต้องไม่อยู่หลังวันที่สิ้นสุด';
-    return;
-  }
-  status.textContent=`เปิดการแจ้งเตือนตั้งแต่ ${formatDateOnly(start)} ถึง ${formatDateOnly(end)} เวลา ${time} น. ทุกวัน`;
-}
-
-async function saveNotificationSettings(){
-  if(!currentUser)return;
-  const enabled=el('notificationEnabled').checked;
-  const start=el('notificationStartDate').value||null;
-  const end=el('notificationEndDate').value||null;
-  const time=el('dailyNotificationTime').value||null;
-
-  if(enabled){
-    if(!start||!end||!time){
-      setMessage('notificationSettingsMessage','กรุณากรอกวันเริ่มต้น วันสิ้นสุด และเวลาให้ครบถ้วน','error');
-      return;
-    }
-    if(start>end){
-      setMessage('notificationSettingsMessage','วันเริ่มต้นต้องไม่อยู่หลังวันสิ้นสุด','error');
-      return;
-    }
-  }
-
-  const payload={
-    user_id:currentUser.id,
-    timezone:'Asia/Bangkok',
-    notification_enabled:enabled,
-    notification_start_date:start,
-    notification_end_date:end,
-    daily_notification_time:time
-  };
-
-  const {error}=await supabaseClient.from('user_settings')
-    .upsert(payload,{onConflict:'user_id'});
-
-  if(error){
-    setMessage('notificationSettingsMessage','บันทึกไม่สำเร็จ: '+error.message,'error');
-    return;
-  }
-
-  notificationSettings={...notificationSettings,...payload};
-  updateNotificationPreview();
-  setMessage('notificationSettingsMessage','บันทึกการตั้งค่าการแจ้งเตือนสำเร็จแล้ว','success');
-  showToast('บันทึกการตั้งค่าสำเร็จ');
-}
-
-async function createLineLinkCode(){
-  if(!currentUser){
-    showToast('กรุณาเข้าสู่ระบบก่อน');
-    return;
-  }
-
-  const button=el('createLineCodeButton');
-  button.disabled=true;
-  button.textContent='กำลังสร้างรหัส...';
-  setMessage('lineLinkMessage','');
-
-  try{
-    const {data,error}=await supabaseClient.functions.invoke(
-      'create-line-link-code',
-      {body:{}}
-    );
-
-    if(error)throw error;
-    if(!data||!data.success||!data.code){
-      throw new Error(data?.error||'ไม่สามารถสร้างรหัสได้');
-    }
-
-    currentLineLinkCode=data.code;
-    el('lineLinkCode').textContent=data.code;
-    el('lineLinkExpiry').textContent='รหัสหมดอายุเวลา '+new Date(data.expires_at).toLocaleTimeString('th-TH',{
-      hour:'2-digit',minute:'2-digit'
-    })+' น.';
-    el('lineLinkResult').classList.remove('hidden');
-
-    setMessage('lineLinkMessage','สร้างรหัสเชื่อมต่อสำเร็จ กรุณาส่งรหัสไปยัง LINE Official Account','success');
-    showToast('สร้างรหัสเชื่อมต่อ LINE สำเร็จ');
-  }catch(error){
-    console.error('LINE link error:',error);
-    setMessage('lineLinkMessage','สร้างรหัสไม่สำเร็จ: '+(error.message||'เกิดข้อผิดพลาด'),'error');
-  }finally{
-    button.disabled=false;
-    button.textContent='สร้างรหัสเชื่อมต่อ LINE';
-  }
-}
-
-function copyLineLinkCode(){
-  if(!currentLineLinkCode)return;
-
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(currentLineLinkCode)
-      .then(()=>showToast('คัดลอกรหัสแล้ว'))
-      .catch(()=>showToast('คัดลอกไม่สำเร็จ กรุณาคัดลอกรหัสด้วยตนเอง'));
-  }else{
-    showToast('กรุณาคัดลอกรหัสด้วยตนเอง');
-  }
-}
-
-function exportTasks(){
-  const data={
-    exported_at:new Date().toISOString(),
-    app:'EduReminder',
-    tasks,
-    subjects
-  };
-  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement('a');
-  link.href=url;
-  link.download='edureminder-backup.json';
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  URL.revokeObjectURL(url);
-  showToast('ส่งออกข้อมูลสำรองแล้ว');
-}
-
-(async function checkExistingSession(){
-  const {data:{session},error}=await supabaseClient.auth.getSession();
-  if(error){
-    console.error('Session check error:',error);
-    return;
-  }
-  if(session?.user){
-    await initializeApp(session.user);
-  }
-})();
+renderAll();
+initializeAuth();
 </script>
+
 </body>
 </html>
