@@ -35,8 +35,8 @@ button{cursor:pointer}
 .brand-name{font-size:20px;font-weight:700;color:var(--green-dark)}
 .brand-sub{font-size:11px;color:var(--muted)}
 .nav-title{font-size:11px;color:#a0aaa2;font-weight:700;letter-spacing:1px;padding:10px 12px}
-.nav-btn{width:100%;display:flex;align-items:center;gap:13px;padding:12px 14px;border:0;background:transparent;border-radius:11px;color:#718077;text-align:left;margin:3px 0;transition:.2s}
-.nav-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.8}
+.nav-btn{width:100%;display:flex;align-items:center;gap:13px;padding:12px 14px;border:0;background:transparent;border-radius:11px;color:#718077;text-align:left;margin:3px 0;transition:background .2s,color .2s}
+.nav-btn svg{width:20px;height:20px;min-width:20px;display:block;flex-shrink:0;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .nav-btn:hover,.nav-btn.active{background:var(--green-light);color:var(--green-dark);font-weight:600}
 .sidebar-bottom{margin-top:auto;border-top:1px solid var(--border);padding-top:16px}
 .user-mini{padding:10px 8px;overflow:hidden}
@@ -63,6 +63,7 @@ button{cursor:pointer}
 .btn-danger{background:#fff0f0;color:var(--danger)}
 .btn-small{padding:6px 10px;font-size:12px}
 .btn svg{width:17px;height:17px;stroke:currentColor;fill:none;stroke-width:1.8}
+button:disabled{opacity:.6;cursor:not-allowed}
 .form-group{margin-bottom:15px}
 .form-group label{display:block;font-size:13px;font-weight:600;margin-bottom:7px}
 .form-control{width:100%;border:1px solid #e2e9e2;background:#fff;border-radius:9px;padding:11px 12px;outline:none;color:var(--text)}
@@ -89,7 +90,7 @@ textarea.form-control{min-height:85px;resize:vertical}
 .calendar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
 .calendar-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px}
 .calendar-day-name{text-align:center;font-size:12px;color:var(--muted);padding:9px 0}
-.calendar-cell{min-height:85px;background:#fbfcfa;border:1px solid var(--border);border-radius:9px;padding:7px;font-size:12px}
+.calendar-cell{min-height:85px;background:#fbfcfa;border:1px solid var(--border);border-radius:9px;padding:7px;font-size:12px;cursor:pointer}
 .calendar-cell.today{border:1.5px solid var(--green);background:var(--green-light)}
 .calendar-cell.muted{opacity:.35}
 .calendar-number{font-weight:600}
@@ -103,7 +104,7 @@ textarea.form-control{min-height:85px;resize:vertical}
 .switch-slider:before{content:"";position:absolute;width:19px;height:19px;left:3px;top:3px;background:#fff;border-radius:50%;transition:.2s}
 .switch input:checked+.switch-slider{background:var(--green)}
 .switch input:checked+.switch-slider:before{transform:translateX(21px)}
-.status-box{padding:13px;border-radius:10px;background:var(--green-soft);font-size:13px;color:var(--green-dark);margin-top:15px}
+.status-box{padding:13px;border-radius:10px;background:var(--green-soft);font-size:13px;color:var(--green-dark);margin-top:15px;line-height:1.8}
 .message{font-size:13px;margin-top:10px}
 .message.error{color:var(--danger)}
 .message.success{color:var(--green-dark)}
@@ -189,7 +190,11 @@ textarea.form-control{min-height:85px;resize:vertical}
     </button>
     <div class="nav-title" style="margin-top:15px">บัญชีผู้ใช้</div>
     <button class="nav-btn" data-page="settings" onclick="showPage('settings',this)">
-      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="m19.4 15 .1.1 1.4 1.1-1.4 2.4-1.7-.6a8 8 0 0 1-1.5.9l-.3 1.8h-2.8l-.3-1.8a8 8 0 0 1-1.5-.9l-1.7.6-1.4-2.4 1.4-1.1a8 8 0 0 1 0-1.8L6.3 12l1.4-2.4 1.7.6a8 8 0 0 1 1.5-.9l.3-1.8H14l.3 1.8a8 8 0 0 1 1.5.9l1.7-.6 1.4 2.4-1.4 1.1a8 8 0 0 1-.1 1.9Z" transform="translate(-1 -1)"/></svg>ตั้งค่า
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 8.25a3.75 3.75 0 1 0 0 7.5 3.75 3.75 0 0 0 0-7.5Z"/>
+        <path d="M19.4 13.5a7.7 7.7 0 0 0 0-3l1.7-1.3-1.8-3.1-2 .8a7.8 7.8 0 0 0-2.6-1.5L14.4 3h-4.8l-.3 2.4a7.8 7.8 0 0 0-2.6 1.5l-2-.8-1.8 3.1 1.7 1.3a7.7 7.7 0 0 0 0 3l-1.7 1.3 1.8 3.1 2-.8a7.8 7.8 0 0 0 2.6 1.5l.3 2.4h4.8l.3-2.4a7.8 7.8 0 0 0 2.6-1.5l2 .8 1.8-3.1-1.7-1.3Z"/>
+      </svg>
+      <span>ตั้งค่า</span>
     </button>
     <div class="sidebar-bottom">
       <div class="user-mini"><div style="font-weight:600;font-size:13px">บัญชีของคุณ</div><div class="user-email" id="userEmail">-</div></div>
@@ -285,29 +290,27 @@ textarea.form-control{min-height:85px;resize:vertical}
           <div class="message" id="notificationSettingsMessage"></div>
         </div>
       </div>
-      
-<div class="panel">
-  <h2 class="panel-title">เชื่อมต่อ LINE</h2>
-  <p style="font-size:13px;color:var(--muted);line-height:1.8">
-    เชื่อมต่อบัญชี LINE เพื่อรับการแจ้งเตือนงานจาก EduReminder ตามวันที่และเวลาที่กำหนด
-  </p>
-  <button class="btn btn-primary" id="createLineCodeButton" onclick="createLineLinkCode()">
-    สร้างรหัสเชื่อมต่อ LINE
-  </button>
-  <div id="lineLinkResult" class="hidden" style="margin-top:18px">
-    <div style="font-size:12px;color:var(--muted)">รหัสเชื่อมต่อของคุณ</div>
-    <div id="lineLinkCode" style="font-size:30px;font-weight:700;letter-spacing:5px;color:var(--green-dark);margin:8px 0"></div>
-    <div id="lineLinkExpiry" style="font-size:12px;color:var(--muted)"></div>
-    <button class="btn btn-outline btn-small" style="margin-top:12px" onclick="copyLineLinkCode()">คัดลอกรหัส</button>
-    <div class="status-box">
-      1. เพิ่มเพื่อน LINE Official Account ชื่อ EduReminder<br>
-      2. ส่งรหัสด้านบนไปในแชต LINE<br>
-      3. รอข้อความยืนยันการเชื่อมต่อจาก EduReminder<br><br>
-      รหัสนี้ใช้ได้เพียงครั้งเดียวและหมดอายุภายใน 10 นาที
-    </div>
-  </div>
-  <div id="lineLinkMessage" class="message"></div>
-</div>
+
+      <div class="panel">
+        <h2 class="panel-title">เชื่อมต่อ LINE</h2>
+        <p style="font-size:13px;color:var(--muted);line-height:1.8">
+          เชื่อมต่อบัญชี LINE เพื่อรับการแจ้งเตือนงานจาก EduReminder ตามวันที่และเวลาที่กำหนด
+        </p>
+        <button class="btn btn-primary" id="createLineCodeButton" onclick="createLineLinkCode()">สร้างรหัสเชื่อมต่อ LINE</button>
+        <div id="lineLinkResult" class="hidden" style="margin-top:18px">
+          <div style="font-size:12px;color:var(--muted)">รหัสเชื่อมต่อของคุณ</div>
+          <div id="lineLinkCode" style="font-size:30px;font-weight:700;letter-spacing:5px;color:var(--green-dark);margin:8px 0"></div>
+          <div id="lineLinkExpiry" style="font-size:12px;color:var(--muted)"></div>
+          <button class="btn btn-outline btn-small" style="margin-top:12px" onclick="copyLineLinkCode()">คัดลอกรหัส</button>
+          <div class="status-box">
+            1. เพิ่มเพื่อน LINE Official Account ชื่อ EduReminder<br>
+            2. ส่งรหัสด้านบนไปในแชต LINE<br>
+            3. รอข้อความยืนยันการเชื่อมต่อจาก EduReminder<br><br>
+            รหัสนี้ใช้ได้เพียงครั้งเดียวและหมดอายุภายใน 10 นาที
+          </div>
+        </div>
+        <div id="lineLinkMessage" class="message"></div>
+      </div>
 
       <div class="panel">
         <h2 class="panel-title">ข้อมูลบัญชี</h2>
@@ -343,14 +346,10 @@ textarea.form-control{min-height:85px;resize:vertical}
 <div id="toast" class="toast hidden"></div>
 
 <script>
-/* SUPABASE CONFIGURATION */
 const SUPABASE_URL = 'https://fghgjkyanoyfjbtdnipm.supabase.co';
-const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_JfJRyJaWAikqsDAIwAoxvQ_hpETE22v';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_JfJRyJaWAikqsDAIwAoxv';
 
-const supabaseClient = window.supabase.createClient(
-  SUPABASE_URL,
-  SUPABASE_PUBLISHABLE_KEY
-);
+const supabaseClient = window.supabase.createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY);
 
 let currentUser = null;
 let tasks = [];
@@ -358,94 +357,98 @@ let subjects = [];
 let currentAuthMode = 'login';
 let calendarDate = new Date();
 let selectedCalendarDate = new Date();
+let currentLineLinkCode = '';
+
 let notificationSettings = {
-  notification_enabled: true,
-  notification_start_date: null,
-  notification_end_date: null,
-  daily_notification_time: null,
-  timezone: 'Asia/Bangkok'
+  notification_enabled:true,
+  notification_start_date:null,
+  notification_end_date:null,
+  daily_notification_time:null,
+  timezone:'Asia/Bangkok'
 };
 
 const pageInfo = {
-  dashboard: ['ภาพรวม','จัดการงานและติดตามกำหนดส่งของคุณ'],
-  tasks: ['งานทั้งหมด','จัดการและติดตามงานทุกประเภท'],
-  calendar: ['ปฏิทิน','ดูงานและกำหนดส่งตามวันที่'],
-  settings: ['ตั้งค่า','จัดการบัญชีและการแจ้งเตือน']
+  dashboard:['ภาพรวม','จัดการงานและติดตามกำหนดส่งของคุณ'],
+  tasks:['งานทั้งหมด','จัดการและติดตามงานทุกประเภท'],
+  calendar:['ปฏิทิน','ดูงานและกำหนดส่งตามวันที่'],
+  settings:['ตั้งค่า','จัดการบัญชีและการแจ้งเตือน']
 };
 
-function el(id){ return document.getElementById(id); }
+function el(id){return document.getElementById(id);}
 
 function showToast(message){
-  const toast = el('toast');
-  toast.textContent = message;
+  const toast=el('toast');
+  toast.textContent=message;
   toast.classList.remove('hidden');
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(()=>toast.classList.add('hidden'),3000);
+  showToast.timer=setTimeout(()=>toast.classList.add('hidden'),3000);
 }
 
 function setMessage(id,message,type=''){
-  const node = el(id);
-  if(!node) return;
-  node.textContent = message;
-  node.className = 'message ' + type;
+  const node=el(id);
+  if(!node)return;
+  node.textContent=message;
+  node.className='message '+type;
+}
+
+function escapeHTML(value){
+  return String(value??'').replace(/[&<>"']/g,char=>({
+    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+  }[char]));
+}
+
+function friendlyError(message){
+  if(!message)return 'เกิดข้อผิดพลาด กรุณาลองใหม่';
+  const lower=message.toLowerCase();
+  if(lower.includes('invalid login'))return 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
+  if(lower.includes('already registered'))return 'อีเมลนี้สมัครสมาชิกแล้ว';
+  if(lower.includes('email not confirmed'))return 'กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ';
+  return message;
 }
 
 function switchAuth(mode){
-  currentAuthMode = mode;
+  currentAuthMode=mode;
   el('loginTab').classList.toggle('active',mode==='login');
   el('signupTab').classList.toggle('active',mode==='signup');
   el('displayNameGroup').classList.toggle('hidden',mode!=='signup');
-  el('authSubmit').textContent = mode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
+  el('authSubmit').textContent=mode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
   setMessage('authMessage','');
 }
 
 el('authForm').addEventListener('submit',async function(event){
   event.preventDefault();
-  const email = el('authEmail').value.trim();
-  const password = el('authPassword').value;
-  const button = el('authSubmit');
-  button.disabled = true;
-  button.textContent = 'กำลังดำเนินการ...';
+  const email=el('authEmail').value.trim();
+  const password=el('authPassword').value;
+  const button=el('authSubmit');
+  button.disabled=true;
+  button.textContent='กำลังดำเนินการ...';
   setMessage('authMessage','');
 
   try{
     if(currentAuthMode==='signup'){
-      const displayName = el('displayName').value.trim();
-      const {data,error} = await supabaseClient.auth.signUp({
-        email,
-        password,
-        options:{data:{display_name:displayName}}
+      const displayName=el('displayName').value.trim();
+      const {data,error}=await supabaseClient.auth.signUp({
+        email,password,options:{data:{display_name:displayName}}
       });
-      if(error) throw error;
-      if(data.session){
-        showToast('สมัครสมาชิกสำเร็จ');
-      }else{
-        setMessage('authMessage','สมัครสมาชิกสำเร็จ กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี','success');
-      }
+      if(error)throw error;
+      if(data.session)showToast('สมัครสมาชิกสำเร็จ');
+      else setMessage('authMessage','สมัครสมาชิกสำเร็จ กรุณาตรวจสอบอีเมลเพื่อยืนยันบัญชี','success');
     }else{
-      const {error} = await supabaseClient.auth.signInWithPassword({email,password});
-      if(error) throw error;
+      const {error}=await supabaseClient.auth.signInWithPassword({email,password});
+      if(error)throw error;
     }
   }catch(error){
     setMessage('authMessage',friendlyError(error.message),'error');
   }finally{
-    button.disabled = false;
-    button.textContent = currentAuthMode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
+    button.disabled=false;
+    button.textContent=currentAuthMode==='login'?'เข้าสู่ระบบ':'สมัครสมาชิก';
   }
 });
 
-function friendlyError(message){
-  if(!message) return 'เกิดข้อผิดพลาด กรุณาลองใหม่';
-  if(message.toLowerCase().includes('invalid login')) return 'อีเมลหรือรหัสผ่านไม่ถูกต้อง';
-  if(message.toLowerCase().includes('already registered')) return 'อีเมลนี้สมัครสมาชิกแล้ว';
-  if(message.toLowerCase().includes('email not confirmed')) return 'กรุณายืนยันอีเมลก่อนเข้าสู่ระบบ';
-  return message;
-}
-
 async function signOut(){
-  const {error} = await supabaseClient.auth.signOut();
+  const {error}=await supabaseClient.auth.signOut();
   if(error){showToast(error.message);return;}
-  currentUser = null;
+  currentUser=null;
   el('app').classList.add('hidden');
   el('authScreen').classList.remove('hidden');
 }
@@ -454,18 +457,22 @@ supabaseClient.auth.onAuthStateChange((event,session)=>{
   if(session?.user){
     setTimeout(()=>initializeApp(session.user),0);
   }else if(event==='SIGNED_OUT'){
+    currentUser=null;
     el('app').classList.add('hidden');
     el('authScreen').classList.remove('hidden');
   }
 });
 
 async function initializeApp(user){
-  currentUser = user;
+  if(currentUser?.id===user.id && !el('app').classList.contains('hidden'))return;
+  currentUser=user;
   el('authScreen').classList.add('hidden');
   el('app').classList.remove('hidden');
-  el('userEmail').textContent = user.email || '-';
-  el('settingsEmail').textContent = user.email || '-';
-  el('todayLabel').textContent = new Date().toLocaleDateString('th-TH',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+  el('userEmail').textContent=user.email||'-';
+  el('settingsEmail').textContent=user.email||'-';
+  el('todayLabel').textContent=new Date().toLocaleDateString('th-TH',{
+    weekday:'long',day:'numeric',month:'long',year:'numeric'
+  });
 
   try{
     await Promise.all([loadSubjects(),loadTasks(),loadNotificationSettings()]);
@@ -478,57 +485,52 @@ async function initializeApp(user){
 }
 
 async function loadSubjects(){
-  const {data,error} = await supabaseClient
-    .from('subjects')
-    .select('*')
-    .eq('user_id',currentUser.id)
-    .order('name');
-  if(error) throw error;
-  subjects = data || [];
+  const {data,error}=await supabaseClient.from('subjects')
+    .select('*').eq('user_id',currentUser.id).order('name');
+  if(error)throw error;
+  subjects=data||[];
   updateSubjectOptions();
 }
 
 function updateSubjectOptions(){
-  const select = el('taskSubject');
-  if(!select) return;
-  const selected = select.value;
-  select.innerHTML = '<option value="">ไม่ระบุรายวิชา</option>';
+  const select=el('taskSubject');
+  if(!select)return;
+  const selected=select.value;
+  select.innerHTML='<option value="">ไม่ระบุรายวิชา</option>';
   subjects.forEach(subject=>{
-    const option = document.createElement('option');
-    option.value = subject.id;
-    option.textContent = subject.name;
+    const option=document.createElement('option');
+    option.value=subject.id;
+    option.textContent=subject.name;
     select.appendChild(option);
   });
-  select.value = selected;
+  select.value=selected;
 }
 
 async function loadTasks(){
-  const {data,error} = await supabaseClient
-    .from('tasks')
-    .select('*')
-    .eq('user_id',currentUser.id)
+  const {data,error}=await supabaseClient.from('tasks')
+    .select('*').eq('user_id',currentUser.id)
     .order('due_at',{ascending:true,nullsFirst:false});
-  if(error) throw error;
-  tasks = data || [];
+  if(error)throw error;
+  tasks=data||[];
   renderDashboard();
   renderTasks();
   renderCalendar();
 }
 
 function getSubjectName(subjectId){
-  if(!subjectId) return '';
-  const subject = subjects.find(item=>item.id===subjectId);
-  return subject ? subject.name : '';
+  if(!subjectId)return '';
+  const subject=subjects.find(item=>item.id===subjectId);
+  return subject?subject.name:'';
 }
 
 function typeName(type){
-  return {homework:'การบ้าน',exam:'สอบ',project:'โครงงาน',other:'อื่น ๆ'}[type] || 'อื่น ๆ';
+  return {homework:'การบ้าน',exam:'สอบ',project:'โครงงาน',other:'อื่น ๆ'}[type]||'อื่น ๆ';
 }
 
 function formatDate(dateValue){
-  if(!dateValue) return 'ไม่กำหนดวันส่ง';
-  const date = new Date(dateValue);
-  if(Number.isNaN(date.getTime())) return 'ไม่กำหนดวันส่ง';
+  if(!dateValue)return 'ไม่กำหนดวันส่ง';
+  const date=new Date(dateValue);
+  if(Number.isNaN(date.getTime()))return 'ไม่กำหนดวันส่ง';
   return date.toLocaleString('th-TH',{
     day:'numeric',month:'short',year:'numeric',
     hour:'2-digit',minute:'2-digit'
@@ -536,12 +538,12 @@ function formatDate(dateValue){
 }
 
 function isOverdue(task){
-  return task.status!=='completed' && task.due_at && new Date(task.due_at)<new Date();
+  return task.status!=='completed'&&task.due_at&&new Date(task.due_at)<new Date();
 }
 
 function taskHTML(task){
-  const completed = task.status==='completed';
-  const subjectName = getSubjectName(task.subject_id);
+  const completed=task.status==='completed';
+  const subjectName=getSubjectName(task.subject_id);
   return `
     <div class="task-item">
       <input class="task-check" type="checkbox" ${completed?'checked':''} onchange="toggleTask('${task.id}',this.checked)" aria-label="ทำเครื่องหมายว่างานเสร็จแล้ว">
@@ -555,87 +557,80 @@ function taskHTML(task){
         </div>
       </div>
       <div class="task-actions">
-        <button class="icon-btn" onclick="editTask('${task.id}')" title="แก้ไข">
+        <button class="icon-btn" onclick="editTask('${task.id}')" title="แก้ไข" aria-label="แก้ไขงาน">
           <svg viewBox="0 0 24 24"><path d="m14 5 5 5M4 20l4-.8L19 8a2.1 2.1 0 0 0-3-3L5 16l-1 4Z"/></svg>
         </button>
-        <button class="icon-btn" onclick="deleteTask('${task.id}')" title="ลบ">
+        <button class="icon-btn" onclick="deleteTask('${task.id}')" title="ลบ" aria-label="ลบงาน">
           <svg viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2m3 0-1 14H6L5 6m4 4v6m6-6v6"/></svg>
         </button>
       </div>
     </div>`;
 }
 
-function escapeHTML(value){
-  return String(value??'').replace(/[&<>"']/g,char=>({
-    '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
-  }[char]));
-}
-
 function renderDashboard(){
-  const total = tasks.length;
-  const completed = tasks.filter(task=>task.status==='completed').length;
-  const pending = total-completed;
-  const now = new Date();
-  const nextWeek = new Date();
+  const total=tasks.length;
+  const completed=tasks.filter(task=>task.status==='completed').length;
+  const pending=total-completed;
+  const now=new Date();
+  const nextWeek=new Date();
   nextWeek.setDate(now.getDate()+7);
-  const upcoming = tasks.filter(task=>
-    task.status!=='completed' && task.due_at &&
-    new Date(task.due_at)>=now && new Date(task.due_at)<=nextWeek
+  const upcoming=tasks.filter(task=>
+    task.status!=='completed'&&task.due_at&&
+    new Date(task.due_at)>=now&&new Date(task.due_at)<=nextWeek
   ).length;
 
-  el('statTotal').textContent = total;
-  el('statPending').textContent = pending;
-  el('statCompleted').textContent = completed;
-  el('statUpcoming').textContent = upcoming;
+  el('statTotal').textContent=total;
+  el('statPending').textContent=pending;
+  el('statCompleted').textContent=completed;
+  el('statUpcoming').textContent=upcoming;
 
-  const percent = total ? Math.round(completed/total*100) : 0;
-  el('progressText').textContent = percent+'%';
-  el('progressBar').style.width = percent+'%';
-  el('progressCaption').textContent = total
-    ? `ทำงานสำเร็จแล้ว ${completed} จาก ${total} รายการ`
-    : 'เริ่มเพิ่มงานเพื่อดูความคืบหน้า';
+  const percent=total?Math.round(completed/total*100):0;
+  el('progressText').textContent=percent+'%';
+  el('progressBar').style.width=percent+'%';
+  el('progressCaption').textContent=total
+    ?`ทำงานสำเร็จแล้ว ${completed} จาก ${total} รายการ`
+    :'เริ่มเพิ่มงานเพื่อดูความคืบหน้า';
 
-  const upcomingTasks = tasks
-    .filter(task=>task.status!=='completed')
+  const upcomingTasks=tasks.filter(task=>task.status!=='completed')
     .sort((a,b)=>{
-      if(!a.due_at) return 1;
-      if(!b.due_at) return -1;
+      if(!a.due_at)return 1;
+      if(!b.due_at)return -1;
       return new Date(a.due_at)-new Date(b.due_at);
     }).slice(0,5);
 
-  el('dashboardTasks').innerHTML = upcomingTasks.length
-    ? upcomingTasks.map(taskHTML).join('')
-    : '<div class="empty">ยังไม่มีงานที่ต้องดำเนินการ</div>';
+  el('dashboardTasks').innerHTML=upcomingTasks.length
+    ?upcomingTasks.map(taskHTML).join('')
+    :'<div class="empty">ยังไม่มีงานที่ต้องดำเนินการ</div>';
 }
 
 function renderTasks(){
-  if(!el('allTasks')) return;
-  const search = (el('searchTask')?.value||'').toLowerCase();
-  const status = el('statusFilter')?.value||'all';
-  const type = el('typeFilter')?.value||'all';
+  if(!el('allTasks'))return;
+  const search=(el('searchTask')?.value||'').toLowerCase();
+  const status=el('statusFilter')?.value||'all';
+  const type=el('typeFilter')?.value||'all';
 
-  const filtered = tasks.filter(task=>{
-    const matchesSearch = (task.title||'').toLowerCase().includes(search);
-    const matchesStatus = status==='all'||task.status===status;
-    const matchesType = type==='all'||task.task_type===type;
+  const filtered=tasks.filter(task=>{
+    const matchesSearch=(task.title||'').toLowerCase().includes(search);
+    const matchesStatus=status==='all'||task.status===status;
+    const matchesType=type==='all'||task.task_type===type;
     return matchesSearch&&matchesStatus&&matchesType;
   });
 
-  el('allTasks').innerHTML = filtered.length
-    ? filtered.map(taskHTML).join('')
-    : '<div class="empty">ไม่พบรายการงาน</div>';
+  el('allTasks').innerHTML=filtered.length
+    ?filtered.map(taskHTML).join('')
+    :'<div class="empty">ไม่พบรายการงาน</div>';
 }
 
 async function saveTask(event){
   event.preventDefault();
-  if(!currentUser) return;
+  if(!currentUser)return;
 
-  const id = el('taskId').value;
-  const title = el('taskTitle').value.trim();
+  const id=el('taskId').value;
+  const title=el('taskTitle').value.trim();
   if(!title){setMessage('taskFormMessage','กรุณากรอกชื่องาน','error');return;}
 
-  const dueValue = el('taskDue').value;
-  const payload = {
+  const dueValue=el('taskDue').value;
+  const payload={
     user_id:currentUser.id,
     title,
     description:el('taskDescription').value.trim()||null,
@@ -645,37 +640,37 @@ async function saveTask(event){
     updated_at:new Date().toISOString()
   };
 
-  const button = el('taskSaveButton');
-  button.disabled = true;
-  button.textContent = 'กำลังบันทึก...';
+  const button=el('taskSaveButton');
+  button.disabled=true;
+  button.textContent='กำลังบันทึก...';
 
   try{
     let result;
     if(id){
-      result = await supabaseClient.from('tasks')
-        .update(payload).eq('id',id).eq('user_id',currentUser.id);
+      result=await supabaseClient.from('tasks').update(payload)
+        .eq('id',id).eq('user_id',currentUser.id);
     }else{
-      payload.status = 'pending';
-      result = await supabaseClient.from('tasks').insert(payload);
+      payload.status='pending';
+      result=await supabaseClient.from('tasks').insert(payload);
     }
-    if(result.error) throw result.error;
+    if(result.error)throw result.error;
     closeTaskModal();
     await loadTasks();
     showToast(id?'แก้ไขงานสำเร็จ':'เพิ่มงานสำเร็จ');
   }catch(error){
     setMessage('taskFormMessage',error.message,'error');
   }finally{
-    button.disabled = false;
-    button.textContent = 'บันทึกงาน';
+    button.disabled=false;
+    button.textContent='บันทึกงาน';
   }
 }
 el('taskForm').addEventListener('submit',saveTask);
 
 function openTaskModal(){
   el('taskForm').reset();
-  el('taskId').value = '';
-  el('taskModalTitle').textContent = 'เพิ่มงานใหม่';
-  el('taskSaveButton').textContent = 'บันทึกงาน';
+  el('taskId').value='';
+  el('taskModalTitle').textContent='เพิ่มงานใหม่';
+  el('taskSaveButton').textContent='บันทึกงาน';
   setMessage('taskFormMessage','');
   updateSubjectOptions();
   el('taskModal').classList.remove('hidden');
@@ -686,24 +681,25 @@ function closeTaskModal(){
 }
 
 function editTask(id){
-  const task = tasks.find(item=>item.id===id);
-  if(!task) return;
-  el('taskId').value = task.id;
-  el('taskTitle').value = task.title||'';
-  el('taskDescription').value = task.description||'';
-  el('taskType').value = task.task_type||'homework';
-  el('taskSubject').value = task.subject_id||'';
-  el('taskDue').value = task.due_at
-    ? new Date(new Date(task.due_at).getTime()-new Date(task.due_at).getTimezoneOffset()*60000).toISOString().slice(0,16)
-    : '';
-  el('taskModalTitle').textContent = 'แก้ไขงาน';
+  const task=tasks.find(item=>item.id===id);
+  if(!task)return;
+  el('taskId').value=task.id;
+  el('taskTitle').value=task.title||'';
+  el('taskDescription').value=task.description||'';
+  el('taskType').value=task.task_type||'homework';
+  updateSubjectOptions();
+  el('taskSubject').value=task.subject_id||'';
+  el('taskDue').value=task.due_at
+    ?new Date(new Date(task.due_at).getTime()-new Date(task.due_at).getTimezoneOffset()*60000).toISOString().slice(0,16)
+    :'';
+  el('taskModalTitle').textContent='แก้ไขงาน';
   setMessage('taskFormMessage','');
   el('taskModal').classList.remove('hidden');
 }
 
 async function toggleTask(id,checked){
-  const newStatus = checked?'completed':'pending';
-  const {error} = await supabaseClient.from('tasks')
+  const newStatus=checked?'completed':'pending';
+  const {error}=await supabaseClient.from('tasks')
     .update({status:newStatus,updated_at:new Date().toISOString()})
     .eq('id',id).eq('user_id',currentUser.id);
   if(error){
@@ -716,66 +712,31 @@ async function toggleTask(id,checked){
 }
 
 async function deleteTask(id){
-  if(!confirm('คุณต้องการลบงานนี้ใช่หรือไม่?')) return;
-  const {error} = await supabaseClient.from('tasks')
-    .delete().eq('id',id).eq('user_id',currentUser.id);
+  if(!confirm('คุณต้องการลบงานนี้ใช่หรือไม่?'))return;
+  const {error}=await supabaseClient.from('tasks').delete()
+    .eq('id',id).eq('user_id',currentUser.id);
   if(error){showToast('ลบงานไม่สำเร็จ: '+error.message);return;}
   await loadTasks();
   showToast('ลบงานสำเร็จ');
 }
 
-function showPage(page,button){
+function showPage(page){
   Object.keys(pageInfo).forEach(key=>{
     el('page-'+key).classList.toggle('hidden',key!==page);
   });
   document.querySelectorAll('.nav-btn[data-page]').forEach(item=>{
     item.classList.toggle('active',item.dataset.page===page);
   });
-  el('pageTitle').textContent = pageInfo[page][0];
-  el('pageSubtitle').textContent = pageInfo[page][1];
+  el('pageTitle').textContent=pageInfo[page][0];
+  el('pageSubtitle').textContent=pageInfo[page][1];
   el('sidebar').classList.remove('open');
-  if(page==='dashboard') renderDashboard();
-  if(page==='tasks') renderTasks();
-  if(page==='calendar') renderCalendar();
+  if(page==='dashboard')renderDashboard();
+  if(page==='tasks')renderTasks();
+  if(page==='calendar')renderCalendar();
 }
 
-function toggleSidebar(){el('sidebar').classList.toggle('open');}
-
-function renderCalendar(){
-  const year = calendarDate.getFullYear();
-  const month = calendarDate.getMonth();
-  el('calendarTitle').textContent = new Date(year,month,1).toLocaleDateString('th-TH',{month:'long',year:'numeric'});
-
-  const firstDay = new Date(year,month,1).getDay();
-  const daysInMonth = new Date(year,month+1,0).getDate();
-  const previousDays = new Date(year,month,0).getDate();
-  const today = new Date();
-  const names = ['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
-  let html = names.map(name=>`<div class="calendar-day-name">${name}</div>`).join('');
-
-  for(let i=0;i<42;i++){
-    let day,cellMonth=month,cellYear=year,muted=false;
-    if(i<firstDay){
-      day=previousDays-firstDay+i+1;
-      cellMonth=month-1;muted=true;
-    }else if(i>=firstDay+daysInMonth){
-      day=i-(firstDay+daysInMonth)+1;
-      cellMonth=month+1;muted=true;
-    }else{
-      day=i-firstDay+1;
-    }
-    const cellDate = new Date(year,cellMonth,day);
-    const dateKey = localDateKey(cellDate);
-    const dayTasks = tasks.filter(task=>task.due_at&&localDateKey(new Date(task.due_at))===dateKey);
-    const isToday = cellDate.toDateString()===today.toDateString();
-    html += `<div class="calendar-cell ${muted?'muted':''} ${isToday?'today':''}" onclick="selectCalendarDay('${dateKey}')">
-      <div class="calendar-number">${day}</div>
-      <div style="margin-top:5px">${dayTasks.slice(0,4).map(()=>'<span class="calendar-dot"></span>').join('')}</div>
-      ${dayTasks.length?`<div style="font-size:10px;color:var(--muted)">${dayTasks.length} งาน</div>`:''}
-    </div>`;
-  }
-  el('calendarGrid').innerHTML = html;
-  renderSelectedDateTasks();
+function toggleSidebar(){
+  el('sidebar').classList.toggle('open');
 }
 
 function localDateKey(date){
@@ -785,162 +746,133 @@ function localDateKey(date){
   return `${y}-${m}-${d}`;
 }
 
+function renderCalendar(){
+  const year=calendarDate.getFullYear();
+  const month=calendarDate.getMonth();
+  el('calendarTitle').textContent=new Date(year,month,1)
+    .toLocaleDateString('th-TH',{month:'long',year:'numeric'});
+
+  const firstDay=new Date(year,month,1).getDay();
+  const daysInMonth=new Date(year,month+1,0).getDate();
+  const previousDays=new Date(year,month,0).getDate();
+  const today=new Date();
+  const names=['อา.','จ.','อ.','พ.','พฤ.','ศ.','ส.'];
+  let html=names.map(name=>`<div class="calendar-day-name">${name}</div>`).join('');
+
+  for(let i=0;i<42;i++){
+    let day,cellMonth=month,muted=false;
+    if(i<firstDay){
+      day=previousDays-firstDay+i+1;
+      cellMonth=month-1;
+      muted=true;
+    }else if(i>=firstDay+daysInMonth){
+      day=i-(firstDay+daysInMonth)+1;
+      cellMonth=month+1;
+      muted=true;
+    }else{
+      day=i-firstDay+1;
+    }
+
+    const cellDate=new Date(year,cellMonth,day);
+    const dateKey=localDateKey(cellDate);
+    const dayTasks=tasks.filter(task=>task.due_at&&localDateKey(new Date(task.due_at))===dateKey);
+    const isToday=cellDate.toDateString()===today.toDateString();
+
+    html+=`<div class="calendar-cell ${muted?'muted':''} ${isToday?'today':''}" onclick="selectCalendarDay('${dateKey}')">
+      <div class="calendar-number">${day}</div>
+      <div style="margin-top:5px">${dayTasks.slice(0,4).map(()=>'<span class="calendar-dot"></span>').join('')}</div>
+      ${dayTasks.length?`<div style="font-size:10px;color:var(--muted)">${dayTasks.length} งาน</div>`:''}
+    </div>`;
+  }
+  el('calendarGrid').innerHTML=html;
+  renderSelectedDateTasks();
+}
+
 function changeMonth(offset){
   calendarDate.setMonth(calendarDate.getMonth()+offset);
   renderCalendar();
 }
 
 function selectCalendarDay(dateString){
-  const [year,month,day] = dateString.split('-').map(Number);
-  selectedCalendarDate = new Date(year,month-1,day);
+  const [year,month,day]=dateString.split('-').map(Number);
+  selectedCalendarDate=new Date(year,month-1,day);
   renderSelectedDateTasks();
 }
 
 function renderSelectedDateTasks(){
-  const dateKey = localDateKey(selectedCalendarDate);
-  el('selectedDateTitle').textContent = 'งานวันที่ '+selectedCalendarDate.toLocaleDateString('th-TH',{day:'numeric',month:'long',year:'numeric'});
-  const dayTasks = tasks.filter(task=>task.due_at&&localDateKey(new Date(task.due_at))===dateKey);
-  el('selectedDateTasks').innerHTML = dayTasks.length
-    ? dayTasks.map(taskHTML).join('')
-    : '<div class="empty">ไม่มีงานที่กำหนดส่งในวันนี้</div>';
+  const dateKey=localDateKey(selectedCalendarDate);
+  el('selectedDateTitle').textContent='งานวันที่ '+selectedCalendarDate.toLocaleDateString('th-TH',{
+    day:'numeric',month:'long',year:'numeric'
+  });
+  const dayTasks=tasks.filter(task=>task.due_at&&localDateKey(new Date(task.due_at))===dateKey);
+  el('selectedDateTasks').innerHTML=dayTasks.length
+    ?dayTasks.map(taskHTML).join('')
+    :'<div class="empty">ไม่มีงานที่กำหนดส่งในวันนี้</div>';
 }
 
 async function loadNotificationSettings(){
-  const {data,error} = await supabaseClient.from('user_settings')
+  const {data,error}=await supabaseClient.from('user_settings')
     .select('notification_enabled,notification_start_date,notification_end_date,daily_notification_time,timezone')
-    .eq('user_id',currentUser.id)
-    .maybeSingle();
+    .eq('user_id',currentUser.id).maybeSingle();
 
-  if(error) throw error;
+  if(error)throw error;
 
   if(data){
-    notificationSettings = {
-      ...notificationSettings,
-      ...data
-    };
+    notificationSettings={...notificationSettings,...data};
   }else{
-    const {error:insertError} = await supabaseClient.from('user_settings')
+    const {error:insertError}=await supabaseClient.from('user_settings')
       .upsert({user_id:currentUser.id,timezone:'Asia/Bangkok'},{onConflict:'user_id'});
-    if(insertError) throw insertError;
+    if(insertError)throw insertError;
   }
   displayNotificationSettings();
 }
 
 function displayNotificationSettings(){
-  el('notificationEnabled').checked = !!notificationSettings.notification_enabled;
-  el('notificationStartDate').value = notificationSettings.notification_start_date||'';
-  el('notificationEndDate').value = notificationSettings.notification_end_date||'';
-  el('dailyNotificationTime').value = notificationSettings.daily_notification_time
-    ? String(notificationSettings.daily_notification_time).slice(0,5)
-    : '';
+  el('notificationEnabled').checked=!!notificationSettings.notification_enabled;
+  el('notificationStartDate').value=notificationSettings.notification_start_date||'';
+  el('notificationEndDate').value=notificationSettings.notification_end_date||'';
+  el('dailyNotificationTime').value=notificationSettings.daily_notification_time
+    ?String(notificationSettings.daily_notification_time).slice(0,5)
+    :'';
   updateNotificationPreview();
 }
 
+function formatDateOnly(dateString){
+  if(!dateString)return '';
+  const [year,month,day]=dateString.split('-').map(Number);
+  return new Date(year,month-1,day).toLocaleDateString('th-TH',{
+    day:'numeric',month:'short',year:'numeric'
+  });
+}
+
 function updateNotificationPreview(){
-  const enabled = el('notificationEnabled').checked;
-  const start = el('notificationStartDate').value;
-  const end = el('notificationEndDate').value;
-  const time = el('dailyNotificationTime').value;
-  const status = el('notificationStatus');
+  const enabled=el('notificationEnabled').checked;
+  const start=el('notificationStartDate').value;
+  const end=el('notificationEndDate').value;
+  const time=el('dailyNotificationTime').value;
+  const status=el('notificationStatus');
 
   if(!enabled){
-    status.textContent = 'ปิดการแจ้งเตือนอยู่ ระบบจะไม่ส่งการแจ้งเตือนในขณะนี้';
+    status.textContent='ปิดการแจ้งเตือนอยู่ ระบบจะไม่ส่งการแจ้งเตือนในขณะนี้';
     return;
   }
   if(!start||!end||!time){
-    status.textContent = 'กรุณากำหนดวันเริ่มต้น วันสิ้นสุด และเวลาแจ้งเตือนให้ครบถ้วน';
+    status.textContent='กรุณากำหนดวันเริ่มต้น วันสิ้นสุด และเวลาแจ้งเตือนให้ครบถ้วน';
     return;
   }
   if(start>end){
-    status.textContent = 'วันที่เริ่มต้นต้องไม่อยู่หลังวันที่สิ้นสุด';
+    status.textContent='วันที่เริ่มต้นต้องไม่อยู่หลังวันที่สิ้นสุด';
     return;
   }
-  status.textContent = `เปิดการแจ้งเตือนตั้งแต่ ${formatDateOnly(start)} ถึง ${formatDateOnly(end)} เวลา ${time} น. ทุกวัน`;
-}
-
-function formatDateOnly(dateString){
-  if(!dateString) return '';
-  const [year,month,day] = dateString.split('-').map(Number);
-  return new Date(year,month-1,day).toLocaleDateString('th-TH',{day:'numeric',month:'short',year:'numeric'});
-}
-
-let currentLineLinkCode = '';
-
-async function createLineLinkCode(){
-  if(!currentUser){
-    showToast('กรุณาเข้าสู่ระบบก่อน');
-    return;
-  }
-
-  const button = el('createLineCodeButton');
-  button.disabled = true;
-  button.textContent = 'กำลังสร้างรหัส...';
-  setMessage('lineLinkMessage','');
-
-  try{
-    const {data,error} = await supabaseClient.functions.invoke(
-      'create-line-link-code',
-      {body:{}}
-    );
-
-    if(error) throw error;
-    if(!data || !data.success || !data.code){
-      throw new Error(data?.error || 'ไม่สามารถสร้างรหัสได้');
-    }
-
-    currentLineLinkCode = data.code;
-
-    el('lineLinkCode').textContent = data.code;
-    el('lineLinkExpiry').textContent =
-      'รหัสหมดอายุเวลา ' +
-      new Date(data.expires_at).toLocaleTimeString('th-TH',{
-        hour:'2-digit',
-        minute:'2-digit'
-      }) +
-      ' น.';
-
-    el('lineLinkResult').classList.remove('hidden');
-
-    setMessage(
-      'lineLinkMessage',
-      'สร้างรหัสเชื่อมต่อสำเร็จ กรุณาส่งรหัสไปยัง LINE Official Account',
-      'success'
-    );
-
-    showToast('สร้างรหัสเชื่อมต่อ LINE สำเร็จ');
-
-  }catch(error){
-    console.error('LINE link error:',error);
-
-    setMessage(
-      'lineLinkMessage',
-      'สร้างรหัสไม่สำเร็จ: ' + (error.message || 'เกิดข้อผิดพลาด'),
-      'error'
-    );
-
-  }finally{
-    button.disabled = false;
-    button.textContent = 'สร้างรหัสเชื่อมต่อ LINE';
-  }
-}
-
-function copyLineLinkCode(){
-  if(!currentLineLinkCode) return;
-
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(currentLineLinkCode)
-      .then(()=>showToast('คัดลอกรหัสแล้ว'))
-      .catch(()=>showToast('คัดลอกไม่สำเร็จ กรุณาคัดลอกรหัสด้วยตนเอง'));
-  }else{
-    showToast('กรุณาคัดลอกรหัสด้วยตนเอง');
-  }
+  status.textContent=`เปิดการแจ้งเตือนตั้งแต่ ${formatDateOnly(start)} ถึง ${formatDateOnly(end)} เวลา ${time} น. ทุกวัน`;
 }
 
 async function saveNotificationSettings(){
-  const enabled = el('notificationEnabled').checked;
-  const start = el('notificationStartDate').value||null;
-  const end = el('notificationEndDate').value||null;
-  const time = el('dailyNotificationTime').value||null;
+  if(!currentUser)return;
+  const enabled=el('notificationEnabled').checked;
+  const start=el('notificationStartDate').value||null;
+  const end=el('notificationEndDate').value||null;
+  const time=el('dailyNotificationTime').value||null;
 
   if(enabled){
     if(!start||!end||!time){
@@ -953,7 +885,7 @@ async function saveNotificationSettings(){
     }
   }
 
-  const payload = {
+  const payload={
     user_id:currentUser.id,
     timezone:'Asia/Bangkok',
     notification_enabled:enabled,
@@ -962,7 +894,7 @@ async function saveNotificationSettings(){
     daily_notification_time:time
   };
 
-  const {error} = await supabaseClient.from('user_settings')
+  const {error}=await supabaseClient.from('user_settings')
     .upsert(payload,{onConflict:'user_id'});
 
   if(error){
@@ -970,31 +902,89 @@ async function saveNotificationSettings(){
     return;
   }
 
-  notificationSettings = {...notificationSettings,...payload};
+  notificationSettings={...notificationSettings,...payload};
   updateNotificationPreview();
   setMessage('notificationSettingsMessage','บันทึกการตั้งค่าการแจ้งเตือนสำเร็จแล้ว','success');
   showToast('บันทึกการตั้งค่าสำเร็จ');
 }
 
+async function createLineLinkCode(){
+  if(!currentUser){
+    showToast('กรุณาเข้าสู่ระบบก่อน');
+    return;
+  }
+
+  const button=el('createLineCodeButton');
+  button.disabled=true;
+  button.textContent='กำลังสร้างรหัส...';
+  setMessage('lineLinkMessage','');
+
+  try{
+    const {data,error}=await supabaseClient.functions.invoke(
+      'create-line-link-code',
+      {body:{}}
+    );
+
+    if(error)throw error;
+    if(!data||!data.success||!data.code){
+      throw new Error(data?.error||'ไม่สามารถสร้างรหัสได้');
+    }
+
+    currentLineLinkCode=data.code;
+    el('lineLinkCode').textContent=data.code;
+    el('lineLinkExpiry').textContent='รหัสหมดอายุเวลา '+new Date(data.expires_at).toLocaleTimeString('th-TH',{
+      hour:'2-digit',minute:'2-digit'
+    })+' น.';
+    el('lineLinkResult').classList.remove('hidden');
+
+    setMessage('lineLinkMessage','สร้างรหัสเชื่อมต่อสำเร็จ กรุณาส่งรหัสไปยัง LINE Official Account','success');
+    showToast('สร้างรหัสเชื่อมต่อ LINE สำเร็จ');
+  }catch(error){
+    console.error('LINE link error:',error);
+    setMessage('lineLinkMessage','สร้างรหัสไม่สำเร็จ: '+(error.message||'เกิดข้อผิดพลาด'),'error');
+  }finally{
+    button.disabled=false;
+    button.textContent='สร้างรหัสเชื่อมต่อ LINE';
+  }
+}
+
+function copyLineLinkCode(){
+  if(!currentLineLinkCode)return;
+
+  if(navigator.clipboard&&navigator.clipboard.writeText){
+    navigator.clipboard.writeText(currentLineLinkCode)
+      .then(()=>showToast('คัดลอกรหัสแล้ว'))
+      .catch(()=>showToast('คัดลอกไม่สำเร็จ กรุณาคัดลอกรหัสด้วยตนเอง'));
+  }else{
+    showToast('กรุณาคัดลอกรหัสด้วยตนเอง');
+  }
+}
+
 function exportTasks(){
-  const data = {
+  const data={
     exported_at:new Date().toISOString(),
     app:'EduReminder',
     tasks,
     subjects
   };
-  const blob = new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
-  const url = URL.createObjectURL(blob);
-  const link = document.createElement('a');
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('a');
   link.href=url;
   link.download='edureminder-backup.json';
+  document.body.appendChild(link);
   link.click();
+  link.remove();
   URL.revokeObjectURL(url);
   showToast('ส่งออกข้อมูลสำรองแล้ว');
 }
 
 (async function checkExistingSession(){
-  const {data:{session}} = await supabaseClient.auth.getSession();
+  const {data:{session},error}=await supabaseClient.auth.getSession();
+  if(error){
+    console.error('Session check error:',error);
+    return;
+  }
   if(session?.user){
     await initializeApp(session.user);
   }
